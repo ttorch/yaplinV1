@@ -1,0 +1,10 @@
+<template name="default">
+    <div id="page-wrapper">
+        {{> common }}
+        {{> Template.dynamic template=top}}
+        <section id="main-content-wrapper">
+            {{> Template.dynamic template=main}}
+        </section>
+        {{> Template.dynamic template=bottom}}
+    </div>
+</template>

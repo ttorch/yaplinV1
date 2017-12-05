@@ -1,0 +1,14 @@
+<template name="common">
+    <div class="modal fade" id="accountPopUpWindow">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <button class="close pull-right" data-dismiss="modal">&times;</button>
+                {{#if showRegisterTemplate}}
+                    {{> register}}
+                {{else}}
+                    {{> login}}
+                {{/if}}
+            </div>
+        </div>
+    </div>
+</template>
