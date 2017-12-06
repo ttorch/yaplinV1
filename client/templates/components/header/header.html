@@ -40,7 +40,7 @@
 
 <template name="topnav">
 <div class="container" id="all-con">
-    <div class="row">
+    <div class="row menubar">
         <nav class="navbar navbar-inverse col-sm-12">
             <div class="row navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -48,13 +48,13 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>                        
                 </button>
-                <a class="navbar-brand show-logo" href="index.html"><img src="assets/images/yaplin-white.png" width="79"></a>
-                <a class="navbar-brand hidden-logo" href="index.html"><img src="assets/images/yaplin-orange.png" width="79"></a>
+                <a class="navbar-brand show-logo" href="{{pathFor 'home'}}"><img src="assets/images/yaplin-white.png" width="79"></a>
+                <a class="navbar-brand hidden-logo" href="{{pathFor 'home'}}"><img src="assets/images/yaplin-orange.png" width="79"></a>
             </div>
             <div class="row collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav navbar-right">
                     <li class="add-border"><a href="what-we-do.html">What We Do</a></li>
-                    <li class="add-border"><a href="become-a-buddy.html">Become A Buddy</a></li>
+                    <li class="add-border"><a href="{{pathFor 'becomeabuddy'}}">Become A Buddy</a></li>
                     <li class="add-border"><a href="find-buddy.html">Find Buddy</a></li>
                     <li class="hidden-xs"><a href="#">|</a></li>
                     {{#if currentUser}}
