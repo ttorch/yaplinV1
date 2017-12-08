@@ -5,3 +5,10 @@ Template.topnav.rendered = function(){
     //     element.removeClass("become-buddy"); 
     // }
 }
+
+Template.topnav.events({
+    'click .logout': function(event){
+        event.preventDefault();
+        Meteor.logout();
+    }
+});

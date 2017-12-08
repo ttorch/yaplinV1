@@ -1,16 +1,20 @@
 <template name="becomeabuddy">
-    <div class="buddy-img" style="background:url(assets/images/buddy-bkgd.jpg);">
+    <div class="buddy-img" style="background:url(/assets/images/buddy-bkgd.jpg);">
         <div class="container">
             <div>
                 <h1 class="buddy-img-title">Become A Buddy</h1>
             </div>
             <div class="buddy-img-subtitle">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
-            <div class="buddy-img-submit"><a href="update-profile.html"><input name="started" type="button" value="Get Started"></a></div>
+            <div class="buddy-img-submit">
+                <a href="{{pathFor 'becomeabuddy.register'}}">
+                    Get Started
+                </a>
+            </div>
         </div>
     </div>
     <div class="container become-buddy">
         <div class="col-sm-12">
-                <div class="main-large-title"><span>How</span> to become a buddy</div>
+            <div class="main-large-title"><span>How</span> to become a buddy</div>
         </div>
         
         <div class="col-sm-12">

@@ -200,7 +200,7 @@ input:focus, text-area:focus, button:focus, select:focus{outline:none!important;
 
 a:hover{text-decoration:none!important;}
 
-.footer{height:auto; width:100%; border-top:.1rem #e5e5e5 solid; margin-top:100px;}
+.footer{height:auto; border-top:.1rem #e5e5e5 solid; margin-top:100px;}
 
 
 
