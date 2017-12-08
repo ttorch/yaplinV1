@@ -48,14 +48,14 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>                        
                     </button>
-                    <a id="white-logo" class="navbar-brand show-logo" href="{{pathFor 'home'}}"><img src="assets/images/yaplin-white.png" width="79"></a>
-                    <a id="orange-logo" class="navbar-brand hidden-logo" href="{{pathFor 'home'}}"><img src="assets/images/yaplin-orange.png" width="79"></a>
+                    <a id="white-logo" class="navbar-brand show-logo" href="{{pathFor 'home'}}"><img src="/assets/images/yaplin-white.png" width="79"></a>
+                    <a id="orange-logo" class="navbar-brand hidden-logo" href="{{pathFor 'home'}}"><img src="/assets/images/yaplin-orange.png" width="79"></a>
                 </div>
                 <div class="row collapse navbar-collapse" id="myNavbar">
                     <ul class="nav navbar-nav navbar-right">
-                        <li class="add-border"><a href="what-we-do.html">What We Do</a></li>
+                        <li class="add-border"><a href="{{pathFor 'whatwedo'}}">What We Do</a></li>
                         <li class="add-border"><a href="{{pathFor 'becomeabuddy'}}">Become A Buddy</a></li>
-                        <li class="add-border"><a href="find-buddy.html">Find Buddy</a></li>
+                        <li class="add-border"><a href="{{pathFor 'findbuddy'}}">Find Buddy</a></li>
                         <li class="hidden-xs"><a href="#">|</a></li>
                         {{#if currentUser}}
                         <li class="dropdown">
