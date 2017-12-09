@@ -42,7 +42,7 @@ Template.register.events({
         var data = {
             email: target.email.value,
             firstname: target.firstname.value,
-            lastname: target.lastname.value,
+            lastName: target.lastname.value,
             password: target.password.value
         }
         

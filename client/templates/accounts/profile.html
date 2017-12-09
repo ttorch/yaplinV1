@@ -1,12 +1,63 @@
 <template name="profile">
     <div class="row">
-        <div class="form-group">
-            <label for="formGroupExampleInput">Example label</label>
-            <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Example input">
-        </div>
-        <div class="form-group">
-            <label for="formGroupExampleInput2">Another label</label>
-            <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Another input">
+        <div class="col-md-12">
+            <form method="POST">
+                <div class="form-group">
+                    <input type="text" name="firstname" class="form-control input-md" placeholder="First Name" value="{{currentUser.profile.firstName}}" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" name="lastname" class="form-control input-md" value="{{currentUser.profile.lastName}}" placeholder="Last Name">
+                </div>
+                <div class="form-group">
+                    <select name="gender" class="form-control input-md custom-select mb-2 mr-sm-2 mb-sm-0">
+                        {{#each gender}}
+                        <option value="{{value}}">{{text}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <div class="input-group date" id="dob">
+                        <input type="text" name="dateofbirth" class="form-control form-control-lg" placeholder="Date of Birth" value="{{currentUser.profile.dob}}"/>
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="text" name="email" class="form-control input-md" value="{{currentUser.emails.[0].address}}" disabled>
+                </div>
+                <div class="form-group">
+                    <input type="text" name="contact" class="form-control input-md" placeholder="Contact Number" value="{{currentUser.profile.contact}}">
+                </div>
+                <div class="form-group">
+                    <input type="text" name="street" class="form-control input-md" placeholder="Street" value="{{currentUser.profile.street}}">
+                </div>
+                <div class="form-group">
+                    <input type="text" name="city" class="form-control input-md" placeholder="City" value="{{currentUser.profile.city}}">
+                </div>
+                <div class="form-group">
+                    <select name="country" class="form-control input-md custom-select mb-2 mr-sm-2 mb-sm-0">
+                        {{#each country}}
+                        <option value="{{value}}">{{text}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <textarea name="about" id="about" rows="5" placeholder="Describe yourself here..." class="form-control"></textarea>
+                </div>
+                <div class="form-group">
+                    <div class="checkbox" style="margin-left:20px;">
+                        <input id="chktnc" type="checkbox">
+                        <label for="chktnc" style="padding-left:10px;">
+                            By clicking Submit, you agree to the Terms and Conditions set out by this site, including our Cookie Use. 
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <button class="btn btn-primary pull-right" type="submit">Submit</button>
+                </div>
+            </form>
         </div>
     </div>
 </template>
