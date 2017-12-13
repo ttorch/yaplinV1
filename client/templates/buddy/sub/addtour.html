@@ -24,7 +24,23 @@
                 </div>
             </div>
             <h1>Schedules</h1>
-            {{>adddates }}
+            <hr>
+            <div class="row">
+                <div class="col-md-12">
+                    <table id="schedules" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>From</th>
+                                <th>To</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{>adddates }}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
             <h1>Summary</h1>
             <!-- <div class="row">
                 <div class="form-group col-md-6">
@@ -64,45 +80,28 @@
 </template>
 
 <template name="adddates">
-    <hr>
-    <div class="row">
-        <div class="col-md-12">
-            <table id="schedules" class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>From</th>
-                        <th>To</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <div class="form-group">
-                                <div class='input-group date' id='start_01'>
-                                    <input type='text' class="form-control form-control-lg" placeholder="From"/>
-                                    <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-calendar"></span>
-                                    </span>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="form-group">
-                                <div class='input-group date' id='end_01'>
-                                    <input type='text' class="form-control form-control-lg" placeholder="To"/>
-                                    <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-calendar"></span>
-                                    </span>
-                                </div>
-                            </div>
-                        </td>
-                        <td><button type="button" id="btnAddSched" class="btn btn-success" data-toggle="tooltip" title="Add schedule">
-                                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                            </button> <button id="btnRemoveSched" type="button" class="btn btn-danger" data-toggle="tooltip" title="Remove schedule"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+    <tr>
+        <td>
+            <div class="form-group">
+                <div class='input-group date' id='start_01'>
+                    <input type='text' class="form-control form-control-lg" placeholder="From"/>
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </td>
+        <td>
+            <div class="form-group">
+                <div class='input-group date' id='end_01'>
+                    <input type='text' class="form-control form-control-lg" placeholder="To"/>
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </td>
+        <td><button name="btnAddSched" type="button" id="btnAddSched" class="btn btn-success add-sched" data-toggle="tooltip" title="Add schedule">+ 
+            </button> <button name="btnRemoveSched" id="btnRemoveSched" type="button" class="btn btn-danger remove-sched" data-toggle="tooltip" title="Remove schedule">-</button></td>
+    </tr>
 </template>
