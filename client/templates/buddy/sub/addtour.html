@@ -36,7 +36,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {{>adddates }}
+                            {{#each schedules}}
+                                {{>adddates }}
+                            {{/each}}
                         </tbody>
                     </table>
                 </div>
@@ -80,11 +82,11 @@
 </template>
 
 <template name="adddates">
-    <tr>
+    <tr class="scheduleItem tr_{{scheduleId}}" scheduleId="{{scheduleId}}">
         <td>
             <div class="form-group">
-                <div class='input-group date' id='start_01'>
-                    <input type='text' class="form-control form-control-lg" placeholder="From"/>
+                <div class='input-group datetimepicker' id='start_{{scheduleId}}' name='start_{{scheduleId}}'>
+                    <input type='text' class="form-control form-control-lg" placeholder="From" value="{{from}}"/>
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
@@ -93,8 +95,8 @@
         </td>
         <td>
             <div class="form-group">
-                <div class='input-group date' id='end_01'>
-                    <input type='text' class="form-control form-control-lg" placeholder="To"/>
+                <div class='input-group datetimepicker' id='end_{{scheduleId}}' name='end_{{scheduleId}}'>
+                    <input type='text' class="form-control form-control-lg" placeholder="To" value="{{to}}"/>
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>

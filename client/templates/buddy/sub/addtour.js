@@ -1,19 +1,15 @@
 noOfGuests = 1;
+schedules = [];
+
+function getDateTime() {
+    var currentDateTime = new Date();
+    return currentDateTime.getDate() + "/" + (currentDateTime.getMonth()+1)  + "/" + currentDateTime.getFullYear() + " " + currentDateTime.getHours() + ":" + currentDateTime.getMinutes()
+}
 
 Template.addtour.onCreated(function() {
     document.title = "Yaplin - Create Tour";
-    Session.set('schedules', []);
-    
-    var schedules = Session.get('schedules');
-    var uniqid = Math.floor(Math.random() * 100000);
-    schedules.push({uniqid: uniqid, from: "", to: ""});
-    Session.set('schedules', schedules);
+    Session.set('schedules', [{scheduleId: 1, from: getDateTime(), to: getDateTime()}]);
 });
-
-Template.addtour.rendered = function() {
-    $('#start_01').datetimepicker();
-    $('#end_01').datetimepicker();
-};
 
 Template.addtour.events({
     'submit form': function(event){
@@ -52,44 +48,16 @@ Template.addtour.events({
 
     "click .add-sched": function(event) {
         var schedules = Session.get('schedules');
-        var uniqid = Math.floor(Math.random() * 100000);
-        schedules.push({uniqid: uniqid, from: "", to: ""});
+        var scheduleId = Math.floor(Math.random() * 1000);
+
+        schedules.push({scheduleId: scheduleId, from: getDateTime(), to: getDateTime()});
         Session.set('schedules', schedules);
 
-        $('#schedules').append('<tr id="row-' + uniqid +'"><td><div class="form-group"><div class="input-group date start" id="start-' + uniqid + '"><input type="text" class="form-control form-control-lg" placeholder="From"/> \
-                    <span class="input-group-addon"> \
-                        <span class="glyphicon glyphicon-calendar"></span> \
-                    </span> \
-                </div> \
-            </div> \
-        </td> \
-        <td> \
-            <div class="form-group"> \
-                <div class="input-group date end" id="end-' + uniqid + '"> \
-                    <input type="text" class="form-control form-control-lg" placeholder="To"/> \
-                    <span class="input-group-addon"> \
-                        <span class="glyphicon glyphicon-calendar"></span> \
-                    </span> \
-                </div> \
-            </div> \
-        </td> \
-        <td><button type="button" class="btn btn-success add-sched" data-toggle="tooltip" title="Add schedule"> \
-                + \
-            </button> <button name="' + uniqid +'" type="button" class="btn btn-danger remove-sched" data-toggle="tooltip" title="Remove schedule"> \
-            -</button></td> \
-        </tr>');
-        $('#start-'+uniqid).datetimepicker();
-        $('#end-'+uniqid).datetimepicker();
+        console.log('ScheduleID: ' + scheduleId);
         console.log(Session.get('schedules'));
-    },
 
-    "click .remove-sched": function(event) {
-        var buttonName = event.target.name;
-        // TODO: Remove the deleted row from the Session
-        // console.log(Session.key[uniqid]);
-
-        // delete Session.value[buttonName];
-        $('table#schedules tr#row-' + buttonName).remove();
+        $('#start_'+scheduleId).datetimepicker();
+        $('#end_'+scheduleId).datetimepicker();
     }
 });
 
@@ -101,4 +69,28 @@ Template.addtour.helpers({
     schedules: function() {
         return Session.get('schedules');
     }
+});
+
+// Add Dates
+Template.adddates.events({
+    'click .remove-sched': function(event) {
+        var scheduleId = Template.instance().$('.scheduleItem').attr('scheduleId');
+        var schedules = Session.get('schedules');
+        
+        //$('.tr_' + scheduleId).hide();
+
+        schedules = _.reject(schedules, function(x) {
+            return x.scheduleId == scheduleId;
+        });
+
+        Session.set('schedules', schedules);
+
+        console.log(Session.get('schedules'));
+    }
+});
+
+Template.adddates.onRendered(function() {
+    this.$('.datetimepicker').datetimepicker({
+        daysOfWeekDisabled: [0, 6]
+    });
 });
