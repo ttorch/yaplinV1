@@ -1,0 +1,40 @@
+<template name="toursearchfilter">
+    <form>
+        <div class="form-group col-md-offset-2 col-sm-offset-2">
+          <div class="col-md-2 col-sm-5">
+            <input class="form-control datepicker" type="text" value="Date" id="date">
+          </div>
+          <div class="col-md-2 col-sm-5">
+              <select class="form-control" id="noOfGuest">
+                <option selected>Guest</option>
+                {{#each noOfGuest}}
+                 <option value="{{val}}">{{val}} Guest(s)</option>
+                 {{/each}}
+              </select>
+          </div>
+          <div class="col-md-2 col-sm-5">
+              <div class="form-group">
+                <div class='input-group date timepicker'>
+                    <input type='text' class="form-control" id="timeFrom"/>
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-time"></span>
+                    </span>
+                </div>
+            </div>
+          </div>
+          <div class="col-md-2 col-sm-5">
+              <div class="form-group">
+                <div class='input-group date timepicker'>
+                    <input type='text' class="form-control" id="timeTo"/>
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-time"></span>
+                    </span>
+                </div>
+            </div>
+          </div>
+        </div> 
+        <div class="home-search col-md-1 col-sm-12">
+         <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-search"></i></button>
+        </div>
+      </form>
+</template>

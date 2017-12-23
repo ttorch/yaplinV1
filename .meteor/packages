@@ -6,7 +6,7 @@
 
 meteor-base@1.2.0             # Packages every Meteor app needs to have
 mobile-experience@1.0.5       # Packages for a great mobile UX
-mongo@1.3.0                   # The database Meteor supports right now
+mongo@1.3.1                   # The database Meteor supports right now
 #static-html             # Define static page content in .html files
 reactive-var@1.0.11            # Reactive variable for tracker
 tracker@1.1.3                 # Meteor's client-side reactive programming library
@@ -23,7 +23,7 @@ arillo:flow-router-helpers
 kadira:blaze-layout
 blaze-html-templates
 
-session
+session@1.1.7
 
 twbs:bootstrap
 fortawesome:fontawesome
@@ -32,6 +32,7 @@ themeteorchef:bert
 
 alanning:roles
 
-accounts-password
-accounts-base
+accounts-password@1.5.0
+accounts-base@1.4.0
 tsega:bootstrap3-datetimepicker
+mrt:jquery-ui
