@@ -86,7 +86,7 @@
         <td>
             <div class="form-group">
                 <div class='input-group datetimepicker' id='start_{{scheduleId}}' name='start_{{scheduleId}}'>
-                    <input type='text' class="form-control form-control-lg" placeholder="From" value="{{from}}"/>
+                    <input id="dp_start_{{scheduleId}}" name="dp_start_{{scheduleId}}" type='text' class="form-control form-control-lg" placeholder="From" value="{{from}}"/>
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
@@ -96,7 +96,7 @@
         <td>
             <div class="form-group">
                 <div class='input-group datetimepicker' id='end_{{scheduleId}}' name='end_{{scheduleId}}'>
-                    <input type='text' class="form-control form-control-lg" placeholder="To" value="{{to}}"/>
+                    <input id="dp_end_{{scheduleId}}" name="dp_end_{{scheduleId}}" type='text' class="form-control form-control-lg" placeholder="To" value="{{to}}"/>
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>

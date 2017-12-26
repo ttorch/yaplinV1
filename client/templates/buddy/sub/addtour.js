@@ -3,7 +3,7 @@ schedules = [];
 
 function getDateTime() {
     var currentDateTime = new Date();
-    return currentDateTime.getDate() + "/" + (currentDateTime.getMonth()+1)  + "/" + currentDateTime.getFullYear() + " " + currentDateTime.getHours() + ":" + currentDateTime.getMinutes()
+    return currentDateTime.getDate() + "/" + (currentDateTime.getMonth()+1)  + "/" + currentDateTime.getFullYear() + " " + currentDateTime.getHours() + ":" + currentDateTime.getMinutes();
 }
 
 Template.addtour.onCreated(function() {
@@ -25,9 +25,10 @@ Template.addtour.events({
             experience: target.experience.value,
             exp_expectation: target.exp_expectation.value,
             provision: target.provision.value,
-            prov_expectation: target.prov_expectation.value
+            prov_expectation: target.prov_expectation.value,
+            schedules: Session.get('schedules')
         };
-
+        console.log(data);
         Meteor.call('CreateTour', data, function(error, response){
             
             if (error) {
@@ -42,7 +43,7 @@ Template.addtour.events({
 
     "change #noOfGuests": function(event, template) {
         var participant = $(event.currentTarget).val();
-        console.log("participant: " + participant);
+        // console.log("participant: " + participant);
         noOfGuests = participant;
     },
 
@@ -53,8 +54,8 @@ Template.addtour.events({
         schedules.push({scheduleId: scheduleId, from: getDateTime(), to: getDateTime()});
         Session.set('schedules', schedules);
 
-        console.log('ScheduleID: ' + scheduleId);
-        console.log(Session.get('schedules'));
+        // console.log('ScheduleID: ' + scheduleId);
+        // console.log(Session.get('schedules'));
 
         $('#start_'+scheduleId).datetimepicker();
         $('#end_'+scheduleId).datetimepicker();
@@ -76,8 +77,6 @@ Template.adddates.events({
     'click .remove-sched': function(event) {
         var scheduleId = Template.instance().$('.scheduleItem').attr('scheduleId');
         var schedules = Session.get('schedules');
-        
-        //$('.tr_' + scheduleId).hide();
 
         schedules = _.reject(schedules, function(x) {
             return x.scheduleId == scheduleId;
@@ -85,12 +84,38 @@ Template.adddates.events({
 
         Session.set('schedules', schedules);
 
-        console.log(Session.get('schedules'));
+        // console.log(Session.get('schedules'));
+    },
+    'dp.change .datetimepicker': function(event, tmpl) {
+        var target = event.target;
+        var scheduleId = target.id;
+        var value = $('#dp_' + target.id).val();
+        // console.log('New value: ' + value);
+        scheduleId = scheduleId.replace('start_', '').replace('end_', '').trim();
+        
+        var schedules = Session.get('schedules');
+        var result = $.grep(schedules, function(e){ return e.scheduleId == scheduleId; });
+        if(result) {
+            // debugger;
+            if (target.id.indexOf("start") >= 0) {
+                result[0].from = value;
+            } else if(target.id.indexOf("end") >= 0) {
+                result[0].to = value;
+            }
+        }
+        schedules = _.reject(schedules, function(x) {
+            return x.scheduleId == scheduleId;
+        });
+        schedules.push(result[0]);
+        Session.set('schedules', schedules);
+        // console.log(Session.get('schedules'));
     }
 });
 
 Template.adddates.onRendered(function() {
     this.$('.datetimepicker').datetimepicker({
-        daysOfWeekDisabled: [0, 6]
+        timeZone: 'Asia/Singapore',
+        useCurrent: true,
+        sideBySide: true
     });
 });
