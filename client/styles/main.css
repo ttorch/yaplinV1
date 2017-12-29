@@ -262,6 +262,11 @@ a:hover{text-decoration:none!important;}
 
 .home-banner button{padding-left:30px; padding-right:30px;}
 
+.datepicker, .timepicker{
+    color: #292929;
+    text-shadow:none;
+}
+
 .carousel-fade .carousel-inner .item {
   opacity: 0;
   transition-property: opacity;
