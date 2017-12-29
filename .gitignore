@@ -1,2 +1,6 @@
 node_modules/
 /nbproject/private/
+imports/.DS_Store
+imports/collections/.DS_Store
+lib/.DS_Store
+nbproject/.DS_Store
