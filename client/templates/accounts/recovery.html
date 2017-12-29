@@ -1,0 +1,41 @@
+<template name="recovery">
+    <div class="container">
+        <div class="row">
+            {{#if resetPassword}}
+            <div class="col-sm-12">
+                <h2>
+                    Change Password <br>
+                    <small>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.</small>
+                </h2>
+                <form id="change">
+                    <div class="form-group col-xs-12 col-md-3 no-padding">
+                        <input type="password" class="form-control input-md" name="newPassword" placeholder="New Password">
+                    </div>
+                    <div class="form-group col-xs-12 col-md-3">
+                        <input type="password" class="form-control input-md" name="confirmPassword" placeholder="Confirm Password">
+                    </div>
+                    <div class="form-group col-xs-12 col-md-3">
+                        <button class="btn btn-primary" type="submit" id="btn-submit-profile">Change</button>
+                    </div>
+                </form>
+            </div>
+            {{else}}
+            <div class="col-sm-12">
+                <h2>
+                    Request a password reset. <br>
+                    <small>Enter the email address you used when you joined and we’ll send you instructions to reset your password.</small>
+                </h2>
+                <form id="recover">
+                    <div class="form-group col-xs-12 col-md-3 no-padding">
+                        <input type="email" class="form-control input-md" name="recoveryEmail" placeholder="Email">
+                    </div>
+                    <div class="form-group col-xs-12 col-md-3">
+                        <button class="btn btn-primary" type="submit" id="btn-submit-profile">Send Reset Password Instruction</button>
+                    </div>
+                    <!-- If there is an account associated with sixe.eeeeee@gmail.com you will receive an email with a link to reset your password. -->
+                </form>
+            </div>
+            {{/if}}
+        </div>
+    </div>
+</template>

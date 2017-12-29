@@ -1,13 +1,13 @@
 <template name="login">
-    <div class="modal-header">
-        <h3 class="text-center">Login to Yaplin</h3>
-    </div>
+    <h2 class="text-center">Login to Yaplin</h2>
     <div class="account-form">
         <form id="app-login">
             <input type="email" name="loginEmail" placeholder="Email">
             <input type="password" name="loginPassword" placeholder="Password">
             <button type="submit">Login</button>
-            <p class="text-center">Forgot Password?</p>
+            <p class="text-center">
+                <a href="{{pathFor 'atResetPwd'}}">Forgot Password?</a>
+            </p>
             <hr>
             <p class="text-center">
                 Don't have an account? <a href="#Register" id="aRegister">Sign up</a>

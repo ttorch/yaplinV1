@@ -1,3 +1,28 @@
 <template name="myaccount">
-    My Account
+    <div class="container">
+        <div class="wrapper-w-s-b">
+            {{> Template.dynamic template=sidebar}}
+            <div id="content">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <h3>Your personal info</h3>
+                        <p>
+                            Manage this basic information — your name, email, and phone number — It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. 
+                        </p>
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="panel-style-1">
+                            <form>
+                                {{> profile}}
+                                <div class="form-group" style="text-align:right">
+                                    <button class="btn btn-primary" type="submit" id="btn-submit-profile">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>

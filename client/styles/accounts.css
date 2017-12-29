@@ -1,3 +1,12 @@
+
+#accountPopUpWindow .modal-header {
+    border: none;
+}
+
+.account-form {
+    padding: 20px 40px;
+}
+
 .account-form input{
     font-family: "Roboto", sans-serif;
     outline: 0;
@@ -28,4 +37,46 @@
 
 .account-form button:hover, .account-form button:active, .account-form button:focus {
     background: #D07803;
+}
+
+.wrapper-w-s-b {
+    display: flex;
+    align-items: stretch;
+}
+
+.wrapper-w-s-b > #content {
+    padding: 20px 0;
+    width:100%;
+}
+
+#sidebar {
+    min-width: 250px;
+    max-width: 250px;
+    min-height: 100vh;
+    color: #000000;
+    transition: all 0.3s;
+}
+
+#sidebar ul.components {
+    padding: 20px 0;
+    /* border-bottom: 1px solid #f18305; */
+}
+
+#sidebar ul li a {
+    padding: 10px;
+    font-size: 1.1em;
+    display: block;
+    background-color: transparent;
+    text-align: left;
+    font-weight: normal;
+    border-left: solid 3px #ffffff;
+}
+#sidebar ul li a:hover {
+    color: rgb(0, 0, 0);
+    border-left: solid 3px #e44d26
+}
+
+#sidebar ul li.active > a, #sidebar ul li.active a[aria-expanded="true"] {
+    color: rgb(0, 0, 0);
+    border-left: solid 3px #e44d26
 }
