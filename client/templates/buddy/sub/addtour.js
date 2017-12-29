@@ -1,3 +1,4 @@
+import { Buddies } from '../../../../imports/collections/buddiesCol.js';
 noOfGuests = 1;
 schedules = [];
 
@@ -16,28 +17,35 @@ Template.addtour.events({
         event.preventDefault();
         event.stopPropagation();
         var target = event.target;
-        var data = {
-            title: target.title.value,
-            location: target.location.value,
-            guests: noOfGuests,
-            price: target.price.value,
-            summary: target.summary.value,
-            experience: target.experience.value,
-            exp_expectation: target.exp_expectation.value,
-            provision: target.provision.value,
-            prov_expectation: target.prov_expectation.value,
-            schedules: Session.get('schedules')
-        };
-        console.log(data);
-        Meteor.call('CreateTour', data, function(error, response){
-            
-            if (error) {
-                console.log(error);
-                Bart.alert(error.error.reason, 'danger', 'fixed-top', 'fa-frown-o');
-            } else {
-                console.log(response);
-            }
-        });
+        var buddy = Buddies.find({ userId: Meteor.userId() }).fetch()[0];
+        if (buddy != undefined && buddy._id && buddy.verified === true) {
+            var data = {
+                buddy_id: buddy._id,
+                title: target.title.value,
+                location: target.location.value,
+                guests: noOfGuests,
+                price: target.price.value,
+                summary: target.summary.value,
+                experience: target.experience.value,
+                exp_expectation: target.exp_expectation.value,
+                provision: target.provision.value,
+                prov_expectation: target.prov_expectation.value,
+                schedules: Session.get('schedules')
+            };
+            console.log(data);
+            Meteor.call('CreateTour', data, function(error, response){
+                
+                if (error) {
+                    console.log(error);
+                    Bert.alert(error.error.reason, 'danger', 'fixed-top', 'fa-frown-o');
+                } else {
+                    console.log(response);
+                    return true;
+                }
+            });
+        } else {
+            Bert.alert('Not authorized!.', 'danger', 'fixed-top', 'fa-frown-o');
+        }
         return false;
     },
 

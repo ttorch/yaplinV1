@@ -19,7 +19,9 @@ Template.recovery.events({
                 Bert.alert( error.reason, 'danger', 'fixed-top', 'fa-frown-o');
             } else {
                 Bert.alert( 'Password reset link sent.', 'success', 'fixed-top', 'fa-check');
+                event.target.recoveryEmail.value = "";
             }
+            
         })
     }
 })

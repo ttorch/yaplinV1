@@ -3,9 +3,11 @@ import { Buddies } from '../../../../imports/collections/buddiesCol.js';
 Template.buddyregisterform.onCreated(function() {
     FlowRouter.subsReady("subsBuddies", function() {
         let buddy = Buddies.find({ userId: Meteor.userId() }).fetch()[0];
-        if (buddy != undefined && buddy._id) {
+        if (buddy != undefined && buddy._id && buddy.verified === false) {
             FlowRouter.go('becomeabuddy.status', { buddyId: buddy._id} );
-        }
+        } else if (buddy != undefined && buddy._id && buddy.verified === true) {
+            FlowRouter.go('buddy.addtour');
+        } 
     });
 });
 
