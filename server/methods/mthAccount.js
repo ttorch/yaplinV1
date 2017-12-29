@@ -56,12 +56,15 @@ Meteor.methods({
                     }
                 }              
             });
-
+            console.log("SERVER METHOD: UpdateProfile ");
+            console.log(result);
             if (result)
-                return Meteor.userId();
+                return result;
             else
                 throw new Meteor.Error('Unexpected error while updating profile information. Please try again.');
         } catch (error) {
+            console.log("SERVER METHOD: UpdateProfile EXCEPTION");
+            console.log(error);
             throw new Meteor.Error(error);
         }
     }

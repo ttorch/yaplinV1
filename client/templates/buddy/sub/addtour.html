@@ -1,6 +1,6 @@
 <template name="addtour">
     <div class="container">
-        <h1>Add Destinations</h1>
+        <h1>Create Tour</h1>
         <form>
             <div class="row">
                 <div class="form-group col-md-6">
@@ -13,21 +13,68 @@
             <div class="row">
                 <div class="form-group col-md-6">
                     <select class="form-control form-control-lg" id="noOfGuests">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
+                        <option disabled="disabled" selected="selected">Guests</option> 
+                        {{#each participants}}
+                            <option value="{{this}}">{{this}}</option>
+                        {{/each}}
                     </select>
                 </div>
                 <div class="form-group col-md-6">
-                    <input type="text" class="form-control form-control-lg" placeholder="Price">
+                    <input type="text" name="price" class="form-control form-control-lg" placeholder="Price">
                 </div>
             </div>
-            {{>adddates }}
+            <h1>Schedules</h1>
+            <hr>
+            <div class="row">
+                <div class="col-md-12">
+                    <table id="schedules" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>From</th>
+                                <th>To</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each schedules}}
+                                {{>adddates }}
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <h1>Summary</h1>
+            <!-- <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="uploadPhotos">Add photos about the experience (up to 5 photos)</label>
+                    <input type="file" id="uploadPhotos">
+                </div>
+            </div> -->
+            <hr>
             <div class="row">
                 <div class="form-group col-md-12">
-                    <button type="submit" class="btn btn-primary pull-right">Submit</button>
+                    <textarea class="form-control" name="summary" rows="3" placeholder="Summary"></textarea>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <textarea class="form-control" name="experience" rows="3" placeholder="About the experience/service"></textarea>
+                </div>
+                <div class="form-group col-md-6">
+                    <textarea class="form-control" name="exp_expectation" rows="3" placeholder="What to expect"></textarea>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <textarea class="form-control" name="provision"  rows="3" placeholder="What is provided"></textarea>
+                </div>
+                <div class="form-group col-md-6">
+                    <textarea class="form-control" name="prov_expectation" rows="3" placeholder="What to expect"></textarea>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <button type="submit" class="btn btn-primary pull-right">Save</button>
                 </div>
             </div>
         </form>
@@ -35,60 +82,28 @@
 </template>
 
 <template name="adddates">
-    <div class="row">
-        <div class='form-group col-md-3'>
+    <tr class="scheduleItem tr_{{scheduleId}}" scheduleId="{{scheduleId}}">
+        <td>
             <div class="form-group">
-                <div class='input-group date' id='start'>
-                    <input type='text' class="form-control form-control-lg" placeholder="From"/>
+                <div class='input-group datetimepicker' id='start_{{scheduleId}}' name='start_{{scheduleId}}'>
+                    <input id="dp_start_{{scheduleId}}" name="dp_start_{{scheduleId}}" type='text' class="form-control form-control-lg" placeholder="From" value="{{from}}"/>
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
                 </div>
             </div>
-        </div>
-        <div class='form-group col-md-3'>
+        </td>
+        <td>
             <div class="form-group">
-                <div class='input-group date' id='end'>
-                    <input type='text' class="form-control form-control-lg" placeholder="End"/>
+                <div class='input-group datetimepicker' id='end_{{scheduleId}}' name='end_{{scheduleId}}'>
+                    <input id="dp_end_{{scheduleId}}" name="dp_end_{{scheduleId}}" type='text' class="form-control form-control-lg" placeholder="To" value="{{to}}"/>
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
                 </div>
             </div>
-        </div>
-        <div class="form-group col-md-6">
-            <button type="submit" class="btn btn-primary">ADD DATE</button>
-        </div>
-        <script type="text/javascript">
-            $(function () {
-                $('#start').datetimepicker();
-                $('#end').datetimepicker();
-            });
-        </script>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>From</th>
-                        <th>To</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>test</td>
-                        <td>test</td>
-                        <td><a href="#">Remove</a></td>
-                    </tr>
-                    <tr>
-                        <td>test</td>
-                        <td>test</td>
-                        <td><a href="#">Remove</a></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+        </td>
+        <td><button name="btnAddSched" type="button" id="btnAddSched" class="btn btn-success add-sched" data-toggle="tooltip" title="Add schedule">+ 
+            </button> <button name="btnRemoveSched" id="btnRemoveSched" type="button" class="btn btn-danger remove-sched" data-toggle="tooltip" title="Remove schedule">-</button></td>
+    </tr>
 </template>

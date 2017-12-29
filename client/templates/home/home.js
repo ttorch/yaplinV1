@@ -11,7 +11,7 @@ Template.home.onCreated(function(){
     
     var self = this;
     
-    self.tours = new ReactiveVar("Waiting for response from server...");
+    self.tours = new ReactiveVar({});
     
     Meteor.call("SearchTour",{},function(error,response){
         
@@ -27,23 +27,37 @@ Template.home.onCreated(function(){
 
 Template.home.helpers({
   tours() {
-      
       return Template.instance().tours.get();
   },
 });
 
-Template.registerHelper('arrayify',function(obj){
+Template.registerHelper('arrayify_tour',function(obj){
     var result = [];
     
-    obj.forEach(function(obj,i){
-        result.push({
-            _id: JSON.stringify(obj._id),
-            title: obj.title,
-            guests:obj.guests
+    if(typeof obj !== "undefined"){
+        obj.forEach(function(obj,i){
+            
+            result.push({
+                _id: obj._id,
+                title: obj.title,
+                location: obj.location,
+                guests:obj.guests,
+                price:obj.price,
+                summary:obj.summary,
+                experience:obj.experience,
+                exp_expectation:obj.exp_expectation,
+                provision:obj.provision,
+                prov_expectation:obj.prov_expectation,
+                scheduleId: obj.schedules.scheduleId,
+                from: obj.schedules.from,
+                to: obj.schedules.to,
+            });
+
         });
         
-    });
+        console.log(result);
+    }
     
-    console.log(result);
+    
     return result;
 });

@@ -5,7 +5,7 @@ import { TourDates } from '../../imports/collections/tourDatesCol.js';
 Meteor.methods({
     CreateTour: function(data) {
         try {
-            Buddies.insert(data);
+            Tours.insert(data);
             console.log("Create: OK");
             console.log(data);
             return "OK";
@@ -42,9 +42,9 @@ Meteor.methods({
             }*/
            
            var pipeline = [
-            {"$unwind": "$dates"},
-            {"$match": { $or: [ { "dates.date": { $gte: "2017-12-27"} } ] }},
-            {"$match": { "location": "UT" } }
+            {"$unwind": "$schedules"},
+            {"$match": { $or: [ { "schedules.from": { $gte: "2017-12-31 11:00"} } ] }},
+            //{"$match": { "location": "Bukit Batok" } }
            ];
 
            const tours=Tours.aggregate(pipeline); 

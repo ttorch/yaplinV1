@@ -1,8 +1,12 @@
 node_modules/
-/nbproject/private/
+nbproject/.DS_Store
+lib/.DS_Store
 imports/.DS_Store
 imports/collections/.DS_Store
-lib/.DS_Store
-nbproject/.DS_Store
+nbproject/private/private.properties
+nbproject/private/private.xml
+.DS_Store
+/nbproject/private/
 client/templates/buddy/.DS_Store
 client/templates/buddy/sub/.DS_Store
+

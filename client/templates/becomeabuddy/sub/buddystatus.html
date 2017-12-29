@@ -1,0 +1,33 @@
+<template name="buddystatus">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <h1>Hello {{currentUser.profile.firstName}}!</h1>
+                <h3>You're almost done!</h3>
+                <p>
+                    To prevent abuse we just need to verify your application as Buddy. Verification code was sent to your email.<br>
+                    Please check your email and enter the verification code below to activate your Buddy account.
+                </p>
+                {{> buddyverificationform}}
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="buddyverificationform">
+    <form>
+        <div class="container">
+            <div class="row">
+                <div class="form-group form-inline">
+                    <div class="col-xs-12 no-padding">
+                        <label for="">Verification Code:</label>
+                        <input type="hidden" name="bid" value="{{buddyId}}">
+                        <input type="text" name="vcprefix" class="form-control input-md" style="width: 90px;" required> -
+                        <input type="text" name="vcsuffix" class="form-control input-md" style="width: 100px;"  required>
+                        <button type="submit" class="btn btn-primary">Verify</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</template>
