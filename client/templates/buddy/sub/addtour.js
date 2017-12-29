@@ -16,6 +16,18 @@ Template.addtour.events({
         event.preventDefault();
         event.stopPropagation();
         var target = event.target;
+        
+        var arySchedules = new Array();
+        
+        //loop through to convert the datetime format
+        Session.get('schedules').forEach(function(s, i){
+            arySchedules.push({
+                scheduleId: s.scheduleId, 
+                from: moment(s.from).format("YYYY-MM-DD HH:mm"), 
+                to: moment(s.to).format("YYYY-MM-DD HH:mm")
+            });
+        });
+        
         var data = {
             title: target.title.value,
             location: target.location.value,
@@ -26,7 +38,7 @@ Template.addtour.events({
             exp_expectation: target.exp_expectation.value,
             provision: target.provision.value,
             prov_expectation: target.prov_expectation.value,
-            schedules: Session.get('schedules')
+            schedules: arySchedules
         };
         console.log(data);
         Meteor.call('CreateTour', data, function(error, response){
@@ -113,8 +125,10 @@ Template.adddates.events({
 });
 
 Template.adddates.onRendered(function() {
-    this.$('.datetimepicker').datetimepicker({
+    $('.datetimepicker').datetimepicker({
         timeZone: 'Asia/Singapore',
+        format: 'DD MMM YYYY HH:mm',
+        //date: new Date(),
         useCurrent: true,
         sideBySide: true
     });

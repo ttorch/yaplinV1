@@ -38,3 +38,4 @@ tsega:bootstrap3-datetimepicker
 email
 mrt:jquery-ui
 meteorhacks:aggregate
+momentjs:moment
