@@ -1,12 +1,12 @@
 <template name="toursearchfilter">
-    <form>
+    <form class="tourFilterFrm">
         <div class="form-group col-md-offset-2 col-sm-offset-2">
           <div class="col-md-2 col-sm-5">
-            <input class="form-control datepicker" type="text" value="Date" id="date">
+            <input class="form-control datepicker" type="text" value="Date" name="date" id="date">
           </div>
           <div class="col-md-2 col-sm-5">
-              <select class="form-control" id="noOfGuest">
-                <option selected>Guest</option>
+              <select class="form-control" name="noOfGuest" id="noOfGuest">
+                <option selected value="">Guest</option>
                 {{#each noOfGuest}}
                  <option value="{{val}}">{{val}} Guest(s)</option>
                  {{/each}}
@@ -15,7 +15,7 @@
           <div class="col-md-2 col-sm-5">
               <div class="form-group">
                 <div class='input-group date timepicker'>
-                    <input type='text' class="form-control" id="timeFrom"/>
+                    <input type='text' class="form-control" name="timeFrom" id="timeFrom"/>
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-time"></span>
                     </span>
@@ -25,7 +25,7 @@
           <div class="col-md-2 col-sm-5">
               <div class="form-group">
                 <div class='input-group date timepicker'>
-                    <input type='text' class="form-control" id="timeTo"/>
+                    <input type='text' class="form-control" name="timeTo" id="timeTo"/>
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-time"></span>
                     </span>
