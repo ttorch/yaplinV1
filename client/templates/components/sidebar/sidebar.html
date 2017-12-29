@@ -1,0 +1,15 @@
+<template name="sidebar">
+    <nav id="sidebar">
+        <ul class="list-unstyled components">
+            <li class="{{activeClass 'myaccount.profile'}}">
+                <a href="{{pathFor 'myaccount.profile'}}"><i class="fa fa-user"></i> My Profile</a>
+            </li>
+            <li class="{{activeClass 'myaccount.bookings'}}">
+                <a href="{{pathFor 'myaccount.bookings'}}"><i class="fa fa-calendar"></i> Bookings</a>
+            </li>
+            <li class="{{activeClass 'myaccount.inbox'}}">
+                <a href="{{pathFor 'myaccount.inbox'}}"><i class="fa fa-inbox"></i> Inbox</a>
+            </li>
+        </ul>
+    </nav>
+</template>
