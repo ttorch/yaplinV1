@@ -2,18 +2,22 @@ Template.home.onCreated(function(){
     var title = "Yaplin - Home";
     DocHead.setTitle(title);
     
-    /*var data = {
-        date: Session.get("dateFilter"),
-        noOfGuest: Session.get("noOfGuestFilter"),
-        timeFrom: Session.get("timeFromFilter"),
-        timeTo: Session.get("timeToFilter")
-    };*/
+});
+
+Template.home.onRendered(function(){
     
     var self = this;
     
     self.tours = new ReactiveVar({});
     
-    Meteor.call("SearchTour",{},function(error,response){
+    var data = {
+        date: Session.get("dateFilter"),
+        noOfGuest: Session.get("noOfGuestFilter"),
+        timeFrom: Session.get("timeFromFilter"),
+        timeTo: Session.get("timeToFilter")
+    };
+    
+    Meteor.call("SearchTour",data,function(error,response){
         
         if (error) {
             console.log(error);
@@ -22,7 +26,6 @@ Template.home.onCreated(function(){
             self.tours.set(response);
         }
     });
-    
 });
 
 Template.home.helpers({

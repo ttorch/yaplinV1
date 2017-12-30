@@ -21,25 +21,51 @@ Meteor.methods({
             
             const selector = {};
             
-            if(data.date!== undefined && data.date!=""){
-                selector.date=data.date;
-            }
-
+            var dateFromFilter = "";
+            var dateToFilter = "";
+            
             if(data.timeFrom!== undefined && data.timeFrom!=""){
-                selector.time={"$gte":data.timeFrom};
+                dateFromFilter += " "+data.timeFrom;
             }
 
-            /*if(data.timeTo!== undefined && data.timeTo!=""){
-                selector.time_to={"$lte":data.timeTo};
-            }*/
+            if(data.timeTo!== undefined && data.timeTo!=""){
+                //selector.time_to={"$lte":data.timeTo};
+                dateToFilter += " "+data.timeTo;
+            }
+            
+            if(data.date!== undefined && data.date!=""){
+                
+                if(dateFromFilter != ""){
+                    dateFromFilter = data.date + dateFromFilter;
+                }
+                
+                if(dateToFilter != ""){
+                    dateToFilter = data.date + dateToFilter;
+                }
+                
+                if(dateToFilter == "" && dateFromFilter == ""){
+                    dateToFilter = data.date;
+                    dateFromFilter = data.date;
+                }
+            }
+            
+            if(dateFromFilter != ""){
+                selector.$match= { "$or": [ { "schedules.from": { "$gte": dateFromFilter} } ] };
+            }
+            
+            if(dateToFilter != ""){
+                selector.$match= { "$or": [ { "schedules.from": { "$lte": dateToFilter} } ] };
+            }
 
             if(data.noOfGuest!== undefined && data.noOfGuest!=""){
-                selector.no_of_guest=parseInt(data.noOfGuest);
+                selector.$match= { "guests": parseInt(data.noOfGuest)};
             }
 
             /*if(txtSearch!== undefined && txtSearch!=""){
                 selector.title=txtSearch;
             }*/
+            
+           console.log(selector);
            
            var pipeline = [
             {"$unwind": "$schedules"},

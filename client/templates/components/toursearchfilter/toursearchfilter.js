@@ -23,10 +23,10 @@ Template.toursearchfilter.onRendered(function(){
     var timeTo=$("#timeTo").val();
     var noOfGuest=$("#noOfGuest").val();
     
-    /*Session.set("dateFilter",date);
+    Session.set("dateFilter",date);
     Session.set("timeFromFilter",timeFrom);
     Session.set("timeToFilter",timeTo);
-    Session.set("noOfGuestFilter",noOfGuest);*/
+    Session.set("noOfGuestFilter",noOfGuest);
 });
 
 Template.toursearchfilter.helpers({

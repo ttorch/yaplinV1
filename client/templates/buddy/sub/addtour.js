@@ -2,7 +2,7 @@ import { Buddies } from '../../../../imports/collections/buddiesCol.js';
 noOfGuests = 1;
 schedules = [];
 FS.debug = true;
-TourImages = new FS.Collection('tourImages', {
+/*TourImages = new FS.Collection('tourImages', {
     // stores: [new FS.Store.GridFS("tourImages")]
     stores: [new FS.Store.FileSystem("tourImages", {path: "uploads"})]
 });
@@ -15,7 +15,7 @@ TourImages.allow({
         // add custom authentication code here
         return true;
     }
-});
+});*/
 
 function getDateTime() {
     var currentDateTime = new Date();
@@ -39,36 +39,15 @@ Template.addtour.events({
         Session.get('schedules').forEach(function(s, i){
             arySchedules.push({
                 scheduleId: s.scheduleId, 
-                from: moment(s.from).format("YYYY-MM-DD HH:mm"), 
-                to: moment(s.to).format("YYYY-MM-DD HH:mm")
+                date_from: moment(s.from).format("YYYY-MM-DD"), 
+                date_to: moment(s.to).format("YYYY-MM-DD"),
+                time_from: moment(s.from).format("HH:mm"),
+                time_to: moment(s.to).format("HH:mm"),
             });
         });
         
-        var data = {
-            buddyid: Meteor.userId(),
-            title: target.title.value,
-            location: target.location.value,
-            guests: noOfGuests,
-            price: target.price.value,
-            summary: target.summary.value,
-            experience: target.experience.value,
-            exp_expectation: target.exp_expectation.value,
-            provision: target.provision.value,
-            prov_expectation: target.prov_expectation.value,
-            schedules: arySchedules
-        };
-        console.log(data);
-        Meteor.call('CreateTour', data, function(error, response){
-            
-            if (error) {
-                console.log(error);
-                Bart.alert(error.error.reason, 'danger', 'fixed-top', 'fa-frown-o');
-            } else {
-                console.log(response);
-            }
-        });
-        
         var buddy = Buddies.find({ userId: Meteor.userId() }).fetch()[0];
+        
         if (buddy != undefined && buddy._id && buddy.verified === true) {
             var data = {
                 buddy_id: buddy._id,
@@ -81,9 +60,9 @@ Template.addtour.events({
                 exp_expectation: target.exp_expectation.value,
                 provision: target.provision.value,
                 prov_expectation: target.prov_expectation.value,
-                schedules: Session.get('schedules')
+                schedules: arySchedules
             };
-            console.log(data);
+            
             Meteor.call('CreateTour', data, function(error, response){
                 
                 if (error) {
@@ -176,7 +155,7 @@ Template.adddates.onRendered(function() {
     $('.datetimepicker').datetimepicker({
         timeZone: 'Asia/Singapore',
         format: 'DD MMM YYYY HH:mm',
-        //date: new Date(),
+        date: new Date(),
         useCurrent: true,
         sideBySide: true
     });
