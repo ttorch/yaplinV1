@@ -43,6 +43,11 @@
                     </table>
                 </div>
             </div>
+            <h1>Photos</h1>
+            <hr>
+            <div id="dropzone">
+                {{>tourimages}}
+            </div>
             <h1>Summary</h1>
             <!-- <div class="row">
                 <div class="form-group col-md-6">
@@ -106,4 +111,11 @@
         <td><button name="btnAddSched" type="button" id="btnAddSched" class="btn btn-success add-sched" data-toggle="tooltip" title="Add schedule">+ 
             </button> <button name="btnRemoveSched" id="btnRemoveSched" type="button" class="btn btn-danger remove-sched" data-toggle="tooltip" title="Remove schedule">-</button></td>
     </tr>
+</template>
+
+<template name="tourimages">
+    <form action="/upload-target" id="dropzone" class="dropzone dz-clickable">
+        <div class="dz-default dz-message"><span>Drop files here to upload</span></div>
+    </form>
+    <input type="file" multiple="multiple" class="dz-hidden-input" style="visibility: hidden; position: absolute; top: 0px; left: 0px; height: 0px; width: 0px;">
 </template>

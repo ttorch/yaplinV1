@@ -39,3 +39,7 @@ email
 mrt:jquery-ui
 meteorhacks:aggregate
 momentjs:moment
+cfs:standard-packages
+cfs:gridfs
+risul:dropzone
+cfs:filesystem
