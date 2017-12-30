@@ -13,4 +13,15 @@ Meteor.methods({
             throw new Meteor.Error(error);
         }
     }
-})
+});
+
+TourImages.allow({
+    update: function () {
+        // add custom authentication code here
+        return true;
+    },
+    insert: function () {
+        // add custom authentication code here
+        return true;
+    }
+});

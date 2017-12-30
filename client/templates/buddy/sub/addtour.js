@@ -1,5 +1,20 @@
 noOfGuests = 1;
 schedules = [];
+FS.debug = true;
+TourImages = new FS.Collection('tourImages', {
+    // stores: [new FS.Store.GridFS("tourImages")]
+    stores: [new FS.Store.FileSystem("tourImages", {path: "uploads"})]
+});
+TourImages.allow({
+    'update': function () {
+        // add custom authentication code here
+        return true;
+    },
+    'insert': function () {
+        // add custom authentication code here
+        return true;
+    }
+});
 
 function getDateTime() {
     var currentDateTime = new Date();
@@ -17,6 +32,7 @@ Template.addtour.events({
         event.stopPropagation();
         var target = event.target;
         var data = {
+            buddyid: Meteor.userId(),
             title: target.title.value,
             location: target.location.value,
             guests: noOfGuests,
@@ -119,3 +135,28 @@ Template.adddates.onRendered(function() {
         sideBySide: true
     });
 });
+
+Template.tourimages.rendered = function() {
+    $("div#dropzone").dropzone({ url: "/file/post" });
+
+    var arrayOfImageIds = [];
+    
+    Dropzone.autoDiscover = false;
+
+    // Adds file uploading and adds the imageID of the file uploaded
+    // to the arrayOfImageIds object.
+
+    var dropzone = new Dropzone("form#dropzone", {
+        accept: function(file, done){
+            TourImages.insert(file, function(err, fileObj){
+                debugger;
+                if(!err){
+                    // gets the ID of the image that was uploaded
+                    var imageId = fileObj._id;
+                    // do something with this image ID, like save it somewhere
+                    arrayOfImageIds.push(imageId);
+                }
+            });
+        }
+    });
+};
