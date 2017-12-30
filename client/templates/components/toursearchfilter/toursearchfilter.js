@@ -1,11 +1,4 @@
 import './toursearchfilter.html';
-
-Template.toursearchfilter.created = function () {
-    
-    //We set default value
-    this.date = new ReactiveVar($("#date").val());
-    
-};
   
 Template.toursearchfilter.onRendered(function(){
     
@@ -20,7 +13,20 @@ Template.toursearchfilter.onRendered(function(){
         stepping:30
     });
     
-    console.log($("#date").val()+ " here");
+    var date="";
+    
+    if($("#date").val()!=""){
+        date=moment($("#date").val()).format("YYYY-MM-DD");
+    }
+    
+    var timeFrom=$("#timeFrom").val();
+    var timeTo=$("#timeTo").val();
+    var noOfGuest=$("#noOfGuest").val();
+    
+    /*Session.set("dateFilter",date);
+    Session.set("timeFromFilter",timeFrom);
+    Session.set("timeToFilter",timeTo);
+    Session.set("noOfGuestFilter",noOfGuest);*/
 });
 
 Template.toursearchfilter.helpers({

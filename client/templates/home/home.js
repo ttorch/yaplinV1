@@ -2,12 +2,12 @@ Template.home.onCreated(function(){
     var title = "Yaplin - Home";
     DocHead.setTitle(title);
     
-    var data = {
-        date: $("#date").val(),
-        noOfGuest: $("#noOfGuests").val(),
-        timeFrom: $("#timeFrom").val(),
-        timeTo: $("#timeTo").val()
-    };
+    /*var data = {
+        date: Session.get("dateFilter"),
+        noOfGuest: Session.get("noOfGuestFilter"),
+        timeFrom: Session.get("timeFromFilter"),
+        timeTo: Session.get("timeToFilter")
+    };*/
     
     var self = this;
     
@@ -17,7 +17,7 @@ Template.home.onCreated(function(){
         
         if (error) {
             console.log(error);
-            Bart.alert(error.error.reason, 'danger', 'fixed-top', 'fa-frown-o');
+            Bert.alert(error.error.reason, 'danger', 'fixed-top', 'fa-frown-o');
         } else {
             self.tours.set(response);
         }
@@ -35,27 +35,25 @@ Template.registerHelper('arrayify_tour',function(obj){
     var result = [];
     
     if(typeof obj !== "undefined"){
-        obj.forEach(function(obj,i){
-            
-            result.push({
-                _id: obj._id,
-                title: obj.title,
-                location: obj.location,
-                guests:obj.guests,
-                price:obj.price,
-                summary:obj.summary,
-                experience:obj.experience,
-                exp_expectation:obj.exp_expectation,
-                provision:obj.provision,
-                prov_expectation:obj.prov_expectation,
-                scheduleId: obj.schedules.scheduleId,
-                from: obj.schedules.from,
-                to: obj.schedules.to,
-            });
-
-        });
         
-        console.log(result);
+        Object.keys(obj).forEach(function (key){
+                
+                result.push({
+                    _id: obj[key]["_id"],
+                    title: obj[key]["title"],
+                    location: obj[key]["location"],
+                    guests: obj[key]["guests"],
+                    price: obj[key]["price"],
+                    summary: obj[key]["summary"],
+                    experience: obj[key]["experience"],
+                    exp_expectation: obj[key]["exp_expectation"],
+                    provision: obj[key]["provision"],
+                    prov_expectation: obj[key]["prov_expectation"],
+                    scheduleId: obj[key]["schedules"]["scheduleId"],
+                    from: obj[key]["schedules"]["from"],
+                    to: obj[key]["schedules"]["to"],
+                });
+        });
     }
     
     
