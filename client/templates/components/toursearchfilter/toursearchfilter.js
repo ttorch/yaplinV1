@@ -1,5 +1,5 @@
 import './toursearchfilter.html';
-  
+
 Template.toursearchfilter.onRendered(function(){
     
     $('.datepicker').datetimepicker({
@@ -56,11 +56,12 @@ Template.toursearchfilter.events({
     //search tours
     Meteor.call('SearchTour', data, function(error, response){
         
+        Session.set("tours",null);
         if (error) {
             console.log(error);
             Bart.alert(error.error.reason, 'danger', 'fixed-top', 'fa-frown-o');
         } else {
-            console.log(response);
+            Session.set("tours",response);
         }
     });
     return false;

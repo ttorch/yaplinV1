@@ -6,10 +6,6 @@ Template.home.onCreated(function(){
 
 Template.home.onRendered(function(){
     
-    var self = this;
-    
-    self.tours = new ReactiveVar({});
-    
     var data = {
         date: Session.get("dateFilter"),
         noOfGuest: Session.get("noOfGuestFilter"),
@@ -23,14 +19,14 @@ Template.home.onRendered(function(){
             console.log(error);
             Bert.alert(error.error.reason, 'danger', 'fixed-top', 'fa-frown-o');
         } else {
-            self.tours.set(response);
+            Session.set("tours",response);
         }
     });
 });
 
 Template.home.helpers({
   tours() {
-      return Template.instance().tours.get();
+      return Session.get("tours");
   },
 });
 

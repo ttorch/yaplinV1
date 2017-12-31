@@ -19,60 +19,54 @@ Meteor.methods({
         
         try{
             
-            const selector = {};
+            var pipeline = [];
+            
+            pipeline.push({"$unwind": "$schedules"});
             
             var dateFromFilter = "";
             var dateToFilter = "";
             
+            if(data.date!== undefined && data.date!=""){
+                dateToFilter += data.date;
+                dateFromFilter += data.date;
+            }else{
+                var today = moment().format("DD MMM YYYY");
+                var endYear = moment().add(1,"year").format("DD MMM YYYY");
+                dateFromFilter += today;
+                dateToFilter += endYear;
+            }
+            
             if(data.timeFrom!== undefined && data.timeFrom!=""){
                 dateFromFilter += " "+data.timeFrom;
+            }else{
+                dateFromFilter += " 23:59";
             }
 
             if(data.timeTo!== undefined && data.timeTo!=""){
-                //selector.time_to={"$lte":data.timeTo};
                 dateToFilter += " "+data.timeTo;
+            }else{
+                dateToFilter += " 23:59";
             }
             
-            if(data.date!== undefined && data.date!=""){
-                
-                if(dateFromFilter != ""){
-                    dateFromFilter = data.date + dateFromFilter;
-                }
-                
-                if(dateToFilter != ""){
-                    dateToFilter = data.date + dateToFilter;
-                }
-                
-                if(dateToFilter == "" && dateFromFilter == ""){
-                    dateToFilter = data.date;
-                    dateFromFilter = data.date;
-                }
-            }
+            var dateFromTS = moment(dateFromFilter).valueOf();
+            var dateToTS = moment(dateToFilter).valueOf();
             
             if(dateFromFilter != ""){
-                selector.$match= { "$or": [ { "schedules.from": { "$gte": dateFromFilter} } ] };
+                pipeline.push({"$match": { "schedules.from": { $gte: new Date(dateFromTS)} }});
             }
             
             if(dateToFilter != ""){
-                selector.$match= { "$or": [ { "schedules.from": { "$lte": dateToFilter} } ] };
+                //pipeline.push({"$match": { "schedules.from": { $lte: new Date(dateToTS)} }});
             }
 
             if(data.noOfGuest!== undefined && data.noOfGuest!=""){
-                selector.$match= { "guests": parseInt(data.noOfGuest)};
+                pipeline.push({"$match": { "guests": parseInt(data.noOfGuest) }});
             }
 
             /*if(txtSearch!== undefined && txtSearch!=""){
                 selector.title=txtSearch;
             }*/
-            
-           console.log(selector);
            
-           var pipeline = [
-            {"$unwind": "$schedules"},
-            {"$match": { $or: [ { "schedules.from": { $gte: "2017-12-31 11:00"} } ] }},
-            //{"$match": { "location": "Bukit Batok" } }
-           ];
-
            const tours=Tours.aggregate(pipeline); 
            
            return tours;

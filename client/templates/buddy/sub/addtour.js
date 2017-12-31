@@ -39,10 +39,10 @@ Template.addtour.events({
         Session.get('schedules').forEach(function(s, i){
             arySchedules.push({
                 scheduleId: s.scheduleId, 
-                date_from: moment(s.from).format("YYYY-MM-DD"), 
-                date_to: moment(s.to).format("YYYY-MM-DD"),
-                time_from: moment(s.from).format("HH:mm"),
-                time_to: moment(s.to).format("HH:mm"),
+                from: new Date(moment(s.from).format("YYYY-MM-DD HH:mm Z")), 
+                to: new Date(moment(s.to).format("YYYY-MM-DD HH:mm Z")),
+                //time_from: moment(s.from).format("HH:mm"),
+                //time_to: moment(s.to).format("HH:mm"),
             });
         });
         
