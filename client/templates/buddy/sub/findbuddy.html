@@ -14,11 +14,11 @@
         <div>
             <div class="find-buddy col-lg-12">
                 <div class="row">
-                    <div class="find-bud-img col-lg-3">
-                      <a href="#"><img src="/assets/images/home-exp.jpg"></a>
-                      <div class="top-title">Boat trip, Clark Quay</div>
-                      <div class="price-title">SGD $50 per person</div>
-                    </div>
+                    {{#each arrayify_tour tours}}
+                        <div class="find-bud-img col-lg-3">
+                            {{> tour}}
+                        </div>
+                    {{/each}}
                 </div>
             </div>
         </div>

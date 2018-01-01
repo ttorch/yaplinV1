@@ -76,7 +76,18 @@ Meteor.methods({
             console.log(error);
             throw new Meteor.Error('500', exception.message);
         }
-    }
+    },
+    
+    getTourDetails : function(data){
+        
+        try{
+            console.log("getTourDetails" + data.tour_id);
+        }catch (exception) {
+            console.log('SERVER ERROR');
+            console.log(error);
+            throw new Meteor.Error('500', exception.message);
+        }
+    },
 });
 
 TourImages.allow({

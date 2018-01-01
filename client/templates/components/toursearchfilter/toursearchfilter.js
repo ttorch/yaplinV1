@@ -42,7 +42,7 @@ Template.toursearchfilter.events({
     // Prevent default browser form submit
     event.preventDefault();
     event.stopPropagation();
- 
+    
     var target = event.target;
     
     // Get value from form element
@@ -56,14 +56,49 @@ Template.toursearchfilter.events({
     //search tours
     Meteor.call('SearchTour', data, function(error, response){
         
-        Session.set("tours",null);
         if (error) {
             console.log(error);
-            Bart.alert(error.error.reason, 'danger', 'fixed-top', 'fa-frown-o');
+            Bert.alert(error.error.reason, 'danger', 'fixed-top', 'fa-frown-o');
         } else {
+            
             Session.set("tours",response);
+            
+            
+            
+              /*$(".regular").slick({
+                      dots: false,
+                      infinite: false,
+                      slidesToShow: 4,
+                      slidesToScroll: 4,
+                      responsive: [
+                      {
+                        breakpoint: 1024,
+                        settings: {
+                          slidesToShow: 4,
+                          slidesToScroll: 4,
+                        }
+                      },
+                      {
+                        breakpoint: 600,
+                        settings: {
+                          slidesToShow: 3,
+                          slidesToScroll: 3
+                        }
+                      },
+                      {
+                        breakpoint: 480,
+                        settings: {
+                          slidesToShow: 2,
+                          slidesToScroll: 2
+                        }
+                      }
+                    ]
+                  });
+
+                $(".regular").slick("setPosition");*/
         }
     });
+    
     return false;
     
   },

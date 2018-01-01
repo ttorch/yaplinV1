@@ -1,7 +1,7 @@
 Template.home.onCreated(function(){
     var title = "Yaplin - Home";
     DocHead.setTitle(title);
-    
+   
 });
 
 Template.home.onRendered(function(){
@@ -14,6 +14,8 @@ Template.home.onRendered(function(){
     };
     
     Meteor.call("SearchTour",data,function(error,response){
+        
+        Session.set("tours", null);
         
         if (error) {
             console.log(error);
