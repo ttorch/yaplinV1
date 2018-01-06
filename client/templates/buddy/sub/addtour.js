@@ -1,24 +1,44 @@
 noOfGuests = 1;
 schedules = [];
-FS.debug = true;
-TourImages = new FS.Collection('tourImages', {
-    // stores: [new FS.Store.GridFS("tourImages")]
-    stores: [new FS.Store.FileSystem("tourImages", {path: "uploads"})]
-});
-TourImages.allow({
-    'update': function () {
-        // add custom authentication code here
-        return true;
-    },
-    'insert': function () {
-        // add custom authentication code here
-        return true;
+photos = [];
+
+Dropzone.options.dropzoneDiv = {
+    init: function() {
+        this.on("success", function(file, response) { 
+            var photos = Session.get('photos');
+            if(!photos) {
+                photos = [];
+            }
+
+            var res = JSON.parse(response);
+            res.files.forEach(element => {
+                photos.push({'baseUrl': element.baseUrl, 'url': element.url, 'filename': element.name});
+            });
+
+            if(photos.length > 0) {
+                Session.set('photos', photos);
+            }
+            // console.log(photos);
+        });
+
+        this.on("resetFiles", function() {
+            this.removeAllFiles(true);
+        });
     }
-});
+};
 
 function getDateTime() {
     var currentDateTime = new Date();
     return currentDateTime.getDate() + "/" + (currentDateTime.getMonth()+1)  + "/" + currentDateTime.getFullYear() + " " + currentDateTime.getHours() + ":" + currentDateTime.getMinutes();
+}
+
+function resetSession() {
+    Session.clear();
+    
+    Session.set('schedules', [{scheduleId: 1, from: getDateTime(), to: getDateTime()}]);
+    
+    var objDropzone = Dropzone.forElement('.dropzone');
+    objDropzone.emit('resetFiles');
 }
 
 Template.addtour.onCreated(function() {
@@ -42,9 +62,10 @@ Template.addtour.events({
             exp_expectation: target.exp_expectation.value,
             provision: target.provision.value,
             prov_expectation: target.prov_expectation.value,
-            schedules: Session.get('schedules')
+            schedules: Session.get('schedules'),
+            photos: Session.get('photos')
         };
-        console.log(data);
+        // console.log(data);
         Meteor.call('CreateTour', data, function(error, response){
             
             if (error) {
@@ -52,6 +73,9 @@ Template.addtour.events({
                 Bart.alert(error.error.reason, 'danger', 'fixed-top', 'fa-frown-o');
             } else {
                 console.log(response);
+                event.target.reset();
+
+                resetSession();
             }
         });
         return false;
@@ -136,27 +160,7 @@ Template.adddates.onRendered(function() {
     });
 });
 
-Template.tourimages.rendered = function() {
-    $("div#dropzone").dropzone({ url: "/file/post" });
-
-    var arrayOfImageIds = [];
-    
-    Dropzone.autoDiscover = false;
-
-    // Adds file uploading and adds the imageID of the file uploaded
-    // to the arrayOfImageIds object.
-
-    var dropzone = new Dropzone("form#dropzone", {
-        accept: function(file, done){
-            TourImages.insert(file, function(err, fileObj){
-                debugger;
-                if(!err){
-                    // gets the ID of the image that was uploaded
-                    var imageId = fileObj._id;
-                    // do something with this image ID, like save it somewhere
-                    arrayOfImageIds.push(imageId);
-                }
-            });
-        }
-    });
+Template.tourimages.onCreated = function() {
+    Session.set('photos', []);
 };
+

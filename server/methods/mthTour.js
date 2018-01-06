@@ -1,5 +1,17 @@
 import { Buddies } from '../../imports/collections/buddiesCol.js';
 
+UploadServer.init({
+    tmpDir: '/tmp/',
+    uploadDir: '/Users/admiralato/uploads/',
+    checkCreateDirectories: true,
+    uploadUrl: '/uploads/',
+    // *** For renaming files on server
+    getFileName: function(file, formData) {
+        return new Date().getTime() + '-' + Math.floor((Math.random() * 10000) + 1) + '-' + file.name; 
+        // we get this value in the ajax response
+    }
+});
+
 Meteor.methods({
     CreateTour: function(data) {
         try {
@@ -12,16 +24,5 @@ Meteor.methods({
             console.log(error);
             throw new Meteor.Error(error);
         }
-    }
-});
-
-TourImages.allow({
-    update: function () {
-        // add custom authentication code here
-        return true;
-    },
-    insert: function () {
-        // add custom authentication code here
-        return true;
     }
 });

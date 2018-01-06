@@ -45,9 +45,9 @@
             </div>
             <h1>Photos</h1>
             <hr>
-            <div id="dropzone">
-                {{>tourimages}}
-            </div>
+            <!-- <div id="dropzone"> -->
+            {{>tourimages }}
+            <!-- </div> -->
             <h1>Summary</h1>
             <!-- <div class="row">
                 <div class="form-group col-md-6">
@@ -114,8 +114,5 @@
 </template>
 
 <template name="tourimages">
-    <form action="/upload-target" id="dropzone" class="dropzone dz-clickable">
-        <div class="dz-default dz-message"><span>Drop files here to upload</span></div>
-    </form>
-    <input type="file" multiple="multiple" class="dz-hidden-input" style="visibility: hidden; position: absolute; top: 0px; left: 0px; height: 0px; width: 0px;">
+    {{> dropzone url='/uploads/' id='dropzoneDiv'}}
 </template>
