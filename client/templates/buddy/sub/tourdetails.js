@@ -39,12 +39,39 @@ Template.tourdetails.onRendered(function(){
     
 });
 
+Template.tourdetails.events({
+    'submit form': function(event){
+        event.preventDefault();
+        event.stopPropagation();
+        console.log(event);
+        
+        return false;
+    }
+});
+
+
 Template.tourdetails.helpers({
     tourdetails(){
         const instance = Template.instance();
         
-        instance.tourdetails.set({id:"123",title:"adsd"});
+        //console.log(instance.tourdetails.get());
         
         return instance.tourdetails.get();
+    },
+    noOfGuest(){
+        return _.map(_.range(1, 6), function(idx) {
+          return {val: idx };
+      })
+    },
+    paymentMethods(){
+        return Meteor.static.payment;
+    },
+    hasPhotos(tourdetails){
+        
+        if(typeof tourdetails.photos !== "undefined" && tourdetails.photos.length >0){
+            return true;
+        }else{
+            return false;
+        }
     }
 });

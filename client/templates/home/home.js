@@ -60,3 +60,14 @@ Template.registerHelper('arrayify_tour',function(obj){
     
     return result;
 });
+
+Template.registerHelper('formatBookingDate',function(from,to){
+    
+    if(moment(moment(from).format("YYYY-MM-DD")).isSame(moment(to).format("YYYY-MM-DD"))){
+        
+        return moment(from).format("ddd, DDDo MMM") + " " + moment(from).format("HH:mm") + "-" + moment(to).format("HH:mm");
+    }else{
+        return moment(from).format("ddd, DDDo MMM") + " " + moment(from).format("HH:mm") + " - " + moment(to).format("ddd, DDDo MMM")+ " " +moment(to).format("HH:mm");console.log("different day");
+    }
+    
+});

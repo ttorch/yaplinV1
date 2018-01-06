@@ -4,7 +4,7 @@ import { TourDates } from '../../imports/collections/tourDatesCol.js';
 
 UploadServer.init({
     tmpDir: '/tmp/',
-    uploadDir: '/Users/admiralato/uploads/',
+    uploadDir: '/Users/jervineang/Documents/GitHub/yaplinV1/public/assets/images/',
     checkCreateDirectories: true,
     uploadUrl: '/uploads/',
     // *** For renaming files on server
@@ -83,7 +83,7 @@ Meteor.methods({
            
            return tours;
            
-        }catch (exception) {
+        }catch (error) {
             console.log('SERVER ERROR');
             console.log(error);
             throw new Meteor.Error('500', exception.message);
@@ -93,8 +93,11 @@ Meteor.methods({
     getTourDetails : function(data){
         
         try{
-            console.log("getTourDetails" + data.tour_id);
-        }catch (exception) {
+            const tours = Tours.find({"_id": data.tour_id}).fetch();
+            
+            return tours[0];
+            
+        }catch (error) {
             console.log('SERVER ERROR');
             console.log(error);
             throw new Meteor.Error('500', exception.message);
