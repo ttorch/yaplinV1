@@ -40,7 +40,6 @@ mrt:jquery-ui
 meteorhacks:aggregate
 momentjs:moment
 reactive-dict
-cfs:standard-packages
-cfs:gridfs
 risul:dropzone
-cfs:filesystem
+dbarrett:dropzonejs
+tomi:upload-server
