@@ -1,6 +1,4 @@
-import { Buddies } from '../../imports/collections/buddiesCol.js';
 import { Tours } from '../../imports/collections/toursCol.js';
-import { TourDates } from '../../imports/collections/tourDatesCol.js';
 
 UploadServer.init({
     tmpDir: '/tmp/',

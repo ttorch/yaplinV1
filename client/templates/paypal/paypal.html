@@ -1,0 +1,31 @@
+<template name="paypal">
+    <form method="post" action="https://www.sandbox.paypal.com/cgi-bin/webscr" class="paypal-button" target="_top" style="opacity: 1;">
+
+        <div class="hide" id="errorBox"></div>
+
+        <input type="hidden" name="button" value="buynow">
+
+        <input type="hidden" name="business" value="YOUR EMAIL">
+
+        <input type="hidden" name="item_name" value="ITEM NAME">
+
+        <input type="hidden" name="quantity" value="THE QUANTITY">
+
+        <input type="hidden" name="amount" value="THE PRICE">
+
+        <input type="hidden" name="currency_code" value="THE CURRENCY (usually set to ‘USD’)">
+
+        <input type="hidden" name="shipping" value="THE SHIPPING COST">
+
+        <input type="hidden" name="tax" value="THE TAX AMOUNT">
+
+        <input type="hidden" name="notify_url" value="http://localhost:3000/paypalCallback">
+
+        <input type="hidden" name="env" value="www.sandbox">
+
+        <input type="hidden" name="cmd" value="_xclick">
+
+        <input type="hidden" name="bn" value="JavaScriptButton_buynow">
+
+      </form>
+</template>

@@ -1,7 +1,12 @@
+import { Buddies } from '../../../../imports/collections/buddiesCol.js';
+
 Template.tourdetails.onCreated(function(){
     
     var self = this;
     self.tourdetails = new ReactiveVar({});
+    
+    var title = "Yaplin - Tour Details";
+    DocHead.setTitle(title);
    
 });
 
@@ -40,10 +45,77 @@ Template.tourdetails.onRendered(function(){
 });
 
 Template.tourdetails.events({
-    'submit form': function(event){
+    'submit form': function(event, template){
         event.preventDefault();
         event.stopPropagation();
-        console.log(event);
+        
+        var tourId = FlowRouter.getParam("tourId");
+        
+        var target = event.target;
+        var scheduleId = "";
+        var paymentMethod = "";
+        
+        var strMsg = "";
+        var hasError = false;
+        
+        if(Meteor.user()!==null){
+            
+            if(target.noOfGuest.value == ""){
+                hasError = true;
+                strMsg += "Please select no. of guest.<br>";
+            }
+
+            if(template.find('input:radio[name=tourDate]:checked') == null){
+                hasError = true;
+                strMsg += "Please select a tour date.<br>";
+            }else{
+                scheduleId = template.find('input:radio[name=tourDate]:checked').value;
+            }
+
+            if(template.find('input:radio[name=paymentMethod]:checked') == null){
+                hasError = true;
+                strMsg += "Please select a payment method.<br>";
+            }else{
+                paymentMethod = template.find('input:radio[name=paymentMethod]:checked').value;
+            }
+
+            if(hasError){
+                Bert.alert(strMsg, 'danger', 'growl-top-right', 'fa-exclamation-triangle' );
+            }else{
+                
+                var buddy = Buddies.find({ userId: Meteor.userId() }).fetch()[0];
+                
+                var data = {
+                    buddy_id: buddy._id,
+                    tour_id: tourId,
+                    guests: target.noOfGuest.value,
+                    schedule_id: scheduleId,
+                    payment_method: paymentMethod,
+                    status: "Waiting for user confirmation",
+                    create_at: new Date()
+                };
+
+                Meteor.call("createBooking", data, function(error, response){
+                    if (error) {
+                        console.log(error);
+                        Bert.alert(error.error.reason, 'danger', 'fixed-top', 'fa-frown-o');
+                    } else {
+                        if(response != ""){
+                            FlowRouter.go('/confirmation/'+response);
+                        }else{
+                            Bert.alert("Error creating booking.", 'danger', 'fixed-top', 'fa-frown-o');
+                        }
+                    }
+                });
+                
+                
+                //;
+            }
+            
+        }else{
+            Bert.alert("Please log in to book a tour.", 'danger', 'fixed-top', 'fa-exclamation-triangle' );
+        }
+        
         
         return false;
     }

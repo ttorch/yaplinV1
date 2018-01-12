@@ -1,9 +1,9 @@
-<template name="tourdetails">
+<template name="confirmation">
     <div class="container">
         <div aria-label="breadcrumb" role="navigation">
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="/">Home</a></li>
-              <li class="breadcrumb-item active" aria-current="page">Tour Details</li>
+              <li class="breadcrumb-item active" aria-current="page">Booking Confirmation</li>
             </ol>
         </div>
         
@@ -106,48 +106,49 @@
             </div>
             <div class="col-md-4 col-sm-5">
                 <div id="form-book" class="hidden-xs hidden-sm">
-                    <div class="tour-price">SGD<span>${{tourdetails.price}}</span> per person</div>
-                    <form id="tourBookingFrm" action="">
+                    <div class="tour-price">Booking Confirmation</div>
                         <div class="booking-form">
-                            <div class="form-title">Choose your booking</div>
                             <div class="form-group row">
-                                <div>
-                                    <div class="col-md-12 col-sm-12">
-                                        <select class="form-control" id="noOfGuest">
-                                            <option value="">No. of Guest</option>
-                                        {{#each noOfGuest}}
-                                            <option value="{{val}}">{{val}} Guest(s)</option>
-                                        {{/each}}
-                                      </select>
+                                <div class="col-md-12 col-sm-12">
+                                    {{#each tourdetails.schedules}}
+                                    <div class="form-check">
+                                        {{#if selectedSchedule this.scheduleId}}
+                                        {{ formatBookingDate this.from this.to}}
+                                        {{/if}}
                                     </div>
+                                    {{/each}}
                                 </div>
                             </div>
-                            <fieldset id="Radios1">
-                                {{#each tourdetails.schedules}}
-                                <div class="form-check">
-                                    
-                                    <input class="form-check-input" type="radio" name="tourDate" value="{{this.scheduleId}}">
-                                    <span>{{ formatBookingDate this.from this.to}}</span>
+                            
+                            <div class="form-group row">
+                                <div class="col-md-12 col-sm-12">
+                                    SGD${{tourdetails.price}} X {{bookingdetails.guests}} Guest(s)
                                 </div>
-                                {{/each}}
-                            </fieldset>
-                            <fieldset id="Radios2">
-                                <div class="form-title" style="padding-top:10px;">Payment</div>
-                                
-                                {{#each paymentMethods}}
-                                <div class="form-check" style="margin-top:18px;">
-                                  
-                                    <input class="form-check-input" type="radio" name="paymentMethod" value="{{this.value}}">
-                                    <span>{{this.text}}</span>
+                            </div>
+                            
+                            <div class="form-group row">
+                                <div class="col-md-12 col-sm-12">
+                                    Payment Mode: {{capitalize bookingdetails.payment_method}}
                                 </div>
-                                {{/each}}
-                                
-                             </fieldset>
+                            </div>
+                            
+                            <div class="form-group row">
+                                <div class="col-md-12 col-sm-12">
+                                    <strong>Total: SGD${{totalCost tourdetails.price bookingdetails.guests}}</strong>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-12" style="margin-top:20px;">
+                                    <form name="confirmationFrm">
+                                        <button type="submit" class="btn btn-primary button-book" style="width:100%; height:50px; font-weight:500;">Confirm</button>
+                                        <a class="pull-right" href="/tour-details/{{tourdetails._id}}">Cancel</a>
+                                    </form>
+                                    {{#if isPaypal}}
+                                    {{>paypal}}
+                                    {{/if}}
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-sm-12" style="margin-top:20px;">
-                            <button type="submit" class="btn btn-primary button-book" style="width:100%; height:50px; font-weight:500;">Book</button>
-                        </div>    
-                    </form>
                 </div>
             </div>
             
