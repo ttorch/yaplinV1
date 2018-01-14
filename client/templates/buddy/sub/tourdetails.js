@@ -4,6 +4,7 @@ Template.tourdetails.onCreated(function(){
     
     var self = this;
     self.tourdetails = new ReactiveVar({});
+    self.numOfGuests = new ReactiveVar({});
     
     var title = "Yaplin - Tour Details";
     DocHead.setTitle(title);
@@ -11,6 +12,7 @@ Template.tourdetails.onCreated(function(){
 });
 
 Template.tourdetails.onRendered(function(){
+    
    $(window).scroll(function() {    
         var scroll = $(window).scrollTop();
 
@@ -39,6 +41,25 @@ Template.tourdetails.onRendered(function(){
             Bert.alert(error.error.reason, 'danger', 'fixed-top', 'fa-frown-o');
         } else {
             instance.tourdetails.set(response);
+        }
+    });
+    
+    var data = {
+        "_id":tourId
+    };
+    
+    Meteor.call("getNumGuest",data,function(error,response){
+
+        if (error) {
+            console.log(error);
+            Bert.alert(error.error.reason, 'danger', 'fixed-top', 'fa-frown-o');
+        } else {
+            instance.numOfGuests.set(response);
+
+            var max = parseInt(instance.numOfGuests.get())+1;
+
+            instance.numOfGuests.set(max);
+
         }
     });
     
@@ -88,7 +109,7 @@ Template.tourdetails.events({
                 var data = {
                     buddy_id: buddy._id,
                     tour_id: tourId,
-                    guests: target.noOfGuest.value,
+                    guests: parseInt(target.noOfGuest.value),
                     schedule_id: scheduleId,
                     payment_method: paymentMethod,
                     status: "Waiting for user confirmation",
@@ -131,9 +152,16 @@ Template.tourdetails.helpers({
         return instance.tourdetails.get();
     },
     noOfGuest(){
-        return _.map(_.range(1, 6), function(idx) {
-          return {val: idx };
-      })
+        
+        const instance = Template.instance();
+        
+        if(typeof instance.numOfGuests.get() != "number"){
+            instance.numOfGuests.set(5);
+        }
+        
+        return _.map(_.range(1, instance.numOfGuests.get()), function(idx) {
+            return {val: idx };
+        });
     },
     paymentMethods(){
         return Meteor.static.payment;

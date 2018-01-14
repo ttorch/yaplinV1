@@ -12,3 +12,13 @@ Template.topnav.events({
         Meteor.logout();
     }
 });
+
+Template.topnav.helpers({
+    isHome(){
+        if (FlowRouter.current().path == "/"){
+            return true;
+        }else{
+            return false;
+        }
+    },
+});
