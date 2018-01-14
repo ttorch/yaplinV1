@@ -1,49 +1,73 @@
 Template.home.onCreated(function(){
     var title = "Yaplin - Home";
     DocHead.setTitle(title);
+   
+});
+
+Template.home.onRendered(function(){
     
     var data = {
-        date: $("#date").val(),
-        noOfGuest: $("#noOfGuests").val(),
-        timeFrom: $("#timeFrom").val(),
-        timeTo: $("#timeTo").val()
+        date: Session.get("dateFilter"),
+        noOfGuest: Session.get("noOfGuestFilter"),
+        timeFrom: Session.get("timeFromFilter"),
+        timeTo: Session.get("timeToFilter")
     };
     
-    var self = this;
-    
-    self.tours = new ReactiveVar("");
-    
-    Meteor.call("SearchTour",{},function(error,response){
+    Meteor.call("SearchTour",data,function(error,response){
+        
+        Session.set("tours", null);
         
         if (error) {
             console.log(error);
-            Bart.alert(error.error.reason, 'danger', 'fixed-top', 'fa-frown-o');
+            Bert.alert(error.error.reason, 'danger', 'fixed-top', 'fa-frown-o');
         } else {
-            self.tours.set(response);
+            Session.set("tours",response);
         }
     });
-    
 });
 
 Template.home.helpers({
   tours() {
-      
-      return Template.instance().tours.get();
+      return Session.get("tours");
   },
 });
 
-Template.registerHelper('arrayify',function(obj){
+Template.registerHelper('arrayify_tour',function(obj){
     var result = [];
     
-    obj.forEach(function(obj,i){
-        result.push({
-            _id: JSON.stringify(obj._id),
-            title: obj.title,
-            guests:obj.guests
-        });
+    if(typeof obj !== "undefined"){
         
-    });
+        Object.keys(obj).forEach(function (key){
+                
+                result.push({
+                    _id: obj[key]["_id"],
+                    title: obj[key]["title"],
+                    location: obj[key]["location"],
+                    guests: obj[key]["guests"],
+                    price: obj[key]["price"],
+                    summary: obj[key]["summary"],
+                    experience: obj[key]["experience"],
+                    exp_expectation: obj[key]["exp_expectation"],
+                    provision: obj[key]["provision"],
+                    prov_expectation: obj[key]["prov_expectation"],
+                    scheduleId: obj[key]["schedules"]["scheduleId"],
+                    from: obj[key]["schedules"]["from"],
+                    to: obj[key]["schedules"]["to"],
+                });
+        });
+    }
     
-    console.log(result);
+    
     return result;
+});
+
+Template.registerHelper('formatBookingDate',function(from,to){
+    
+    if(moment(moment(from).format("YYYY-MM-DD")).isSame(moment(to).format("YYYY-MM-DD"))){
+        
+        return moment(from).format("ddd, DDDo MMM") + " " + moment(from).format("HH:mm") + "-" + moment(to).format("HH:mm");
+    }else{
+        return moment(from).format("ddd, DDDo MMM") + " " + moment(from).format("HH:mm") + " - " + moment(to).format("ddd, DDDo MMM")+ " " +moment(to).format("HH:mm");console.log("different day");
+    }
+    
 });

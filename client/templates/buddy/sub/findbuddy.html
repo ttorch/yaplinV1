@@ -1,0 +1,27 @@
+<template name="findbuddy">
+    <div class="container">
+        <div aria-label="breadcrumb" role="navigation">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Find Buddy</li>
+          </ol>
+        </div>
+        
+        <div>
+            <div class="main-large-title" style="text-align:center;"><span>Find</span> Buddy</div>
+        </div>
+        
+        <div>
+            <div class="find-buddy col-lg-12">
+                <div class="row">
+                    {{#each arrayify_tour tours}}
+                        <div class="find-bud-img col-lg-3">
+                            {{> tour}}
+                        </div>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</template>

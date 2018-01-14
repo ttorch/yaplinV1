@@ -1,3 +1,4 @@
+@import 'roboto.css';
 /*! HTML5 Boilerplate v4.3.0 | MIT License | http://h5bp.com/ */
 
 html,
@@ -387,6 +388,16 @@ a:hover{text-decoration:none!important;}
 .home-exp .btn-xs .glyphicon-star{color:#fb5008;}
 
 .home-exp .ratings-title span{padding-right:2px;}
+
+.home-exp img{
+    width:100%;
+    border-radius:5px;
+}
+
+.home-exp.col-lg-3{
+    padding-left:0px;
+    padding-bottom:20px;
+}
 
 .hidden-logo{display:none;}
 

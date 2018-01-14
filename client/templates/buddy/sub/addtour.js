@@ -1,10 +1,45 @@
 import { Buddies } from '../../../../imports/collections/buddiesCol.js';
 noOfGuests = 1;
 schedules = [];
+photos = [];
+
+Dropzone.options.dropzoneDiv = {
+    init: function() {
+        this.on("success", function(file, response) { 
+            var photos = Session.get('photos');
+            if(!photos) {
+                photos = [];
+            }
+
+            var res = JSON.parse(response);
+            res.files.forEach(element => {
+                photos.push({'baseUrl': element.baseUrl, 'url': element.url, 'filename': element.name});
+            });
+
+            if(photos.length > 0) {
+                Session.set('photos', photos);
+            }
+            // console.log(photos);
+        });
+
+        this.on("resetFiles", function() {
+            this.removeAllFiles(true);
+        });
+    }
+};
 
 function getDateTime() {
     var currentDateTime = new Date();
     return currentDateTime.getDate() + "/" + (currentDateTime.getMonth()+1)  + "/" + currentDateTime.getFullYear() + " " + currentDateTime.getHours() + ":" + currentDateTime.getMinutes();
+}
+
+function resetSession() {
+    Session.clear();
+    
+    Session.set('schedules', [{scheduleId: 1, from: getDateTime(), to: getDateTime()}]);
+    
+    var objDropzone = Dropzone.forElement('.dropzone');
+    objDropzone.emit('resetFiles');
 }
 
 Template.addtour.onCreated(function() {
@@ -13,11 +48,26 @@ Template.addtour.onCreated(function() {
 });
 
 Template.addtour.events({
-    'submit form': function(event){
+    'submit form': function(event) {
         event.preventDefault();
         event.stopPropagation();
         var target = event.target;
+        
+        var arySchedules = new Array();
+        
+        //loop through to convert the datetime format
+        Session.get('schedules').forEach(function(s, i) {
+            arySchedules.push({
+                scheduleId: s.scheduleId, 
+                from: new Date(moment(s.from).format("YYYY-MM-DD HH:mm Z")), 
+                to: new Date(moment(s.to).format("YYYY-MM-DD HH:mm Z")),
+                //time_from: moment(s.from).format("HH:mm"),
+                //time_to: moment(s.to).format("HH:mm"),
+            });
+        });
+        
         var buddy = Buddies.find({ userId: Meteor.userId() }).fetch()[0];
+        
         if (buddy != undefined && buddy._id && buddy.verified === true) {
             var data = {
                 buddy_id: buddy._id,
@@ -30,9 +80,9 @@ Template.addtour.events({
                 exp_expectation: target.exp_expectation.value,
                 provision: target.provision.value,
                 prov_expectation: target.prov_expectation.value,
-                schedules: Session.get('schedules')
+                schedules: arySchedules
             };
-            console.log(data);
+            
             Meteor.call('CreateTour', data, function(error, response){
                 
                 if (error) {
@@ -46,16 +96,17 @@ Template.addtour.events({
         } else {
             Bert.alert('Not authorized!.', 'danger', 'fixed-top', 'fa-frown-o');
         }
+        
         return false;
     },
 
-    "change #noOfGuests": function(event, template) {
+    'change #noOfGuests': function(event, template) {
         var participant = $(event.currentTarget).val();
         // console.log("participant: " + participant);
         noOfGuests = participant;
     },
 
-    "click .add-sched": function(event) {
+    'click .add-sched': function(event) {
         var schedules = Session.get('schedules');
         var scheduleId = Math.floor(Math.random() * 1000);
 
@@ -121,9 +172,16 @@ Template.adddates.events({
 });
 
 Template.adddates.onRendered(function() {
-    this.$('.datetimepicker').datetimepicker({
+    $('.datetimepicker').datetimepicker({
         timeZone: 'Asia/Singapore',
+        format: 'DD MMM YYYY HH:mm',
+        date: new Date(),
         useCurrent: true,
         sideBySide: true
     });
 });
+
+Template.tourimages.onCreated = function() {
+    Session.set('photos', []);
+};
+

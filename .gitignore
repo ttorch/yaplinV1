@@ -6,9 +6,12 @@ imports/collections/.DS_Store
 nbproject/private/private.properties
 nbproject/private/private.xml
 .DS_Store
-node_modules/
 /nbproject/private/
-imports/.DS_Store
-imports/collections/.DS_Store
-lib/.DS_Store
-nbproject/.DS_Store
+client/templates/buddy/.DS_Store
+client/templates/buddy/sub/.DS_Store
+
+public/.DS_Store
+.DS_Store
+.DS_Store
+.DS_Store
+public/.DS_Store

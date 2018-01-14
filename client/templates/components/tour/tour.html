@@ -1,15 +1,13 @@
 <template name="tour">
-    <div class="home-exp">
-        <a href="#"><img src="assets/home-exp.jpg"></a>
-        <div class="top-title">{{title}}Boat trip, Clark Quay</div>
-        <div class="price-title">SGD $50 per person</div>
-        <div class="ratings-title btn-xs">
-            <span class="glyphicon glyphicon-star"></span>
-            <span class="glyphicon glyphicon-star"></span>
-            <span class="glyphicon glyphicon-star"></span>
-            <span class="glyphicon glyphicon-star"></span>
-            <span class="glyphicon glyphicon-star"></span>
-            <b>(20)</b>
-        </div>
-      </div>
+    <a href="/tour-details/{{_id}}"><img src="/assets/images/home-exp.jpg"></a>
+    <div class="top-title">{{title}}, {{location}}</div>
+    <div class="price-title">SGD ${{price}} per person</div>
+    <div class="ratings-title btn-xs">
+        <span class="glyphicon glyphicon-star"></span>
+        <span class="glyphicon glyphicon-star"></span>
+        <span class="glyphicon glyphicon-star"></span>
+        <span class="glyphicon glyphicon-star"></span>
+        <span class="glyphicon glyphicon-star"></span>
+        <b>(20)</b>
+    </div>
 </template>

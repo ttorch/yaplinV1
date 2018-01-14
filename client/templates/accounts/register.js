@@ -50,7 +50,7 @@ Template.register.events({
             
             if (error) {
                 console.log(error);
-                Bart.alert(error.error.reason, 'danger', 'fixed-top', 'fa-frown-o');
+                Bert.alert(error.error.reason, 'danger', 'fixed-top', 'fa-frown-o');
             } else {
                 Meteor.loginWithPassword(data.email, data.password);
                 target.email.value = "";
