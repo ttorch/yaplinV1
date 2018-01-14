@@ -13,6 +13,4 @@ Template.becomeabuddy.rendered = function(){
         element.addClass("become-buddy"); 
     }
     
-    $("#white-logo").removeClass('show-logo').addClass("hidden-logo"); 
-    $("#orange-logo").removeClass('hidden-logo').addClass("show-logo");
 }

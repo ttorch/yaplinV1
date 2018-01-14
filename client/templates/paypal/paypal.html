@@ -1,31 +1,36 @@
 <template name="paypal">
-    <form method="post" action="https://www.sandbox.paypal.com/cgi-bin/webscr" class="paypal-button" target="_top" style="opacity: 1;">
+    <div class="container">
+        <form method="post" action="https://www.sandbox.paypal.com/cgi-bin/webscr" class="paypal-button" target="_top" style="opacity: 1;">
 
-        <div class="hide" id="errorBox"></div>
+            <div class="hide" id="errorBox"></div>
 
-        <input type="hidden" name="button" value="buynow">
+            <input type="hidden" name="button" value="buynow">
 
-        <input type="hidden" name="business" value="YOUR EMAIL">
+            <input type="hidden" name="business" value="angzyjervine@gmail.com">
 
-        <input type="hidden" name="item_name" value="ITEM NAME">
+            <input type="hidden" name="item_name" value="test">
 
-        <input type="hidden" name="quantity" value="THE QUANTITY">
+            <input type="hidden" name="quantity" value="1">
 
-        <input type="hidden" name="amount" value="THE PRICE">
+            <input type="hidden" name="amount" value="0.01">
 
-        <input type="hidden" name="currency_code" value="THE CURRENCY (usually set to ‘USD’)">
+            <input type="hidden" name="currency_code" value="SGD">
 
-        <input type="hidden" name="shipping" value="THE SHIPPING COST">
+            <input type="hidden" name="shipping" value="0">
 
-        <input type="hidden" name="tax" value="THE TAX AMOUNT">
+            <input type="hidden" name="tax" value="0">
 
-        <input type="hidden" name="notify_url" value="http://localhost:3000/paypalCallback">
+            <input type="hidden" name="notify_url" value="http://localhost:3000/paypalCallback">
 
-        <input type="hidden" name="env" value="www.sandbox">
+            <input type="hidden" name="env" value="www.sandbox">
 
-        <input type="hidden" name="cmd" value="_xclick">
+            <input type="hidden" name="cmd" value="_xclick">
 
-        <input type="hidden" name="bn" value="JavaScriptButton_buynow">
+            <input type="hidden" name="bn" value="JavaScriptButton_buynow">
 
-      </form>
+            <input type="image" src="https://www.sandbox.paypal.com/en_GB/SG/i/btn/btn_paynowCC_LG.gif" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!">
+            <img alt="" border="0" src="https://www.sandbox.paypal.com/en_GB/i/scr/pixel.gif" width="1" height="1">
+  
+        </form>
+    </div>
 </template>

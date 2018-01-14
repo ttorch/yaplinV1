@@ -101,4 +101,16 @@ Meteor.methods({
             throw new Meteor.Error('500', exception.message);
         }
     },
+    getNumGuest: function(data){
+        try{
+            const tour = Tours.find(data).fetch();
+            
+            return tour[0].guests;
+            
+        }catch (error) {
+            console.log('SERVER ERROR');
+            console.log(error);
+            throw new Meteor.Error('500', exception.message);
+        }
+    },
 });
