@@ -4,6 +4,11 @@
             <li class="{{activeClass 'myaccount.profile'}}">
                 <a href="{{pathFor 'myaccount.profile'}}"><i class="fa fa-user"></i> My Profile</a>
             </li>
+            {{#if buddyAccount}}
+            <li class="{{activeClass 'myaccount.listings'}}">
+                <a href="{{pathFor 'myaccount.listings'}}"><i class="fa fa-tasks"></i> Listings</a>
+            </li>
+            {{/if}}
             <li class="{{activeClass 'myaccount.bookings'}}">
                 <a href="{{pathFor 'myaccount.bookings'}}"><i class="fa fa-calendar"></i> Bookings</a>
             </li>

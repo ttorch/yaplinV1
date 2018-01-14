@@ -2,7 +2,7 @@ Template.recovery.helpers({
     'resetPassword' : function () {
         console.log("SET/GET PASSWORD TOKEN");
         if (Accounts._resetPasswordToken) {
-            console.log(Accounts._resetPasswordToken);
+            console.log(Accounts._resetPasswordLink);
             Session.set("resetPass", true);
         }
         return Session.get("resetPass");
