@@ -2,7 +2,7 @@ import { Tours } from '../../imports/collections/toursCol.js';
 
 UploadServer.init({
     tmpDir: '/tmp/',
-    uploadDir: '/Users/jervineang/Documents/GitHub/yaplinV1/public/assets/images/',
+    uploadDir: '/Users/admiralato/uploads/',
     checkCreateDirectories: true,
     uploadUrl: '/uploads/',
     // *** For renaming files on server
