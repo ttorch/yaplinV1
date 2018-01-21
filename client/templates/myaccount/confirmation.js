@@ -205,7 +205,56 @@ Template.buddyconfirmation.events({
         event.preventDefault();
         event.stopPropagation();
         
-        console.log("reject");
+        var status="Rejected";
+        
+        var booking_data = {
+            "booking_id": FlowRouter.getParam("bookingId"),
+            "status": status
+        };
+
+        //accept booking
+        Meteor.call("updateBooking",booking_data, function(error, response){
+            if (error) {
+                console.log(error);
+                Bert.alert(error.error.reason, 'danger', 'fixed-top', 'fa-frown-o');
+            } else {
+
+                //notify user, redirect to dashboard
+                if(response > 0){
+
+                    //get info of the person who booked this tour
+                    var buddydetails = Buddies.find({ _id: bookingdetails.buddy_id }).fetch()[0];
+
+                    var userdetails = Meteor.users.find({_id: buddydetails.userId}).fetch()[0];
+
+                    let html = 'Hi ' + userdetails.profile.firstName + ',<br>';
+                    html += '<p>Sorry, your booking no '+ bookingdetails._id +' has been rejected.</p>';
+                    html += '<p>You might want to search for another buddy.</p>';
+                    
+
+                    Meteor.call('SendEmail',
+                        userdetails.emails[0].address,
+                        'Admin <sixe.eeeeee@gmail.com>',
+                        'Hello from Yaplin! Your booking no '+ bookingdetails._id +' has been rejected!',
+                        html, function(error, response){
+                            if (error) {
+                                console.log("SEND EMAIL ERROR CHILD: ", error);
+                                Bert.alert(error.error.reason, 'danger', 'fixed-top', 'fa-frown-o');
+                                throw error; //new Meteor.Error('500','Oops! Something went wrong when sending email.');                 
+                            } else {
+                                Bert.alert("You have successfully rejected the booking.", 'success', 'fixed-top', 'fa-smile-o');
+                                FlowRouter.go("/myaccount/profile");
+                            }
+                        }
+                    );
+
+                }else{
+                    Bert.alert("Error, rejecting the booking. Please contact the administrator.", 'danger', 'fixed-top', 'fa-frown-o');
+                }
+
+            }
+        });
+                            
         return false;
     },
 });

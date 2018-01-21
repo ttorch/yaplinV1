@@ -1,18 +1,22 @@
 <template name="paypal">
     <div class="container">
+        <h1>Payment</h1>
+        
+        <p>Thank you for your interest! Please make payment for your booking by clicking on the button below.</p>
+        
         <form method="post" action="https://www.sandbox.paypal.com/cgi-bin/webscr" class="paypal-button" target="_top" style="opacity: 1;">
 
             <div class="hide" id="errorBox"></div>
 
             <input type="hidden" name="button" value="buynow">
+            {{#each userdetails.emails}}
+            <input type="hidden" name="business" value="{{address}}">
+            {{/each}}
+            <input type="hidden" name="item_name" value="{{tourdetails.title}}">
 
-            <input type="hidden" name="business" value="angzyjervine@gmail.com">
+            <input type="hidden" name="quantity" value="{{bookingdetails.guests}}">
 
-            <input type="hidden" name="item_name" value="test">
-
-            <input type="hidden" name="quantity" value="1">
-
-            <input type="hidden" name="amount" value="0.01">
+            <input type="hidden" name="amount" value="{{totalCost tourdetails.price bookingdetails.guests}}">
 
             <input type="hidden" name="currency_code" value="SGD">
 
@@ -20,7 +24,11 @@
 
             <input type="hidden" name="tax" value="0">
 
-            <input type="hidden" name="notify_url" value="http://localhost:3000/paypalCallback">
+            <input type="hidden" name="notify_url" value="http://localhost:3000/payment/paypalCallback">
+            
+            <input type="hidden" name="return" value="http://localhost:3000/payment/paypalCallback">
+            
+            <input type="hidden" name="cancel_return" value="http://localhost:3000/payment/{{bookingdetails._id}}" />
 
             <input type="hidden" name="env" value="www.sandbox">
 
