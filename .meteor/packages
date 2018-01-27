@@ -43,3 +43,5 @@ reactive-dict
 risul:dropzone
 dbarrett:dropzonejs
 tomi:upload-server
+http
+mrt:paypal
