@@ -205,6 +205,8 @@ Template.buddyconfirmation.events({
         event.preventDefault();
         event.stopPropagation();
         
+        const instance = Template.instance();
+        
         var status="Rejected";
         
         var booking_data = {
@@ -221,7 +223,9 @@ Template.buddyconfirmation.events({
 
                 //notify user, redirect to dashboard
                 if(response > 0){
-
+                    
+                    var bookingdetails = instance.bookingdetails.get();
+                    
                     //get info of the person who booked this tour
                     var buddydetails = Buddies.find({ _id: bookingdetails.buddy_id }).fetch()[0];
 

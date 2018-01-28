@@ -55,7 +55,17 @@ Meteor.methods({
     updateBooking: function(data){
         try{
             
-            const results = Bookings.update({"_id": data.booking_id},{"$set":{"status": data.status}});
+            var set = {};
+            
+            if(data.status != ""){
+                set["status"] = data.status;
+            }
+            
+            if(data.status != ""){
+                set["payment_details"] = data.payment_details;
+            }
+            
+            const results = Bookings.update({"_id": data.booking_id},{"$set":set});
             
             return results;
             
