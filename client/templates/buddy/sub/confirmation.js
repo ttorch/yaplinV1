@@ -1,3 +1,5 @@
+import { Buddies } from '../../../../imports/collections/buddiesCol.js';
+
 Template.confirmation.onCreated(function(){
     
     var self = this;
@@ -10,6 +12,8 @@ Template.confirmation.onCreated(function(){
 });
 
 Template.confirmation.onRendered(function(){
+   
+    Meteor.subscribe("userList");
    
     const instance = Template.instance();
    
@@ -57,7 +61,31 @@ Template.confirmation.events({
             
             var bookingdetails = instance.bookingdetails.get();
             
-            console.log(bookingdetails.payment_method);
+            var tourdetails = instance.tourdetails.get();
+            
+            var buddydetails = Buddies.find({ _id: tourdetails.buddy_id }).fetch()[0];
+            
+            var userdetails = Meteor.users.find({_id: buddydetails.userId}).fetch()[0];
+            
+            
+            let html = 'Hi ' + userdetails.profile.firstName + ',<br>';
+            html += '<p>Someone has booked a tour with you. Click on the link below to accept/ reject the booking</p>';
+            html += '<p><a href="'+Meteor.absoluteUrl()+'myaccount/confirmation/'+bookingdetails._id+'">'+Meteor.absoluteUrl()+'myaccount/confirmation/'+bookingdetails._id+'</strong></p>';
+            
+            Meteor.call('SendEmail',
+                userdetails.emails[0].address,
+                'Admin <sixe.eeeeee@gmail.com>',
+                'Hello from Yaplin! You have a booking!',
+                html, function(error, response){
+                    if (error) {
+                        console.log("SEND EMAIL ERROR CHILD: ", error);
+                        throw error; //new Meteor.Error('500','Oops! Something went wrong when sending email.');                 
+                    } else {
+                        FlowRouter.go('/thankyou/pending');
+                    }
+                }
+            );
+    
         }else{
             Bert.alert("Please log in to confirm your booking.", 'danger', 'fixed-top', 'fa-exclamation-triangle' );
         }

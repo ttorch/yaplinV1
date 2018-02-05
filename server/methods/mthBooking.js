@@ -26,4 +26,60 @@ Meteor.methods({
             throw new Meteor.Error('500', exception.message);
         }
     },
+    getNumOfAcceptedBookings: function(data){
+        
+        try{
+            
+            var pipeline = [];
+            var num =0;
+            
+            pipeline.push({"$match": {"tour_id": data.tour_id, "schedule_id": data.schedule_id, "status": data.status}});
+            
+            pipeline.push({"$group": { "_id": null, "total": { "$sum": "$guests" }}});
+            
+            const result = Bookings.aggregate(pipeline);
+            
+            if(typeof result[0] !== "undefined"){
+                num = result[0].total;
+            }
+            
+            return num;
+            
+        }catch (error) {
+            console.log('SERVER ERROR');
+            console.log(error);
+            throw new Meteor.Error('500', exception.message);
+        }
+        
+    },
+    updateBooking: function(data){
+        try{
+            
+            var set = {};
+            
+            if(data.status != ""){
+                set["status"] = data.status;
+            }
+            
+            if(data.status != ""){
+                set["payment_details"] = data.payment_details;
+            }
+            
+            const results = Bookings.update({"_id": data.booking_id},{"$set":set});
+            
+            return results;
+            
+        }catch (error) {
+            console.log('SERVER ERROR');
+            console.log(error);
+            throw new Meteor.Error('500', exception.message);
+        }
+    },
+    callBackendCode: function(params) {
+
+        console.log('you sent up the parameters' + params);
+
+        //here you will do all your paypal tracking. The params should have information regarding the customer.
+
+    }
 });

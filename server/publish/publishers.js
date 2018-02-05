@@ -5,3 +5,7 @@ Meteor.publish('buddies', function buddiesPublication(){
     // });
     return Buddies.find({});
 });
+
+Meteor.publish('userList', function (){ 
+  return Meteor.users.find({});
+});

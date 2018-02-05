@@ -1,0 +1,77 @@
+<template name="paypal">
+    <div class="container">
+        <h1>Paypal Credit/Debit Card From</h1>
+        <p><strong>Total amount payable:</strong> SGD{{totalCost tourdetails.price bookingdetails.guests}}</p>
+        
+        <form class="form" id="paypal-payment-form" action="#">
+            <div class="form-group row">
+                <div class="col-md-3"><label for="name">Name</label></div>
+              <div class="col-md-6">
+                  <input type="text" class="form-control" name="name" id="name" placeholder="Name on card">
+              </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-3"><label for="card_type">Card Type</label></div>
+
+              <div class="col-md-6">
+                <select class="form-control" name="card_type" id="card-type">
+                    <option value="" selected="selected">Card Type</option>
+                    <option value="visa"> Visa </option>
+                    <option value="mastercard"> Mastercard </option>
+                    <option value="amex"> American Express </option>
+                    <option value="discover"> Discover </option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-3"><label for="credit_card">Card Number</label></div>
+              <div class="col-md-6">
+                  <input type="text" class="form-control" name="card_number" id="card-number" placeholder="Enter without space">
+              </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-3"><label for="expire_month">Expiration Month</label></div>
+                <div class="col-md-6">
+                  <select class="form-control" name="expire_month" id="expire-month">
+                    <option value="" selected="selected">Expiration Month</option>
+                    <option value="01"> 1 - Jan </option>
+                    <option value="02"> 2 - Feb </option>
+                    <option value="03"> 3 - Mar </option>
+                    <option value="04"> 4 - Apr </option>
+                    <option value="05"> 5 - May </option>
+                    <option value="06"> 6 - Jun </option>
+                    <option value="07"> 7 - Jul </option>
+                    <option value="08"> 8 - Aug </option>
+                    <option value="09"> 9 - Sep </option>
+                    <option value="10"> 10 - Oct </option>
+                    <option value="11"> 11 - Nov </option>
+                    <option value="12"> 12 - Dec </option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-3"><label for="expire_year">Expiration Year</label></div>
+                <div class="col-md-6">
+                    <select class="form-control" name="expire_year" id="expire-year">
+                      <option value="" selected="selected">Expiration Year</option>
+                      {{#each cardExpireYear}}
+                      <option value="{{val}}">{{val}}</option>
+                      {{/each}}
+                  </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-3"><label for="cvv2">CVV</label></div>
+                <div class="col-md-6">
+                    <input type="text" class="form-control" name="cvv" id="cvv" placeholder="123" />
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-9">
+                    <button type="submit" style="margin-right:0px;" class=" pull-right btn btn-orange">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</template>

@@ -2,7 +2,7 @@ import { Tours } from '../../imports/collections/toursCol.js';
 
 UploadServer.init({
     tmpDir: '/tmp/',
-    uploadDir: '/Users/karlfonacier/uploads/',
+    uploadDir: '/Users/jervineang/Documents/GitHub/yaplinV1/public/assets/images/',
     checkCreateDirectories: true,
     uploadUrl: '/uploads/',
     // *** For renaming files on server
@@ -94,6 +94,18 @@ Meteor.methods({
             const tours = Tours.find({"_id": data.tour_id}).fetch();
             
             return tours[0];
+            
+        }catch (error) {
+            console.log('SERVER ERROR');
+            console.log(error);
+            throw new Meteor.Error('500', exception.message);
+        }
+    },
+    getNumGuest: function(data){
+        try{
+            const tour = Tours.find(data).fetch();
+            
+            return tour[0].guests;
             
         }catch (error) {
             console.log('SERVER ERROR');
