@@ -70,6 +70,7 @@
     text-align: left;
     font-weight: normal;
     border-left: solid 3px #ffffff;
+    color: #000000;
 }
 #sidebar ul li a:hover {
     color: rgb(0, 0, 0);

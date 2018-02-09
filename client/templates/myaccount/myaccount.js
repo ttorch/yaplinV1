@@ -1,31 +1,16 @@
-import { Buddies } from '../../../../imports/collections/buddiesCol.js';
-
-Template.buddyregisterform.onCreated(function() {
-    FlowRouter.subsReady("subsBuddies", function() {
-        let buddy = Buddies.find({ userId: Meteor.userId() }).fetch()[0];
-        if (buddy != undefined && buddy._id && buddy.verified === false) {
-            FlowRouter.go('becomeabuddy.status', { buddyId: buddy._id} );
-        } else if (buddy != undefined && buddy._id && buddy.verified === true) {
-            FlowRouter.go('buddy.addtour');
-        } 
-    });
-});
-
-Template.buddyregisterform.events({
+Template.myaccount.events({
     'click #dob':function(){
         $('#dob').datetimepicker({
-            format: 'YYYY-MM-DD'
+            format: 'DD/MM/YYYY'
         });
     },
     'submit form':function(event){
         event.preventDefault();
         
         var target = event.target;
-        if (target.chktnc.checked === false) {
-            Bert.alert( 'Before you can proceed, please accept the Terms and Conditions.', 'warning', 'growl-top-right', 'fa-exclamation-triangle' );
-            return false;
-        }
-
+        
+        console.log(moment(target.dateofbirth.value, "DD/MM/YYYY").format("YYYY-MM-DD"));
+        
         $('#btn-submit-profile').prop('disabled',true);
         $('#btn-submit-profile').html('Submitting Information...'); 
 
@@ -79,4 +64,4 @@ Template.buddyregisterform.events({
         });
 
     }
-})
+});
