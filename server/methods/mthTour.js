@@ -113,4 +113,18 @@ Meteor.methods({
             throw new Meteor.Error('500', exception.message);
         }
     },
+    getTourByBuddy : function(data){
+        
+        try{
+            
+            const tours = Tours.find({"buddy_id": data.buddy_id}).fetch();
+            
+            return tours;
+            
+        }catch (error) {
+            console.log('SERVER ERROR');
+            console.log(error);
+            throw new Meteor.Error('500', exception.message);
+        }
+    }
 });

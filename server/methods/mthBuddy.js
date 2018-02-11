@@ -82,5 +82,26 @@ Meteor.methods({
             return false;
         }
 
+    },
+    getABuddy: function(data){
+        
+        try {
+            
+            var buddy = Buddies.findOne({
+                userId: data.userId
+            });
+            
+            if (buddy) {
+                return buddy;
+            } else {
+                //throw new Meteor.Error('500','Invalid Buddy Account.');
+                return false;
+            }
+            
+        } catch (error) {
+            console.log(error);
+            return false;
+        }
+        
     }
 })

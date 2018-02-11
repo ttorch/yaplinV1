@@ -1,29 +1,54 @@
 import { Buddies } from '../../../../imports/collections/buddiesCol.js';
 noOfGuests = 1;
 schedules = [];
-photos = [];
+var myDropzone = null;
 
 Dropzone.options.dropzoneDiv = {
+    maxFiles: 5,
+    acceptedFiles: 'image/*',
+    uploadMultiple: true,
+    autoProcessQueue: false,
+    addRemoveLinks: true,
     init: function() {
-        this.on("success", function(file, response) { 
-            var photos = Session.get('photos');
-            if(!photos) {
-                photos = [];
-            }
+        
+        myDropzone = this;
+        
+        /*var mockFile = { 
+            name: "1518361818844-1363-8.jpg", 
+            //size: 12345, 
+            //type: 'image/jpeg', 
+            status: Dropzone.ADDED, 
+            url: "http://localhost:3000/uploads/1518361818844-1363-8.jpg"
+        };
 
+        // Call the default addedfile event handler
+        myDropzone.emit("addedfile", mockFile);
+
+        // And optionally show the thumbnail of the file:
+        myDropzone.emit("thumbnail", mockFile, "http://localhost:3000/uploads/1518361818844-1363-8.jpg");
+
+        myDropzone.files.push(mockFile);*/
+                
+        myDropzone.on('success', function(file, response) {
+            var res = JSON.parse(response);
+            
+            var photos = [];
+            
             var res = JSON.parse(response);
             res.files.forEach(element => {
-                photos.push({'baseUrl': element.baseUrl, 'url': element.url, 'filename': element.name});
+                
+                photos.push({
+                    'baseUrl': element.baseUrl, 
+                    'url': element.url, 
+                    'filename': element.name, 
+                    'filesize': element.size
+                });
             });
 
             if(photos.length > 0) {
                 Session.set('photos', photos);
             }
-            // console.log(photos);
-        });
-
-        this.on("resetFiles", function() {
-            this.removeAllFiles(true);
+            
         });
     }
 };
@@ -33,30 +58,110 @@ function getDateTime() {
     return currentDateTime.getDate() + "/" + (currentDateTime.getMonth()+1)  + "/" + currentDateTime.getFullYear() + " " + currentDateTime.getHours() + ":" + currentDateTime.getMinutes();
 }
 
-function resetSession() {
-    Session.clear();
-    
-    Session.set('schedules', [{scheduleId: 1, from: getDateTime(), to: getDateTime()}]);
-    
-    var objDropzone = Dropzone.forElement('.dropzone');
-    objDropzone.emit('resetFiles');
+function attachedDatepicker(){
+    $(".datetimepicker").datetimepicker({
+        timeZone: 'Asia/Singapore',
+        format: 'DD MMM YYYY HH:mm',
+        date: new Date(),
+        useCurrent: true,
+        sideBySide: true
+    });
 }
 
+
 Template.addtour.onCreated(function() {
-    document.title = "Yaplin - Create Tour";
-    Session.set('schedules', [{scheduleId: 1, from: getDateTime(), to: getDateTime()}]);
+    
+    var action = Session.get("action");
+    var ucAction = action.charAt(0).toUpperCase() + action.slice(1);
+    
+    document.title = "Yaplin - "+ ucAction +" Tour";
+    
+    var self = this;
+    this.tourdetails = new ReactiveVar({});
+    this.schedules = new ReactiveVar({});
+   
+});
+
+Template.addtour.onRendered(function() {
+    
+    var schedules = new Array();
+    //Session.set('schedules', []);
+    schedules.push({scheduleId: 1, from: getDateTime(), to: getDateTime()});
+    
+    var action = Session.get("action");
+    
+    const instance = Template.instance();
+    
+    instance.schedules.set(schedules);
+    
+    Meteor.setTimeout(function() {
+        attachedDatepicker();
+        
+    }, 10);
+            
+    if(action == "update"){
+        
+        var data = {
+            "tour_id": FlowRouter.getParam("tourId")
+        };
+        
+        
+        //retrieve from database
+        Meteor.call("getTourDetails", data, function(error, response){
+            
+           if(response){
+               
+               instance.tourdetails.set(response);
+               
+               var schedules = new Array();
+               
+               Object.keys(response.schedules).forEach(function (key){
+                    schedules.push({
+                        scheduleId: response.schedules[key]["scheduleId"], 
+                        from: moment(response.schedules[key]["from"]).format("DD/MM/YYYY HH:mm"), 
+                        to: moment(response.schedules[key]["to"]).format("DD/MM/YYYY HH:mm")
+                    });
+                });
+               
+               instance.schedules.set(schedules);
+               
+               var photos = new Array();
+               
+               Object.keys(response.photos).forEach(function (key){
+                    photos.push({
+                        baseUrl: response.photos[key]["baseUrl"], 
+                        filename: response.photos[key]["filename"]
+                    });
+                });
+                
+                Session.set("photos", photos);
+                
+           }else{
+               Bert.alert(error.error.reason, 'danger', 'fixed-top', 'fa-frown-o');
+           }
+           
+        });
+        
+    }
+    
 });
 
 Template.addtour.events({
     'submit form': function(event) {
+        
         event.preventDefault();
         event.stopPropagation();
+        
         var target = event.target;
         
+        const instance = Template.instance();
         var arySchedules = new Array();
+        var schedules = instance.schedules.get();
+                
         
         //loop through to convert the datetime format
-        Session.get('schedules').forEach(function(s, i) {
+        //Session.get('schedules').forEach(function(s, i) {
+        schedules.forEach(function(s, i) {
             arySchedules.push({
                 scheduleId: s.scheduleId, 
                 from: new Date(moment(s.from).format("YYYY-MM-DD HH:mm Z")), 
@@ -65,6 +170,8 @@ Template.addtour.events({
                 //time_to: moment(s.to).format("HH:mm"),
             });
         });
+        
+        myDropzone.processQueue();
         
         var buddy = Buddies.find({ userId: Meteor.userId() }).fetch()[0];
         
@@ -80,7 +187,8 @@ Template.addtour.events({
                 exp_expectation: target.exp_expectation.value,
                 provision: target.provision.value,
                 prov_expectation: target.prov_expectation.value,
-                schedules: arySchedules
+                schedules: arySchedules,
+                photos: Session.get('photos')
             };
             
             Meteor.call('CreateTour', data, function(error, response){
@@ -89,8 +197,8 @@ Template.addtour.events({
                     console.log(error);
                     Bert.alert(error.error.reason, 'danger', 'fixed-top', 'fa-frown-o');
                 } else {
-                    console.log(response);
-                    return true;
+                    Bert.alert("Listing have added succcessfully!", 'success', 'fixed-top', 'fa-smile-o');
+                    FlowRouter.go("/myaccount/listings");
                 }
             });
         } else {
@@ -99,7 +207,6 @@ Template.addtour.events({
         
         return false;
     },
-
     'change #noOfGuests': function(event, template) {
         var participant = $(event.currentTarget).val();
         // console.log("participant: " + participant);
@@ -107,17 +214,72 @@ Template.addtour.events({
     },
 
     'click .add-sched': function(event) {
-        var schedules = Session.get('schedules');
+        
+        const instance = Template.instance();
+        
+        //var schedules = Session.get('schedules');
+        var schedules = instance.schedules.get();
+        
         var scheduleId = Math.floor(Math.random() * 1000);
 
         schedules.push({scheduleId: scheduleId, from: getDateTime(), to: getDateTime()});
-        Session.set('schedules', schedules);
-
+        //Session.set('schedules', schedules);
+        
+        instance.schedules.set(schedules);
+        
         // console.log('ScheduleID: ' + scheduleId);
         // console.log(Session.get('schedules'));
+        
+        Meteor.setTimeout(function() {
+            attachedDatepicker();
 
-        $('#start_'+scheduleId).datetimepicker();
-        $('#end_'+scheduleId).datetimepicker();
+        }, 10);
+    },
+    'click .remove-sched': function(event) {
+        
+        const instance = Template.instance();
+        
+        var scheduleId = instance.$(event.currentTarget).closest('.scheduleItem').attr('scheduleId');
+        var schedules = instance.schedules.get();
+
+        schedules = _.reject(schedules, function(x) {
+            return x.scheduleId == scheduleId;
+        });
+
+        //Session.set('schedules', schedules);
+        instance.schedules.set(schedules);
+        
+        console.log(instance.schedules.get());
+    },
+    'dp.change .datetimepicker': function(event, tmpl) {
+        
+        
+        var target = event.target;
+        var scheduleId = target.id;
+        var value = $('#' + target.id).val();
+        // console.log('New value: ' + value);
+        
+        scheduleId = scheduleId.replace('dp_start_', '').replace('dp_end_', '').trim();
+        
+        const instance = Template.instance();
+        
+        var schedules = instance.schedules.get();
+        
+        var result = $.grep(schedules, function(e){ return e.scheduleId == scheduleId; });
+        
+        Object.keys(schedules).forEach(function (key){
+            
+            if(schedules[key]["scheduleId"] == scheduleId){
+                if (target.id.indexOf("start") >= 0) {
+                    schedules[key]["from"]= value;
+                } else if(target.id.indexOf("end") >= 0) {
+                    schedules[key]["to"] = value;
+                }
+                
+                instance.schedules.set(schedules);
+            }
+        });
+        
     }
 });
 
@@ -127,61 +289,50 @@ Template.addtour.helpers({
     },
 
     schedules: function() {
-        return Session.get('schedules');
-    }
-});
-
-// Add Dates
-Template.adddates.events({
-    'click .remove-sched': function(event) {
-        var scheduleId = Template.instance().$('.scheduleItem').attr('scheduleId');
-        var schedules = Session.get('schedules');
-
-        schedules = _.reject(schedules, function(x) {
-            return x.scheduleId == scheduleId;
-        });
-
-        Session.set('schedules', schedules);
-
-        // console.log(Session.get('schedules'));
-    },
-    'dp.change .datetimepicker': function(event, tmpl) {
-        var target = event.target;
-        var scheduleId = target.id;
-        var value = $('#dp_' + target.id).val();
-        // console.log('New value: ' + value);
-        scheduleId = scheduleId.replace('start_', '').replace('end_', '').trim();
+        //return Session.get('schedules');
         
-        var schedules = Session.get('schedules');
-        var result = $.grep(schedules, function(e){ return e.scheduleId == scheduleId; });
-        if(result) {
-            // debugger;
-            if (target.id.indexOf("start") >= 0) {
-                result[0].from = value;
-            } else if(target.id.indexOf("end") >= 0) {
-                result[0].to = value;
-            }
+        const instance = Template.instance();
+        return instance.schedules.get();
+    },
+    action(){
+        var action = Session.get("action");
+
+        return action.charAt(0).toUpperCase() + action.slice(1);
+    },
+    tour(){
+        const instance = Template.instance();
+
+        return instance.tourdetails.get();
+    },
+    selected(val, selected){
+        if(val == selected){
+            return "selected";
+        }else{
+            return "";
         }
-        schedules = _.reject(schedules, function(x) {
-            return x.scheduleId == scheduleId;
-        });
-        schedules.push(result[0]);
-        Session.set('schedules', schedules);
-        // console.log(Session.get('schedules'));
+    },
+    photos(){
+        return Session.get("photos");
     }
 });
 
-Template.adddates.onRendered(function() {
-    $('.datetimepicker').datetimepicker({
-        timeZone: 'Asia/Singapore',
-        format: 'DD MMM YYYY HH:mm',
-        date: new Date(),
-        useCurrent: true,
-        sideBySide: true
-    });
+Template.registerHelper('arrayify',function(obj){
+    var result = [];
+    
+    if(typeof obj !== "undefined"){
+        
+        Object.keys(obj).forEach(function (key){
+                
+                result.push({
+                    scheduleId: obj[key]["scheduleId"],
+                    from: obj[key]["from"],
+                    to: obj[key]["to"],
+                });
+        });
+        
+    }
+    
+    
+    return result;
 });
-
-Template.tourimages.onCreated = function() {
-    Session.set('photos', []);
-};
 

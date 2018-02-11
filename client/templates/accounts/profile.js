@@ -24,18 +24,18 @@ Template.profile.events({
     
         var target = event.target;
         
-        console.log("here");
         if (target.chktnc.checked === false) {
             Bert.alert( 'Before you can proceed, please accept the Terms and Conditions.', 'warning', 'growl-top-right', 'fa-exclamation-triangle' );
             return false;
         }
         
-        console.log(moment(target.dateofbirth.value).format("YYYY-MM-DD"));
+        var dob = moment(target.dateofbirth.value, "DD/MM/YYYY").format("YYYY-MM-DD");
+        
         data = {
             firstname: target.firstname.value,
             lastname: target.lastname.value,
             gender: target.gender.value,
-            dateofbirth: moment(target.dateofbirth.value).format("YYYY-MM-DD"),
+            dateofbirth: dob,
             contact: target.contact.value,
             street: target.street.value,
             city: target.city.value,

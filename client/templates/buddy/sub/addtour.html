@@ -1,10 +1,10 @@
 <template name="addtour">
     <div class="container">
-        <h1>Create Tour</h1>
-        <form>
+        <h1>{{action}} Tour</h1>
+        <form action="">
             <div class="row">
                 <div class="form-group col-md-6">
-                    <input type="text" name="title" class="form-control form-control-lg" placeholder="Title">
+                    <input type="text" name="title" class="form-control form-control-lg" placeholder="Title" value="{{tour.title}}">
                 </div>
                 <div class="form-group col-md-6">
                     <input type="text" name="location" class="form-control form-control-lg" placeholder="Location">
@@ -13,9 +13,9 @@
             <div class="row">
                 <div class="form-group col-md-6">
                     <select class="form-control form-control-lg" id="noOfGuests">
-                        <option disabled="disabled" selected="selected">Guests</option> 
+                        <option disabled="disabled" {{selected}}>Guests</option> 
                         {{#each participants}}
-                            <option value="{{this}}">{{this}}</option>
+                            <option value="{{this}}" {{selected this tour.guests}}>{{this}}</option>
                         {{/each}}
                     </select>
                 </div>
@@ -32,12 +32,38 @@
                             <tr>
                                 <th>From</th>
                                 <th>To</th>
-                                <th>Actions</th>
+                                <th>Actions
+                                    <button name="btnAddSched" type="button" class="btn btn-success add-sched" data-toggle="tooltip" title="Add schedule">+ </button>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
-                            {{#each schedules}}
-                                {{>adddates }}
+                            {{#each arrayify schedules}}
+                                <tr class="scheduleItem tr_{{scheduleId}}" scheduleId="{{scheduleId}}">
+                                    <td>
+                                        <div class="form-group">
+                                            <div class='input-group' id='start_{{scheduleId}}' name='start_{{scheduleId}}'>
+                                                <input id="dp_start_{{scheduleId}}" name="dp_start_{{scheduleId}}" type='text' class="datetimepicker form-control form-control-lg" placeholder="From" value="{{from}}"/>
+                                                <span class="input-group-addon">
+                                                    <span class="glyphicon glyphicon-calendar"></span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            <div class='input-group' id='end_{{scheduleId}}' name='end_{{scheduleId}}'>
+                                                <input id="dp_end_{{scheduleId}}" name="dp_end_{{scheduleId}}" type='text' class="datetimepicker form-control form-control-lg" placeholder="To" value="{{to}}"/>
+                                                <span class="input-group-addon">
+                                                    <span class="glyphicon glyphicon-calendar"></span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <button name="btnRemoveSched" type="button" class="btn btn-danger remove-sched" data-toggle="tooltip" title="Remove schedule">-</button>
+                                    </td>
+                                </tr>
                             {{/each}}
                         </tbody>
                     </table>
@@ -45,16 +71,8 @@
             </div>
             <h1>Photos</h1>
             <hr>
-            <!-- <div id="dropzone"> -->
-            {{>tourimages }}
-            <!-- </div> -->
+            {{> dropzone url='/uploads/' id='dropzoneDiv'}}
             <h1>Summary</h1>
-            <!-- <div class="row">
-                <div class="form-group col-md-6">
-                    <label for="uploadPhotos">Add photos about the experience (up to 5 photos)</label>
-                    <input type="file" id="uploadPhotos">
-                </div>
-            </div> -->
             <hr>
             <div class="row">
                 <div class="form-group col-md-12">
@@ -84,35 +102,4 @@
             </div>
         </form>
     </div>
-</template>
-
-<template name="adddates">
-    <tr class="scheduleItem tr_{{scheduleId}}" scheduleId="{{scheduleId}}">
-        <td>
-            <div class="form-group">
-                <div class='input-group datetimepicker' id='start_{{scheduleId}}' name='start_{{scheduleId}}'>
-                    <input id="dp_start_{{scheduleId}}" name="dp_start_{{scheduleId}}" type='text' class="form-control form-control-lg" placeholder="From" value="{{from}}"/>
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                </div>
-            </div>
-        </td>
-        <td>
-            <div class="form-group">
-                <div class='input-group datetimepicker' id='end_{{scheduleId}}' name='end_{{scheduleId}}'>
-                    <input id="dp_end_{{scheduleId}}" name="dp_end_{{scheduleId}}" type='text' class="form-control form-control-lg" placeholder="To" value="{{to}}"/>
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                </div>
-            </div>
-        </td>
-        <td><button name="btnAddSched" type="button" id="btnAddSched" class="btn btn-success add-sched" data-toggle="tooltip" title="Add schedule">+ 
-            </button> <button name="btnRemoveSched" id="btnRemoveSched" type="button" class="btn btn-danger remove-sched" data-toggle="tooltip" title="Remove schedule">-</button></td>
-    </tr>
-</template>
-
-<template name="tourimages">
-    {{> dropzone url='/uploads/' id='dropzoneDiv'}}
 </template>

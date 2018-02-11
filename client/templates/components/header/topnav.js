@@ -10,6 +10,12 @@ Template.topnav.events({
     'click .logout': function(event){
         event.preventDefault();
         Meteor.logout();
+        
+        if(FlowRouter.current().path.indexOf("/myaccount/")>=0){
+            //redirect to homepage
+            FlowRouter.go("/");
+        }
+        
     }
 });
 

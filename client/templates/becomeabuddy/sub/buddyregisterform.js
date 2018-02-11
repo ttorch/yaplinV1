@@ -28,12 +28,14 @@ Template.buddyregisterform.events({
 
         $('#btn-submit-profile').prop('disabled',true);
         $('#btn-submit-profile').html('Submitting Information...'); 
-
+        
+        var dob = moment(target.dateofbirth.value, "DD/MM/YYYY").format("YYYY-MM-DD");
+        
         data = {
             firstname: target.firstname.value,
             lastname: target.lastname.value,
             gender: target.gender.value,
-            dateofbirth: target.dateofbirth.value,
+            dateofbirth: dob,
             contact: target.contact.value,
             street: target.street.value,
             city: target.city.value,
