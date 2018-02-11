@@ -4,9 +4,28 @@
             {{> Template.dynamic template=sidebar}}
             <div id="content">
                 <div class="row">
-                    <div class="col-sm-12">
-                        <h3>My Listings</h3>
-                        
+                    <h3>Your Listings</h3>
+                    <div class="col-md-10 no-padding">
+                        Manage listings that you have posted 
+                    </div>
+                    <div class="col-md-2 no-padding">
+                        <a href="{{pathFor 'buddy.addtour'}}" class="btn btn-orange pull-right no-margin">Add Tour</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Test</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

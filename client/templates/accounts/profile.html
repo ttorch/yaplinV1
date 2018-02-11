@@ -9,7 +9,7 @@
     <div class="form-group">
         <select name="gender" class="form-control input-md custom-select mb-2 mr-sm-2 mb-sm-0" required>
             {{#each gender}}
-            <option value="{{value}}">{{text}}</option>
+            <option value="{{value}}" {{selectedOptions currentUser.profile.gender value}}>{{text}}</option>
             {{/each}}
         </select>
     </div>
@@ -36,7 +36,7 @@
     <div class="form-group">
         <select name="country" class="form-control input-md custom-select mb-2 mr-sm-2 mb-sm-0" required>
             {{#each country}}
-            <option value="{{value}}">{{text}}</option>
+            <option value="{{value}}" {{selectedOptions currentUser.profile.country value}}>{{text}}</option>
             {{/each}}
         </select>
     </div>
