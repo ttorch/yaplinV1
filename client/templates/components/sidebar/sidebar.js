@@ -1,7 +1,31 @@
-import { Buddies } from '../../../../imports/collections/buddiesCol.js';
+//import { Buddies } from '../../../../imports/collections/buddiesCol.js';
 // Template.sidebar.onRendered(function(){
 
 // })
+Template.sidebar.onCreated(function(){
+
+    var self = this;
+    self.isBuddy = new ReactiveVar(false);
+
+});
+
+Template.sidebar.onRendered(function(){
+    
+    const instance = Template.instance();
+    
+    var data={
+        "userId": Meteor.userId()
+    };
+
+    Meteor.call("getABuddy", data, function(error, response){
+
+        if(error || response == false){
+            instance.isBuddy.set(false);
+        }else{
+            instance.isBuddy.set(true);
+        }
+    });
+});
 
 Template.sidebar.helpers({
     activeClass: function (menu_name) {
@@ -10,11 +34,9 @@ Template.sidebar.helpers({
             return 'active'
     },
     buddyAccount: function() {
-        let buddy = Buddies.find({ userId: Meteor.userId() }).fetch()[0];
-        if (buddy != undefined && buddy._id && buddy.verified === true) { 
-            return true;
-        } else {
-            return false;
-        }
+        
+        const instance = Template.instance();
+        
+        return instance.isBuddy.get();
     }
-})
+});

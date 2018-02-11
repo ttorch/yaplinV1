@@ -15,7 +15,7 @@
     </div>
     <div class="form-group">
         <div class="input-group date" id="dob">
-            <input type="text" name="dateofbirth" class="form-control form-control-lg" placeholder="Date of Birth" value="{{currentUser.profile.dob}}"/>
+            <input type="text" name="dateofbirth" class="form-control form-control-lg" placeholder="Date of Birth" value="{{formatDob currentUser.profile.dob}}"/>
             <span class="input-group-addon">
                 <span class="glyphicon glyphicon-calendar"></span>
             </span>
