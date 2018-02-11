@@ -67,7 +67,8 @@ Template.registerHelper('formatBookingDate',function(from,to){
         
         return moment(from).format("ddd, DDDo MMM") + " " + moment(from).format("HH:mm") + "-" + moment(to).format("HH:mm");
     }else{
-        return moment(from).format("ddd, DDDo MMM") + " " + moment(from).format("HH:mm") + " - " + moment(to).format("ddd, DDDo MMM")+ " " +moment(to).format("HH:mm");console.log("different day");
+        return moment(from).format("ddd, DDDo MMM") + " " + moment(from).format("HH:mm") + " - " + moment(to).format("ddd, DDDo MMM")+ " " +moment(to).format("HH:mm");
+        //console.log("different day");
     }
     
 });

@@ -81,6 +81,19 @@ Meteor.methods({
             console.log(error);
             return false;
         }
+    },
 
+    HasBuddyAccount: function(data) {
+        try{
+            let buddy = Buddies.find({ userId: data.userId }).fetch()[0];
+            if (buddy != undefined && buddy._id && buddy.verified === true) { 
+                return true;
+            } else {
+                return false;
+            }
+        } catch (error) {
+            console.log(error);
+            return false;
+        }
     }
 })
