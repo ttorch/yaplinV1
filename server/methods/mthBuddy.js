@@ -82,8 +82,6 @@ Meteor.methods({
             return false;
         }
     },
-
-<<<<<<< HEAD
     HasBuddyAccount: function(data) {
         try{
             let buddy = Buddies.find({ userId: data.userId }).fetch()[0];
@@ -92,7 +90,10 @@ Meteor.methods({
             } else {
                 return false;
             }
-=======
+        }catch (error) {
+            console.log(error);
+            return false;
+        }
     },
     getABuddy: function(data){
         
@@ -109,14 +110,9 @@ Meteor.methods({
                 return false;
             }
             
->>>>>>> tour-listing
         } catch (error) {
             console.log(error);
             return false;
         }
-<<<<<<< HEAD
-=======
-        
->>>>>>> tour-listing
     }
 })

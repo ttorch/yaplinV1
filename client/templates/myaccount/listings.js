@@ -1,13 +1,10 @@
 Template.listings.onCreated(function(){
     
     var self = this;
-<<<<<<< HEAD
-    self.tourdetails = new ReactiveVar({});
-    
+
     var title = "Yaplin - My Listings";
     DocHead.setTitle(title);
    
-=======
     self.listings = new ReactiveVar({});
      
 });
@@ -86,5 +83,4 @@ Template.registerHelper('arrayify_tour',function(obj){
     
     
     return result;
->>>>>>> tour-listing
 });

@@ -9,6 +9,7 @@ Dropzone.options.dropzoneDiv = {
     uploadMultiple: true,
     autoProcessQueue: false,
     addRemoveLinks: true,
+    parallelUploads: 5,
     init: function() {
         
         myDropzone = this;
@@ -29,27 +30,24 @@ Dropzone.options.dropzoneDiv = {
 
         myDropzone.files.push(mockFile);*/
                 
-        myDropzone.on('success', function(file, response) {
-            var res = JSON.parse(response);
-            
-            var photos = [];
-            
-            var res = JSON.parse(response);
-            res.files.forEach(element => {
-                
-                photos.push({
-                    'baseUrl': element.baseUrl, 
-                    'url': element.url, 
-                    'filename': element.name, 
-                    'filesize': element.size
-                });
+    },
+    success: function(file, response){
+        var photos = [];
+        
+        var res = JSON.parse(response);
+        
+        Object.keys(res.files).forEach(function (key){
+            photos.push({
+                'baseUrl': res.files[key].baseUrl, 
+                'url': res.files[key].url, 
+                'filename': res.files[key].name, 
+                'filesize': res.files[key].size
             });
-
-            if(photos.length > 0) {
-                Session.set('photos', photos);
-            }
-            
         });
+        
+        if(photos.length > 0) {
+            Session.set('photos', photos);
+        }
     }
 };
 
@@ -130,7 +128,8 @@ Template.addtour.onRendered(function() {
                Object.keys(response.photos).forEach(function (key){
                     photos.push({
                         baseUrl: response.photos[key]["baseUrl"], 
-                        filename: response.photos[key]["filename"]
+                        filename: response.photos[key]["filename"],
+                        filesize: response.photos[key]["filesize"]
                     });
                 });
                 

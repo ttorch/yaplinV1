@@ -2,8 +2,8 @@ import { Tours } from '../../imports/collections/toursCol.js';
 
 UploadServer.init({
     tmpDir: '/tmp/',
-    // uploadDir: '/Users/jervineang/Documents/GitHub/yaplinV1/public/assets/images/',
-    uploadDir: '/Users/karlfonacier/Projects/Bin/yaplinv1/uploads/',
+    uploadDir: '/Users/jervineang/Documents/GitHub/yaplinV1/public/assets/images/',
+    //uploadDir: '/Users/karlfonacier/Projects/Bin/yaplinv1/uploads/',
     checkCreateDirectories: true,
     uploadUrl: '/uploads/',
     // *** For renaming files on server
@@ -114,13 +114,6 @@ Meteor.methods({
             throw new Meteor.Error('500', exception.message);
         }
     },
-<<<<<<< HEAD
-
-    getMyListings: function(data) {
-        try {
-            const listings = Tours.find({"buddy_id": data.buddy_id}).fetch();
-        } catch (error) {
-=======
     getTourByBuddy : function(data){
         
         try{
@@ -130,7 +123,6 @@ Meteor.methods({
             return tours;
             
         }catch (error) {
->>>>>>> tour-listing
             console.log('SERVER ERROR');
             console.log(error);
             throw new Meteor.Error('500', exception.message);
