@@ -82,6 +82,10 @@ Template.addtour.onCreated(function() {
 
 Template.addtour.onRendered(function() {
     
+    if(!Meteor.userId()){
+        FlowRouter.go("/");
+    }
+    
     var schedules = new Array();
     //Session.set('schedules', []);
     schedules.push({scheduleId: 1, from: getDateTime(), to: getDateTime()});
