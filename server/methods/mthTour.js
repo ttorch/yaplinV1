@@ -26,6 +26,31 @@ Meteor.methods({
             throw new Meteor.Error(error);
         }
     },
+    UpdateTour: function(data) {
+        try {
+            Tours.update(data._id, {$set: 
+                { title: data.title, 
+                  location: data.location,
+                  guests: data.guests,
+                  price: data.price,
+                  summary: data.summary,
+                  experience: data.experience,
+                  exp_expectation: data.exp_expectation,
+                  provision: data.provision,
+                  prov_expectation: data.prov_expectation,
+                  schedules: data.schedules, 
+                  photos: data.photos, 
+                }
+            });
+        
+            console.log("Update: OK");
+            return "OK";
+        } catch (error) {
+            console.log('SERVER ERROR');
+            console.log(error);
+            throw new Meteor.Error(error);
+        }
+    },
     SearchTour: function(data){
         
         try{

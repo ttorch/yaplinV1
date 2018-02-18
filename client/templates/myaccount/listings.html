@@ -31,7 +31,11 @@
                                     <td>{{location}}</td>
                                     <td>{{guests}}</td>
                                     <td>{{price}}</td>
-                                    <td><a href="{{pathFor "/buddy/edit-tour/:tourId" tourId=_id}}"><span class="glyphicon glyphicon-pencil"></span></a></td>
+                                    <td>
+                                        <a href="{{pathFor "/buddy/edit-tour/:tourId" tourId=_id}}"><span class="glyphicon glyphicon-pencil"></span></a>
+                                        &nbsp;
+                                        <a href="#" id="delete_{{_id}}"><span class="glyphicon glyphicon-remove"></span></a>
+                                    </td>
                                 </tr>
                                 {{/each}}
                             </tbody>

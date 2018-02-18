@@ -56,6 +56,22 @@ Template.listings.helpers({
     }
 });
 
+Template.listings.events({
+   'click [id^=delete_]': function(event, tmpl) {
+        
+        var target = event.currentTarget;
+        
+        Session.set("showDelete",true);
+        $("#confirmationWindow").modal('show');
+        
+        var listingId = target.id.replace("delete_","");
+        
+        Session.set("listingId",listingId);
+        
+        //console.log(target.id);
+    }
+});
+
 Template.registerHelper('arrayify_tour',function(obj){
     var result = [];
     

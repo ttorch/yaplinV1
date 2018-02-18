@@ -14,22 +14,6 @@ Dropzone.options.dropzoneDiv = {
         
         myDropzone = this;
         
-        /*var mockFile = { 
-            name: "1518361818844-1363-8.jpg", 
-            //size: 12345, 
-            //type: 'image/jpeg', 
-            status: Dropzone.ADDED, 
-            url: "http://localhost:3000/uploads/1518361818844-1363-8.jpg"
-        };
-
-        // Call the default addedfile event handler
-        myDropzone.emit("addedfile", mockFile);
-
-        // And optionally show the thumbnail of the file:
-        myDropzone.emit("thumbnail", mockFile, "http://localhost:3000/uploads/1518361818844-1363-8.jpg");
-
-        myDropzone.files.push(mockFile);*/
-                
     },
     success: function(file, response){
         var photos = [];
@@ -43,6 +27,7 @@ Dropzone.options.dropzoneDiv = {
                 'filename': res.files[key].name, 
                 'filesize': res.files[key].size
             });
+            
         });
         
         if(photos.length > 0) {
@@ -53,15 +38,15 @@ Dropzone.options.dropzoneDiv = {
 
 function getDateTime() {
     var currentDateTime = new Date();
-    return currentDateTime.getDate() + "/" + (currentDateTime.getMonth()+1)  + "/" + currentDateTime.getFullYear() + " " + currentDateTime.getHours() + ":" + currentDateTime.getMinutes();
+    return moment(currentDateTime).format("DD/MM/YYYY HH:mm");
 }
 
 function attachedDatepicker(){
     $(".datetimepicker").datetimepicker({
         timeZone: 'Asia/Singapore',
-        format: 'DD MMM YYYY HH:mm',
-        date: new Date(),
-        useCurrent: true,
+        format: 'DD/MM/YYYY HH:mm',
+        //date: new Date(),
+        //useCurrent: true,
         sideBySide: true
     });
 }
@@ -78,6 +63,7 @@ Template.addtour.onCreated(function() {
     this.tourdetails = new ReactiveVar({});
     this.schedules = new ReactiveVar({});
    
+   Dropzone.autoDiscover = false;
 });
 
 Template.addtour.onRendered(function() {
@@ -86,21 +72,11 @@ Template.addtour.onRendered(function() {
         FlowRouter.go("/");
     }
     
-    var schedules = new Array();
-    //Session.set('schedules', []);
-    schedules.push({scheduleId: 1, from: getDateTime(), to: getDateTime()});
     
     var action = Session.get("action");
     
     const instance = Template.instance();
     
-    instance.schedules.set(schedules);
-    
-    Meteor.setTimeout(function() {
-        attachedDatepicker();
-        
-    }, 10);
-            
     if(action == "update"){
         
         var data = {
@@ -118,7 +94,7 @@ Template.addtour.onRendered(function() {
                var schedules = new Array();
                
                Object.keys(response.schedules).forEach(function (key){
-                    schedules.push({
+                   schedules.push({
                         scheduleId: response.schedules[key]["scheduleId"], 
                         from: moment(response.schedules[key]["from"]).format("DD/MM/YYYY HH:mm"), 
                         to: moment(response.schedules[key]["to"]).format("DD/MM/YYYY HH:mm")
@@ -127,25 +103,66 @@ Template.addtour.onRendered(function() {
                
                instance.schedules.set(schedules);
                
-               var photos = new Array();
+               Meteor.setTimeout(function() {
+                    attachedDatepicker();
+
+               }, 10);
                
-               Object.keys(response.photos).forEach(function (key){
-                    photos.push({
-                        baseUrl: response.photos[key]["baseUrl"], 
-                        filename: response.photos[key]["filename"],
-                        filesize: response.photos[key]["filesize"]
-                    });
-                });
+               var photos = new Array();
+               var mockFile = {};
+               var baseUrl = "";
                 
-                Session.set("photos", photos);
+               if(typeof response.photos!== "undefined"){
                 
-           }else{
+                Object.keys(response.photos).forEach(function (key){
+                     photos.push({
+                         baseUrl: response.photos[key]["baseUrl"], 
+                         filename: response.photos[key]["filename"],
+                         filesize: response.photos[key]["filesize"]
+                     });
+
+                     baseUrl = response.photos[key]["baseUrl"].replace("uploads/","assets/images/");
+
+                     mockFile = { 
+                         name: response.photos[key]["filename"], 
+                         size: response.photos[key]["filesize"], 
+                         status: Dropzone.ADDED,
+                         url: baseUrl+ response.photos[key]["filename"]
+                    };
+
+                     myDropzone.files.push(mockFile);
+
+                     myDropzone.emit('addedfile', mockFile);
+                     myDropzone.createThumbnailFromUrl(mockFile, baseUrl+ response.photos[key]["filename"]);
+
+                     myDropzone.emit('complete', mockFile);
+                 });
+
+             }
+             
+             Session.set("photos", photos);
+             
+            }else{
                Bert.alert(error.error.reason, 'danger', 'fixed-top', 'fa-frown-o');
            }
            
         });
         
+    }else{
+        
+        var schedules = new Array();
+        
+        var scheduleId = Math.floor(Math.random() * 1000);
+        schedules.push({scheduleId: scheduleId, from: getDateTime(), to: getDateTime()});
+
+        instance.schedules.set(schedules);
+    
     }
+    
+    Meteor.setTimeout(function() {
+        attachedDatepicker();
+
+    }, 10);
     
 });
 
@@ -154,6 +171,8 @@ Template.addtour.events({
         
         event.preventDefault();
         event.stopPropagation();
+        
+        var action = Session.get("action");
         
         var target = event.target;
         
@@ -165,10 +184,11 @@ Template.addtour.events({
         //loop through to convert the datetime format
         //Session.get('schedules').forEach(function(s, i) {
         schedules.forEach(function(s, i) {
+            
             arySchedules.push({
                 scheduleId: s.scheduleId, 
-                from: new Date(moment(s.from).format("YYYY-MM-DD HH:mm Z")), 
-                to: new Date(moment(s.to).format("YYYY-MM-DD HH:mm Z")),
+                from: new Date(moment(s.from, "DD/MM/YYYY HH:mm").format("YYYY-MM-DD HH:mm Z")), 
+                to: new Date(moment(s.to, "DD/MM/YYYY HH:mm").format("YYYY-MM-DD HH:mm Z")),
                 //time_from: moment(s.from).format("HH:mm"),
                 //time_to: moment(s.to).format("HH:mm"),
             });
@@ -179,31 +199,71 @@ Template.addtour.events({
         var buddy = Buddies.find({ userId: Meteor.userId() }).fetch()[0];
         
         if (buddy != undefined && buddy._id && buddy.verified === true) {
-            var data = {
-                buddy_id: buddy._id,
-                title: target.title.value,
-                location: target.location.value,
-                guests: noOfGuests,
-                price: target.price.value,
-                summary: target.summary.value,
-                experience: target.experience.value,
-                exp_expectation: target.exp_expectation.value,
-                provision: target.provision.value,
-                prov_expectation: target.prov_expectation.value,
-                schedules: arySchedules,
-                photos: Session.get('photos')
-            };
             
-            Meteor.call('CreateTour', data, function(error, response){
+            
+            if(action == "add"){
+                var data = {
+                    buddy_id: buddy._id,
+                    title: target.title.value,
+                    location: target.location.value,
+                    guests: noOfGuests,
+                    price: target.price.value,
+                    summary: target.summary.value,
+                    experience: target.experience.value,
+                    exp_expectation: target.exp_expectation.value,
+                    provision: target.provision.value,
+                    prov_expectation: target.prov_expectation.value,
+                    schedules: arySchedules,
+                    photos: Session.get('photos')
+                };
+            
+                Meteor.call('CreateTour', data, function(error, response){
+
+                    if (error) {
+                        console.log(error);
+                        Bert.alert(error.error.reason, 'danger', 'fixed-top', 'fa-frown-o');
+                    } else {
+
+                        //reset session
+                        Session.set('photos', null);
+
+                        Bert.alert("Listing have added succcessfully!", 'success', 'fixed-top', 'fa-smile-o');
+                        FlowRouter.go("/myaccount/listings");
+                    }
+                });
+            }else if(action == "update"){
                 
-                if (error) {
-                    console.log(error);
-                    Bert.alert(error.error.reason, 'danger', 'fixed-top', 'fa-frown-o');
-                } else {
-                    Bert.alert("Listing have added succcessfully!", 'success', 'fixed-top', 'fa-smile-o');
-                    FlowRouter.go("/myaccount/listings");
-                }
-            });
+                var data = {
+                    _id: instance.tourdetails.get()._id,
+                    buddy_id: buddy._id,
+                    title: target.title.value,
+                    location: target.location.value,
+                    guests: noOfGuests,
+                    price: target.price.value,
+                    summary: target.summary.value,
+                    experience: target.experience.value,
+                    exp_expectation: target.exp_expectation.value,
+                    provision: target.provision.value,
+                    prov_expectation: target.prov_expectation.value,
+                    schedules: arySchedules,
+                    photos: Session.get('photos')
+                };
+            
+                Meteor.call('UpdateTour', data, function(error, response){
+
+                    if (error) {
+                        console.log(error);
+                        Bert.alert(error.error.reason, 'danger', 'fixed-top', 'fa-frown-o');
+                    } else {
+
+                        //reset session
+                        Session.set('photos', null);
+
+                        Bert.alert("Listing have updated succcessfully!", 'success', 'fixed-top', 'fa-smile-o');
+                        FlowRouter.go("/myaccount/listings");
+                    }
+                });
+            }
         } else {
             Bert.alert('Not authorized!.', 'danger', 'fixed-top', 'fa-frown-o');
         }
@@ -220,18 +280,13 @@ Template.addtour.events({
         
         const instance = Template.instance();
         
-        //var schedules = Session.get('schedules');
         var schedules = instance.schedules.get();
         
         var scheduleId = Math.floor(Math.random() * 1000);
 
         schedules.push({scheduleId: scheduleId, from: getDateTime(), to: getDateTime()});
-        //Session.set('schedules', schedules);
         
         instance.schedules.set(schedules);
-        
-        // console.log('ScheduleID: ' + scheduleId);
-        // console.log(Session.get('schedules'));
         
         Meteor.setTimeout(function() {
             attachedDatepicker();
@@ -252,15 +307,13 @@ Template.addtour.events({
         //Session.set('schedules', schedules);
         instance.schedules.set(schedules);
         
-        console.log(instance.schedules.get());
     },
     'dp.change .datetimepicker': function(event, tmpl) {
         
-        
-        var target = event.target;
+        /*var target = event.target;
         var scheduleId = target.id;
         var value = $('#' + target.id).val();
-        // console.log('New value: ' + value);
+        console.log("scheduleId " + scheduleId);
         
         scheduleId = scheduleId.replace('dp_start_', '').replace('dp_end_', '').trim();
         
@@ -281,7 +334,7 @@ Template.addtour.events({
                 
                 instance.schedules.set(schedules);
             }
-        });
+        });*/
         
     }
 });

@@ -1,105 +1,115 @@
 <template name="addtour">
     <div class="container">
-        <h1>{{action}} Tour</h1>
-        <form action="">
-            <div class="row">
-                <div class="form-group col-md-6">
-                    <input type="text" name="title" class="form-control form-control-lg" placeholder="Title" value="{{tour.title}}">
-                </div>
-                <div class="form-group col-md-6">
-                    <input type="text" name="location" class="form-control form-control-lg" placeholder="Location">
+        <div class="wrapper-w-s-b">
+            {{> Template.dynamic template=sidebar}}
+            <div id="content">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h3>{{action}} Tour</h3>
+                        
+                        <form action="">
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <input type="text" name="title" class="form-control form-control-lg" placeholder="Title" value="{{tour.title}}">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <input type="text" name="location" class="form-control form-control-lg" placeholder="Location" value="{{tour.location}}">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <select class="form-control form-control-lg" id="noOfGuests">
+                                        <option disabled="disabled" {{selected}}>Guests</option> 
+                                        {{#each participants}}
+                                            <option value="{{this}}" {{selected this tour.guests}}>{{this}}</option>
+                                        {{/each}}
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <input type="text" name="price" class="form-control form-control-lg" placeholder="Price" value="{{tour.price}}">
+                                </div>
+                            </div>
+                            <h1>Schedules</h1>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <table id="schedules" class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>From</th>
+                                                <th>To</th>
+                                                <th>Actions
+                                                    <button name="btnAddSched" type="button" class="btn btn-success add-sched" data-toggle="tooltip" title="Add schedule">+ </button>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {{#each arrayify schedules}}
+                                                <tr class="scheduleItem tr_{{scheduleId}}" scheduleId="{{scheduleId}}">
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <div class='input-group' id='start_{{scheduleId}}' name='start_{{scheduleId}}'>
+                                                                <input id="dp_start_{{scheduleId}}" name="dp_start_{{scheduleId}}" type='text' class="datetimepicker form-control form-control-lg" placeholder="From" value="{{from}}"/>
+                                                                <span class="input-group-addon">
+                                                                    <span class="glyphicon glyphicon-calendar"></span>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <div class='input-group' id='end_{{scheduleId}}' name='end_{{scheduleId}}'>
+                                                                <input id="dp_end_{{scheduleId}}" name="dp_end_{{scheduleId}}" type='text' class="datetimepicker form-control form-control-lg" placeholder="To" value="{{to}}"/>
+                                                                <span class="input-group-addon">
+                                                                    <span class="glyphicon glyphicon-calendar"></span>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <button name="btnRemoveSched" type="button" class="btn btn-danger remove-sched" data-toggle="tooltip" title="Remove schedule">-</button>
+                                                    </td>
+                                                </tr>
+                                            {{/each}}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <h1>Photos</h1>
+                            <hr>
+                            {{> dropzone url='/uploads/' id='dropzoneDiv'}}
+                            <h1>Summary</h1>
+                            <hr>
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <textarea class="form-control" name="summary" rows="3" placeholder="Summary">{{tour.summary}}</textarea>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <textarea class="form-control" name="experience" rows="3" placeholder="About the experience/service">{{tour.experience}}</textarea>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <textarea class="form-control" name="exp_expectation" rows="3" placeholder="What to expect">{{tour.exp_expectation}}</textarea>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <textarea class="form-control" name="provision"  rows="3" placeholder="What is provided">{{tour.provision}}</textarea>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <textarea class="form-control" name="prov_expectation" rows="3" placeholder="What to expect">{{tour.prov_expectation}}</textarea>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <button type="submit" class="btn btn-primary pull-right">Save</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="form-group col-md-6">
-                    <select class="form-control form-control-lg" id="noOfGuests">
-                        <option disabled="disabled" {{selected}}>Guests</option> 
-                        {{#each participants}}
-                            <option value="{{this}}" {{selected this tour.guests}}>{{this}}</option>
-                        {{/each}}
-                    </select>
-                </div>
-                <div class="form-group col-md-6">
-                    <input type="text" name="price" class="form-control form-control-lg" placeholder="Price">
-                </div>
-            </div>
-            <h1>Schedules</h1>
-            <hr>
-            <div class="row">
-                <div class="col-md-12">
-                    <table id="schedules" class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>From</th>
-                                <th>To</th>
-                                <th>Actions
-                                    <button name="btnAddSched" type="button" class="btn btn-success add-sched" data-toggle="tooltip" title="Add schedule">+ </button>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {{#each arrayify schedules}}
-                                <tr class="scheduleItem tr_{{scheduleId}}" scheduleId="{{scheduleId}}">
-                                    <td>
-                                        <div class="form-group">
-                                            <div class='input-group' id='start_{{scheduleId}}' name='start_{{scheduleId}}'>
-                                                <input id="dp_start_{{scheduleId}}" name="dp_start_{{scheduleId}}" type='text' class="datetimepicker form-control form-control-lg" placeholder="From" value="{{from}}"/>
-                                                <span class="input-group-addon">
-                                                    <span class="glyphicon glyphicon-calendar"></span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-group">
-                                            <div class='input-group' id='end_{{scheduleId}}' name='end_{{scheduleId}}'>
-                                                <input id="dp_end_{{scheduleId}}" name="dp_end_{{scheduleId}}" type='text' class="datetimepicker form-control form-control-lg" placeholder="To" value="{{to}}"/>
-                                                <span class="input-group-addon">
-                                                    <span class="glyphicon glyphicon-calendar"></span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <button name="btnRemoveSched" type="button" class="btn btn-danger remove-sched" data-toggle="tooltip" title="Remove schedule">-</button>
-                                    </td>
-                                </tr>
-                            {{/each}}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <h1>Photos</h1>
-            <hr>
-            {{> dropzone url='/uploads/' id='dropzoneDiv'}}
-            <h1>Summary</h1>
-            <hr>
-            <div class="row">
-                <div class="form-group col-md-12">
-                    <textarea class="form-control" name="summary" rows="3" placeholder="Summary"></textarea>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-md-6">
-                    <textarea class="form-control" name="experience" rows="3" placeholder="About the experience/service"></textarea>
-                </div>
-                <div class="form-group col-md-6">
-                    <textarea class="form-control" name="exp_expectation" rows="3" placeholder="What to expect"></textarea>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-md-6">
-                    <textarea class="form-control" name="provision"  rows="3" placeholder="What is provided"></textarea>
-                </div>
-                <div class="form-group col-md-6">
-                    <textarea class="form-control" name="prov_expectation" rows="3" placeholder="What to expect"></textarea>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-md-12">
-                    <button type="submit" class="btn btn-primary pull-right">Save</button>
-                </div>
-            </div>
-        </form>
+        </div>
     </div>
 </template>
