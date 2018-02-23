@@ -99,9 +99,17 @@ Meteor.methods({
         
         try {
             
-            var buddy = Buddies.findOne({
-                userId: data.userId
-            });
+            var selector = {};
+            
+            if(typeof data.userId !== "undefined"){
+                selector["userId"] = data.userId;
+            }
+            
+            if(typeof data.buddy_id !== "undefined"){
+                selector["_id"] = data.buddy_id;
+            }
+            
+            var buddy = Buddies.findOne(selector);
             
             if (buddy) {
                 return buddy;

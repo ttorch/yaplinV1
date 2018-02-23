@@ -117,9 +117,25 @@ Meteor.methods({
     getTourDetails : function(data){
         
         try{
-            const tours = Tours.find({"_id": data.tour_id}).fetch();
             
-            return tours[0];
+            var pipeline = [];
+            
+            pipeline.push({"$unwind": "$schedules"});
+            
+            if(typeof data.tour_id !== "undefined"){
+                pipeline.push({"$match": { "_id": data.tour_id}});
+            }
+            
+            if(typeof data.schedule_id !== "undefined"){
+                pipeline.push({"$match": { "schedules.scheduleId": parseInt(data.schedule_id) }});
+            }
+            
+            //const tours = Tours.find(selector).fetch();
+            const tours=Tours.aggregate(pipeline);
+            
+            //console.log(tours);
+            
+            return tours;
             
         }catch (error) {
             console.log('SERVER ERROR');
@@ -151,6 +167,17 @@ Meteor.methods({
             console.log('SERVER ERROR');
             console.log(error);
             throw new Meteor.Error('500', exception.message);
+        }
+    },
+    DeleteTour: function(data){
+        try {
+            Tours.remove(data._id);
+            console.log("Delete: OK");
+            return "OK";
+        } catch (error) {
+            console.log('SERVER ERROR');
+            console.log(error);
+            throw new Meteor.Error(error);
         }
     }
 });

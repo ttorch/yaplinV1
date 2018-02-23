@@ -72,3 +72,33 @@ Template.registerHelper('formatBookingDate',function(from,to){
     }
     
 });
+
+Template.registerHelper('formatMemberJoinDate', function(date) { 
+    return moment(date).format('MMM YYYY'); 
+});
+
+Template.registerHelper('maskPhoneNo', function(phoneNo) { 
+    
+    if(typeof phoneNo !== "undefined"){
+        return phoneNo.replace(/^[0-9]{4}/, "**** ");
+    }else{
+        return "";
+    }
+});
+
+Template.registerHelper('maskEmail', function(email) { 
+    
+    var endPos = 0;
+    var newEmail  = "";
+    
+    if(typeof email !== "undefined"){
+        endPos = email.indexOf("@");
+    }
+    
+    for(var i=1; i<=endPos; i++){
+        
+        newEmail += "*";
+    }
+    
+    return newEmail+email.substr(endPos);
+});

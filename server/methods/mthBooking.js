@@ -75,11 +75,17 @@ Meteor.methods({
             throw new Meteor.Error('500', exception.message);
         }
     },
-    callBackendCode: function(params) {
-
-        console.log('you sent up the parameters' + params);
-
-        //here you will do all your paypal tracking. The params should have information regarding the customer.
-
+    getBookings: function(data) {
+        
+        try{
+            const bookings = Bookings.find({"buddy_id": data.buddy_id}).fetch();
+            
+            return bookings;
+            
+        }catch (error) {
+            console.log('SERVER ERROR');
+            console.log(error);
+            throw new Meteor.Error('500', exception.message);
+        }
     }
 });

@@ -1,0 +1,67 @@
+<template name="memberprofile">
+    <div class="row"></div>
+    <div class="container">
+        <div class="col-xs-3 ">
+            <div class="row profile-img no-padding">
+                <div class="col-md-10">
+                    <img src="/assets/images/profile-img.jpg" class="img-responsive img-circle"/>
+                </div>
+            </div>
+            <div class="row align-center profile-smaller">
+
+                <div class="row profile-name margin-top15">
+                    {{buddydetails.profile.firstName}} {{buddydetails.profile.lastName}}<br>
+                    <span class="grey-text">Member since {{formatMemberJoinDate buddydetails.createdAt}}</span>
+                </div>
+                <div class="row"><div class="col-md-8 col-sm -8 hr"></div></div>
+                <div class="row">{{buddydetails.profile.country}}</div>
+                <div class="row">+65{{maskPhoneNo buddydetails.profile.contact}}</div>
+                <div class="row">{{maskEmail buddyemail}}</div>
+
+                <div class="row"><div class="col-md-8 col-sm-8 hr"></div></div>
+
+                <div class="row">
+                    <div class="col-md-8 profile-desc">{{buddydetails.profile.about}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-9">
+            
+            <div class="col-md-9 col-sm-9 profile-width">
+                <div class="row">
+                    <div class="main-large-title"><span>Reviews</span></div>
+                    
+                    <div class="reviewers col-md-9">
+                        <div class="row col-md-12 col-xs-12">
+                            <div class="col-md-1 col-xs-2 profile-pic">
+                                <img src="/assets/images/profile-img.jpg" class="img-responsive img-circle"/>
+                            </div>
+                            <div class="col-md-11 col-xs-10">
+                                <span class="reviewer-name">Jenson Lim</span>
+                                {{> starsRating rating=4.5 size='sm'}}
+                            </div>
+                        </div>
+                        <div class="col-md-12 row">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                        </div>
+                    </div>
+
+                    <div class="reviewers col-md-9">
+                        <div class="row col-md-12">
+                            <div class="col-md-1 col-xs-2 profile-pic">
+                                <img src="img/profile-img.jpg" class="img-responsive img-circle"/>
+                            </div>
+                            <div class="col-md-11 col-xs-10">
+                                <span class="reviewer-name">Jenson Lim</span>
+                                <input id="input-7-xs" class="rating-loading displayOnly" value="4" data-min="0" data-max="5" data-step="0.5" data-size="xs">
+                            </div>
+                        </div>
+                        <div class="col-md-12 row">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

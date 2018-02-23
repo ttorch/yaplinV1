@@ -22,28 +22,37 @@ Template.listings.onRendered(function(){
         "userId": Meteor.userId()
     };
     
+    Session.set("refreshTourListings", true);
     
-    Meteor.call("getABuddy", data, function(error, response){
-        if(response){
-            
-            var buddy = response;
-            
-            var tour_data = {
-                "buddy_id": buddy._id
-            };
-            
-            //retrieve tour by buddy_id
-            Meteor.call("getTourByBuddy", tour_data, function(error, response){
+    Tracker.autorun(() => {
+        console.log("tracker");
+        if(Session.get("refreshTourListings") == true){
+            Meteor.call("getABuddy", data, function(error, response){
                 if(response){
-                    instance.listings.set(response);
+
+                    var buddy = response;
+
+                    var tour_data = {
+                        "buddy_id": buddy._id
+                    };
+
+                    //retrieve tour by buddy_id
+                    Meteor.call("getTourByBuddy", tour_data, function(error, response){
+                        if(response){
+                            instance.listings.set(response);
+                        }else{
+                            Bert.alert("Error retrieving listings", 'danger', 'fixed-top', 'fa-frown-o');
+                        }
+                    });
                 }else{
-                    Bert.alert("Error retrieving listings", 'danger', 'fixed-top', 'fa-frown-o');
+                    Bert.alert("Error retrieving buddy details", 'danger', 'fixed-top', 'fa-frown-o');
                 }
             });
-        }else{
-            Bert.alert("Error retrieving buddy details", 'danger', 'fixed-top', 'fa-frown-o');
+            
+            Session.set("refreshTourListings", false);
         }
     });
+
 });
 
 Template.listings.helpers({

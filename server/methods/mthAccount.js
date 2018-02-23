@@ -67,5 +67,19 @@ Meteor.methods({
             console.log(error);
             throw new Meteor.Error(error);
         }
+    },
+    getAUser: function(data){
+        try {
+            const user = Meteor.users.findOne({
+                _id: data._id
+            });
+        
+            return user;
+            
+        } catch (error) {
+            console.log("SERVER METHOD: getAUser EXCEPTION");
+            console.log(error);
+            throw new Meteor.Error(error);
+        }
     }
-})
+});

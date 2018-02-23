@@ -7,6 +7,34 @@
                     <div class="col-sm-12">
                         <h3>Bookings</h3>
                         
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Order No.</th>
+                                        <th>Details</th>
+                                        <th>Payment Mode</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each arrayify_bookings bookings}}
+                                    <tr>
+                                        <td>{{_id}}</td>
+                                        <td>{{title}}<br>{{formatBookingDate date_from date_to}}</td>
+                                        <td>{{payment_method}}</td>
+                                        <td>${{totalCost price guests}}</td>
+                                        <td>{{status}}</td>
+                                        <td>
+                                            <button class="btn btn-orange" id="btnConfirm">Confirm</button>
+                                        </td>
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

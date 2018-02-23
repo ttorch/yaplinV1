@@ -310,10 +310,10 @@ Template.addtour.events({
     },
     'dp.change .datetimepicker': function(event, tmpl) {
         
-        /*var target = event.target;
+        var target = event.target;
         var scheduleId = target.id;
         var value = $('#' + target.id).val();
-        console.log("scheduleId " + scheduleId);
+        
         
         scheduleId = scheduleId.replace('dp_start_', '').replace('dp_end_', '').trim();
         
@@ -334,7 +334,7 @@ Template.addtour.events({
                 
                 instance.schedules.set(schedules);
             }
-        });*/
+        });
         
     }
 });
