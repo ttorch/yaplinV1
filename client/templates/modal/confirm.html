@@ -1,5 +1,13 @@
 <template name="confirm">
-    {{#if showDelete}}
-    {{> delete}}
-    {{/if}}
+    <div class="modal fade" data-backdrop="static" id="confirmationWindow">
+        <div class="modal-dialog">
+        {{#if showDelete}}
+        {{> delete}}
+        {{/if}}
+
+        {{#if showFeedback}}
+        {{> review}}
+        {{/if}}
+        </div>
+    </div>
 </template>

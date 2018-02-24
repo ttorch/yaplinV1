@@ -24,11 +24,17 @@
                                     <tr>
                                         <td>{{_id}}</td>
                                         <td>{{title}}<br>{{formatBookingDate date_from date_to}}</td>
-                                        <td>{{payment_method}}</td>
+                                        <td>{{capitalize payment_method}}</td>
                                         <td>${{totalCost price guests}}</td>
                                         <td>{{status}}</td>
                                         <td>
-                                            <button class="btn btn-orange" id="btnConfirm">Confirm</button>
+                                            {{#if showFeedback status payment_method}}
+                                            <button data-toggle="modal" data-target="#confirmationWindow" class="btn btn-orange" id="btnFeedback_{{_id}}">Feedback</button>
+                                            {{/if}}
+                                            
+                                            {{#if showPayment status payment_method}}
+                                            <button class="btn btn-orange" id="btnPayment_{{_id}}">Payment</button>
+                                            {{/if}}
                                         </td>
                                     </tr>
                                     {{/each}}

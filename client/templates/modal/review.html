@@ -1,0 +1,16 @@
+<template name="review">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Feedback</h3>
+        </div>
+        <div class="modal-body">
+            {{> starsRating id='rating' size=30 mutable=true}}
+            
+            <textarea class="form-control" style="height:100px;" id="txtFeedback" placeholder="How do you find the tour?"></textarea>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-success" id="btnSubmit">Submit</button>
+            <button class="btn btn-danger pull-right" data-dismiss="modal">Cancel</button>
+        </div>
+    </div>
+</template>

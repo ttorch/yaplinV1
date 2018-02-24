@@ -34,7 +34,7 @@
                                     <td>
                                         <a href="{{pathFor "/buddy/edit-tour/:tourId" tourId=_id}}"><span class="glyphicon glyphicon-pencil"></span></a>
                                         &nbsp;
-                                        <a href="#" id="delete_{{_id}}"><span class="glyphicon glyphicon-remove"></span></a>
+                                        <a href="#" id="delete_{{_id}}" data-toggle="modal" data-target="#confirmationWindow"><span class="glyphicon glyphicon-remove"></span></a>
                                     </td>
                                 </tr>
                                 {{/each}}

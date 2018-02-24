@@ -122,5 +122,19 @@ Meteor.methods({
             console.log(error);
             return false;
         }
+    },
+    UpdateBuddy: function(data){
+        
+        try{
+            const results = Buddies.update({"_id": data._id},
+            { $push: { "reviews":  data.reviews}},
+            {$set: {"status": data.status}});
+            
+            return results;
+            
+        } catch (error) {
+            console.log(error);
+            return false;
+        }
     }
 })

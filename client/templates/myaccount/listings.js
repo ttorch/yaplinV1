@@ -71,7 +71,7 @@ Template.listings.events({
         var target = event.currentTarget;
         
         Session.set("showDelete",true);
-        $("#confirmationWindow").modal('show');
+        Session.set('showFeedback', false);
         
         var listingId = target.id.replace("delete_","");
         

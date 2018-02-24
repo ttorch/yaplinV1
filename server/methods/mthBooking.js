@@ -61,7 +61,7 @@ Meteor.methods({
                 set["status"] = data.status;
             }
             
-            if(data.status != ""){
+            if(data.payment_details != ""){
                 set["payment_details"] = data.payment_details;
             }
             

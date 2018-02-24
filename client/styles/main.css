@@ -794,7 +794,11 @@ a:hover{text-decoration:none!important;}
 
 i{
     margin-right: 5px;
-	font-size:14px;
+    font-size:14px;
+}
+
+#rating i{
+    font-size:25px;
 }
 
 .nav a:hover, nav a:visited{

@@ -117,6 +117,20 @@ Meteor.methods({
     getTourDetails : function(data){
         
         try{
+            const tours = Tours.find({"_id": data.tour_id}).fetch();
+            
+            return tours[0];
+            
+        }catch (error) {
+            console.log('SERVER ERROR');
+            console.log(error);
+            throw new Meteor.Error('500', exception.message);
+        }
+    },
+    
+    getAccTourDetails : function(data){
+        
+        try{
             
             var pipeline = [];
             
