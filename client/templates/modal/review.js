@@ -23,8 +23,9 @@ Template.review.events({
             Meteor.call("getBookingDetails", booking_data, function(error, response){
                 
                 if(response){
+                    
                     var data = {
-                        "_id": Session.get("buddyId"),
+                        "_id": response.buddy_id,
                         "reviews": reviews,
                     };
                     
@@ -35,9 +36,21 @@ Template.review.events({
 
                         if(response == 1){
                             
+                            var status = {
+                                "booking_id": Session.get("bookingId"),
+                                "status": "Complete"
+                            };
                             
-                            Session.set("refreshBookings", true);
-                            Bert.alert("Thanks for your feedback!", 'success', 'fixed-top', 'fa-smile-o');
+                            //update booking status to complete
+                            Meteor.call("updateBooking", status ,function(error, response){
+                                
+                                if(response){
+                                    Session.set("refreshBookings", true);
+                                    Bert.alert("Thanks for your feedback!", 'success', 'fixed-top', 'fa-smile-o');
+                                }else{
+                                    Bert.alert("Error updating booking status.", 'danger', 'fixed-top', 'fa-frown-o');
+                                }
+                            });
 
                         }else{
                             Bert.alert("Error writing feedback.", 'danger', 'fixed-top', 'fa-frown-o');

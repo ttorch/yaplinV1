@@ -126,9 +126,9 @@ Meteor.methods({
     UpdateBuddy: function(data){
         
         try{
+            console.log(data._id);
             const results = Buddies.update({"_id": data._id},
-            { $push: { "reviews":  data.reviews}},
-            {$set: {"status": data.status}});
+            { $push: { "reviews":  data.reviews}});
             
             return results;
             

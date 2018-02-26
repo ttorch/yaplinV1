@@ -21,56 +21,59 @@ Template.bookings.onRendered(function(){
     Session.set("refreshBookings", true);
     
     Tracker.autorun(() => {
-        var data = {
-            "userId": Meteor.userId()
-        };
+        
+        if(Session.get("refreshBookings") == true){
+            var data = {
+                "userId": Meteor.userId()
+            };
 
-        Meteor.call("getABuddy", data, function(error, response){
+            Meteor.call("getABuddy", data, function(error, response){
 
-            if(response){
+                if(response){
 
-                var buddy = response;
+                    var buddy = response;
 
-                var booking_data = {
-                    "buddy_id": buddy._id
-                };
+                    var booking_data = {
+                        "buddy_id": buddy._id
+                    };
 
-                //retrieve tour by buddy_id
-                Meteor.call("getBookings", booking_data, function(error, response){
-                    if(response){
+                    //retrieve tour by buddy_id
+                    Meteor.call("getBookings", booking_data, function(error, response){
+                        if(response){
 
-                        var aryTour = [];
+                            var aryTour = [];
 
-                        var bookings = response;
+                            var bookings = response;
 
-                        Object.keys(bookings).forEach(function (key){
+                            Object.keys(bookings).forEach(function (key){
 
-                            var tour_data = {
-                                "tour_id": bookings[key]["tour_id"],
-                                "schedule_id": bookings[key]["schedule_id"]
-                            };
+                                var tour_data = {
+                                    "tour_id": bookings[key]["tour_id"],
+                                    "schedule_id": bookings[key]["schedule_id"]
+                                };
 
-                            Meteor.call("getAccTourDetails", tour_data, function(error, response){
+                                Meteor.call("getAccTourDetails", tour_data, function(error, response){
 
-                                if(response){
-                                    aryTour.push({"booking": bookings[key], "tourdetails": response});
+                                    if(response){
+                                        aryTour.push({"booking": bookings[key], "tourdetails": response});
 
-                                    instance.bookings.set(aryTour);
-                                }else{
-                                    Bert.alert("Error retrieving tour details", 'danger', 'fixed-top', 'fa-frown-o');
-                                }
+                                        instance.bookings.set(aryTour);
+                                    }else{
+                                        Bert.alert("Error retrieving tour details", 'danger', 'fixed-top', 'fa-frown-o');
+                                    }
+                                });
+
                             });
 
-                        });
-
-                    }else{
-                        Bert.alert("Error retrieving bookings", 'danger', 'fixed-top', 'fa-frown-o');
-                    }
-                });
-            }else{
-                Bert.alert("Error retrieving buddy details", 'danger', 'fixed-top', 'fa-frown-o');
-            }
-        });
+                        }else{
+                            Bert.alert("Error retrieving bookings", 'danger', 'fixed-top', 'fa-frown-o');
+                        }
+                    });
+                }else{
+                    Bert.alert("Error retrieving buddy details", 'danger', 'fixed-top', 'fa-frown-o');
+                }
+            });
+        }
         
         Session.set("refreshBookings", false);
     });
