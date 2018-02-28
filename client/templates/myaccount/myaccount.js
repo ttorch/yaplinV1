@@ -1,4 +1,4 @@
-Template.myaccount.onRendered(function(){
+/*Template.myaccount.onRendered(function(){
     $('#account').validate({
         rules: {
             firstname: {
@@ -42,7 +42,7 @@ Template.myaccount.onRendered(function(){
     if(!Meteor.userId()){
         FlowRouter.go("/");
     }
-});
+});*/
 
 Template.myaccount.events({
     'click #dob':function(){
@@ -98,6 +98,10 @@ Template.myaccount.events({
 
 Template.registerHelper('formatDob',function(dob){
     
-    return moment(dob, "YYYY-MM-DD").format("DD/MM/YYYY");
+    if(moment(dob).isValid()){
+        return moment(dob, "YYYY-MM-DD").format("DD/MM/YYYY");
+    }else{
+        return "";
+    }
     
 });

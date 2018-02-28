@@ -9,6 +9,7 @@ Template.listings.onCreated(function(){
      
 });
 
+
 Template.listings.onRendered(function(){
     
     if(!Meteor.userId()){
@@ -52,7 +53,6 @@ Template.listings.onRendered(function(){
             Session.set("refreshTourListings", false);
         }
     });
-
 });
 
 Template.listings.helpers({

@@ -7,7 +7,7 @@
                     <div class="col-sm-12">
                         <h3>{{action}} Tour</h3>
                         
-                        <form action="">
+                        <form id="tourfrm" novalidate>
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <input type="text" name="title" class="form-control form-control-lg" placeholder="Title" value="{{tour.title}}">
@@ -18,7 +18,7 @@
                             </div>
                             <div class="row">
                                 <div class="form-group col-md-6">
-                                    <select class="form-control form-control-lg" id="noOfGuests">
+                                    <select name="noOfGuests" class="form-control form-control-lg" id="noOfGuests">
                                         <option disabled="disabled" {{selected}}>Guests</option> 
                                         {{#each participants}}
                                             <option value="{{this}}" {{selected this tour.guests}}>{{this}}</option>

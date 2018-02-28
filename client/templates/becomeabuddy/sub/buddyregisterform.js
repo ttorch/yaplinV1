@@ -1,13 +1,111 @@
 import { Buddies } from '../../../../imports/collections/buddiesCol.js';
 
 Template.buddyregisterform.onCreated(function() {
-    FlowRouter.subsReady("subsBuddies", function() {
-        let buddy = Buddies.find({ userId: Meteor.userId() }).fetch()[0];
-        if (buddy != undefined && buddy._id && buddy.verified === false) {
-            FlowRouter.go('becomeabuddy.status', { buddyId: buddy._id} );
-        } else if (buddy != undefined && buddy._id && buddy.verified === true) {
-            FlowRouter.go('buddy.addtour');
-        } 
+    if(!Meteor.userId()){
+        FlowRouter.go('becomeabuddy');
+        Bert.alert("Please login to register as buddy.",'danger', 'fixed-top', 'fa-frown-o');
+    }
+    else{
+
+        FlowRouter.subsReady("subsBuddies", function() {
+
+
+                let buddy = Buddies.find({ userId: Meteor.userId() }).fetch()[0];
+
+                if (buddy != undefined && buddy._id && buddy.verified === false) {
+                    FlowRouter.go('becomeabuddy.status', { buddyId: buddy._id} );
+                } else if (buddy != undefined && buddy._id && buddy.verified === true) {
+                    FlowRouter.go('buddy.addtour');
+                }
+        });
+    }
+});
+
+Template.buddyregisterform.onRendered(function(){
+    $('#buddyregisterform').validate({
+        rules: {
+            firstname: {
+                required: true,
+            },
+            gender:{
+                required:true,
+            },
+           dateofbirth: {
+                required: true,
+                //date: true,
+            },
+            email: {
+                required: true,
+                email: true,
+            },
+            contact: {
+                required: true,
+                digits: true,
+            },
+            street: {
+                required: true,
+            },
+            city: {
+                required: true,
+            },
+            country: {
+                required: true,
+            },
+            chktnc: {
+                required: true,
+            }
+
+        },
+        messages: {
+            firstname: {
+                required: "First Name is required.",
+            },
+            gender: {
+                required: "Gender is required.",
+            },
+           dateofbirth: {
+                required: "Date of birth is required.",
+                //date: "Please enter a valid date of birth.",
+            },
+            email: {
+                required: "Email is required.",
+                email: "Please enter a valid email.",
+            },
+            contact: {
+                required: "Contact Number is required.",
+                digits: "Please enter only numbers in contact number.",
+            },
+            street: {
+                required: "Street is required.",
+            },
+            city: {
+                required: "City is required.",
+            },
+            country: {
+                required: "Country is required",
+            },
+            chktnc:{
+                required: "Before you can proceed, please accept the Terms and Conditions."
+            }
+        },
+        invalidHandler: function(event, validator) {
+            // 'this' refers to the form
+            var numOfErrors = validator.numberOfInvalids();
+            var msg = "";
+            
+            if (numOfErrors) {
+               
+               _.forEach(validator.invalid, function(k,v){
+                   msg+=k+"<br>";
+               });
+               
+              Bert.alert(msg, 'danger', 'fixed-top', 'fa-frown-o');
+            }
+        },
+        errorPlacement: function(error, element) {
+            
+        },
+        focusInvalid: false
     });
 });
 
@@ -81,4 +179,4 @@ Template.buddyregisterform.events({
         });
 
     }
-})
+});

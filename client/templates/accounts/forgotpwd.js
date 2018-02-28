@@ -6,13 +6,31 @@ Template.forgotpwd.onRendered(function(){
                 email: true
             }
         },
-        message: {
-            email: {
-                required: 'Email field is required.',
-                email: 'Please enter a valid email address.'
+        messages: {
+            recoveryemail: {
+                required: 'Email is required.',
+                email: 'Please enter a valid email.'
+            },
+        },
+        invalidHandler: function(event, validator) {
+            // 'this' refers to the form
+            var numOfErrors = validator.numberOfInvalids();
+            var msg = "";
+            
+            if (numOfErrors) {
+               
+               _.forEach(validator.invalid, function(k,v){
+                   msg+=k+"<br>";
+               });
+               
+              Bert.alert(msg, 'danger', 'fixed-top', 'fa-frown-o');
             }
-        }
-    })
+        },
+        errorPlacement: function(error, element) {
+            
+        },
+        focusInvalid: false
+    });
 });
 
 Template.forgotpwd.events({
