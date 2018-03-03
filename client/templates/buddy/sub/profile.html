@@ -30,36 +30,23 @@
             <div class="col-md-9 col-sm-9 profile-width">
                 <div class="row">
                     <div class="main-large-title"><span>Reviews</span></div>
-                    
+                    {{#each arrayify_reviews reviews}}
                     <div class="reviewers col-md-9">
                         <div class="row col-md-12 col-xs-12">
                             <div class="col-md-1 col-xs-2 profile-pic">
                                 <img src="/assets/images/profile-img.jpg" class="img-responsive img-circle"/>
                             </div>
                             <div class="col-md-11 col-xs-10">
-                                <span class="reviewer-name">Jenson Lim</span>
-                                {{> starsRating rating=4.5 size='sm'}}
+                                <span class="reviewer-name">{{name}}</span>
+                                {{> starsRating rating=rating size='sm'}}
                             </div>
                         </div>
                         <div class="col-md-12 row">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                            {{feedback}}
                         </div>
                     </div>
-
-                    <div class="reviewers col-md-9">
-                        <div class="row col-md-12">
-                            <div class="col-md-1 col-xs-2 profile-pic">
-                                <img src="img/profile-img.jpg" class="img-responsive img-circle"/>
-                            </div>
-                            <div class="col-md-11 col-xs-10">
-                                <span class="reviewer-name">Jenson Lim</span>
-                                <input id="input-7-xs" class="rating-loading displayOnly" value="4" data-min="0" data-max="5" data-step="0.5" data-size="xs">
-                            </div>
-                        </div>
-                        <div class="col-md-12 row">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                        </div>
-                    </div>
+                    {{/each}}
+                    
                 </div>
             </div>
         </div>

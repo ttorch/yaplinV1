@@ -6,6 +6,7 @@ Template.memberprofile.onCreated(function(){
     DocHead.setTitle(title);
    
     self.buddydetails = new ReactiveVar({});
+    self.reviews = new ReactiveVar({});
      
 });
 
@@ -22,7 +23,9 @@ Template.memberprofile.onRendered(function(){
         if(response){
 
             var buddy = response;
-
+            
+            instance.reviews.set(buddy.reviews);
+            
             var user_data = {
                 "_id": buddy.userId
             };
@@ -60,5 +63,30 @@ Template.memberprofile.helpers({
         }else{
             return "";
         }
+    },
+    reviews:function(){
+        const instance = Template.instance();
+        
+        return instance.reviews.get();
     }
+});
+
+Template.registerHelper('arrayify_reviews',function(obj){
+    var result = [];
+    
+    if(typeof obj !== "undefined"){
+        
+        Object.keys(obj).forEach(function (key){
+                
+                result.push({
+                    review_id: obj[key]["review_id"],
+                    rating: obj[key]["rating"],
+                    feedback: obj[key]["feedback"],
+                    name: obj[key]["name"],
+                });
+        });
+    }
+    
+    
+    return result;
 });
