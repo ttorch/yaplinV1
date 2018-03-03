@@ -1,3 +1,89 @@
+Template.profile.onCreated(function() {
+    document.title = "Yaplin - Profile";
+});
+
+Template.profile.onRendered(function(){
+    $('#account').validate({
+        rules: {
+            firstname: {
+                required: true,
+            },
+            gender:{
+                required:true,
+            },
+           dateofbirth: {
+                required: true,
+                //date: true,
+            },
+            email: {
+                required: true,
+                email: true,
+            },
+            contact: {
+                required: true,
+                digits: true,
+            },
+            street: {
+                required: true,
+            },
+            city: {
+                required: true,
+            },
+            country: {
+                required: true,
+            },
+
+        },
+        messages: {
+            firstname: {
+                required: "First Name is required.",
+            },
+            gender: {
+                required: "Gender is required.",
+            },
+           dateofbirth: {
+                required: "Date of birth is required.",
+                //date: "Please enter a valid date of birth.",
+            },
+            email: {
+                required: "Email is required.",
+                email: "Please enter a valid email.",
+            },
+            contact: {
+                required: "Contact Number is required.",
+                digits: "Please enter only numbers in contact number.",
+            },
+            street: {
+                required: "Street is required.",
+            },
+            city: {
+                required: "City is required.",
+            },
+            country: {
+                required: "Country is required",
+            },
+        },
+        invalidHandler: function(event, validator) {
+            // 'this' refers to the form
+            var numOfErrors = validator.numberOfInvalids();
+            var msg = "";
+            
+            if (numOfErrors) {
+               
+               _.forEach(validator.invalid, function(k,v){
+                   msg+=k+"<br>";
+               });
+               
+              Bert.alert(msg, 'danger', 'fixed-top', 'fa-frown-o');
+            }
+        },
+        errorPlacement: function(error, element) {
+            
+        },
+        focusInvalid: false
+    });
+});
+
 Template.profile.helpers({
     'gender': function(){
         return Meteor.static.gender;
@@ -24,19 +110,19 @@ Template.profile.events({
     
         var target = event.target;
         
-        console.log("here");
         if (target.chktnc.checked === false) {
             Bert.alert( 'Before you can proceed, please accept the Terms and Conditions.', 'warning', 'growl-top-right', 'fa-exclamation-triangle' );
             return false;
         }
         var imageUrl = $('#avatar').attr("src");
         
-        console.log(moment(target.dateofbirth.value).format("YYYY-MM-DD"));
+        var dob = moment(target.dateofbirth.value, "DD/MM/YYYY").format("YYYY-MM-DD");
+        
         data = {
             firstname: target.firstname.value,
             lastname: target.lastname.value,
             gender: target.gender.value,
-            dateofbirth: moment(target.dateofbirth.value).format("YYYY-MM-DD"),
+            dateofbirth: dob,
             contact: target.contact.value,
             street: target.street.value,
             city: target.city.value,

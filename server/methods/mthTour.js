@@ -2,8 +2,8 @@ import { Tours } from '../../imports/collections/toursCol.js';
 
 UploadServer.init({
     tmpDir: '/tmp/',
-    // uploadDir: '/Users/jervineang/Documents/GitHub/yaplinV1/public/assets/images/',
-    uploadDir: '/Users/karlfonacier/Projects/Bin/yaplinv1/uploads/',
+    uploadDir: '/Users/jervineang/Documents/GitHub/yaplinV1/public/assets/images/',
+    //uploadDir: '/Users/karlfonacier/Projects/Bin/yaplinv1/uploads/',
     checkCreateDirectories: true,
     uploadUrl: '/uploads/',
     // *** For renaming files on server
@@ -19,6 +19,31 @@ Meteor.methods({
             Tours.insert(data);
             console.log("Create: OK");
             console.log(data);
+            return "OK";
+        } catch (error) {
+            console.log('SERVER ERROR');
+            console.log(error);
+            throw new Meteor.Error(error);
+        }
+    },
+    UpdateTour: function(data) {
+        try {
+            Tours.update(data._id, {$set: 
+                { title: data.title, 
+                  location: data.location,
+                  guests: data.guests,
+                  price: data.price,
+                  summary: data.summary,
+                  experience: data.experience,
+                  exp_expectation: data.exp_expectation,
+                  provision: data.provision,
+                  prov_expectation: data.prov_expectation,
+                  schedules: data.schedules, 
+                  photos: data.photos, 
+                }
+            });
+        
+            console.log("Update: OK");
             return "OK";
         } catch (error) {
             console.log('SERVER ERROR');
@@ -102,6 +127,36 @@ Meteor.methods({
             throw new Meteor.Error('500', exception.message);
         }
     },
+    
+    getAccTourDetails : function(data){
+        
+        try{
+            
+            var pipeline = [];
+            
+            pipeline.push({"$unwind": "$schedules"});
+            
+            if(typeof data.tour_id !== "undefined"){
+                pipeline.push({"$match": { "_id": data.tour_id}});
+            }
+            
+            if(typeof data.schedule_id !== "undefined"){
+                pipeline.push({"$match": { "schedules.scheduleId": parseInt(data.schedule_id) }});
+            }
+            
+            //const tours = Tours.find(selector).fetch();
+            const tours=Tours.aggregate(pipeline);
+            
+            //console.log(tours);
+            
+            return tours;
+            
+        }catch (error) {
+            console.log('SERVER ERROR');
+            console.log(error);
+            throw new Meteor.Error('500', exception.message);
+        }
+    },
     getNumGuest: function(data){
         try{
             const tour = Tours.find(data).fetch();
@@ -114,14 +169,29 @@ Meteor.methods({
             throw new Meteor.Error('500', exception.message);
         }
     },
-
-    getMyListings: function(data) {
-        try {
-            const listings = Tours.find({"buddy_id": data.buddy_id}).fetch();
-        } catch (error) {
+    getTourByBuddy : function(data){
+        
+        try{
+            
+            const tours = Tours.find({"buddy_id": data.buddy_id}).fetch();
+            
+            return tours;
+            
+        }catch (error) {
             console.log('SERVER ERROR');
             console.log(error);
             throw new Meteor.Error('500', exception.message);
+        }
+    },
+    DeleteTour: function(data){
+        try {
+            Tours.remove(data._id);
+            console.log("Delete: OK");
+            return "OK";
+        } catch (error) {
+            console.log('SERVER ERROR');
+            console.log(error);
+            throw new Meteor.Error(error);
         }
     }
 });

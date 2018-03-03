@@ -65,10 +65,57 @@ Template.registerHelper('formatBookingDate',function(from,to){
     
     if(moment(moment(from).format("YYYY-MM-DD")).isSame(moment(to).format("YYYY-MM-DD"))){
         
-        return moment(from).format("ddd, DDDo MMM") + " " + moment(from).format("HH:mm") + "-" + moment(to).format("HH:mm");
+        return moment(from).format("ddd, Do MMM") + " " + moment(from).format("HH:mm") + "-" + moment(to).format("HH:mm");
     }else{
-        return moment(from).format("ddd, DDDo MMM") + " " + moment(from).format("HH:mm") + " - " + moment(to).format("ddd, DDDo MMM")+ " " +moment(to).format("HH:mm");
+        return moment(from).format("ddd, Do MMM") + " " + moment(from).format("HH:mm") + " - " + moment(to).format("ddd, Do MMM")+ " " +moment(to).format("HH:mm");
         //console.log("different day");
     }
     
+});
+
+Template.registerHelper('formatMemberJoinDate', function(date) { 
+    return moment(date).format('MMM YYYY'); 
+});
+
+Template.registerHelper('maskPhoneNo', function(phoneNo) { 
+    
+    if(typeof phoneNo !== "undefined"){
+        return phoneNo.replace(/^[0-9]{4}/, "**** ");
+    }else{
+        return "";
+    }
+});
+
+Template.registerHelper('maskEmail', function(email) { 
+    
+    var endPos = 0;
+    var newEmail  = "";
+    
+    if(typeof email !== "undefined"){
+        endPos = email.indexOf("@");
+    }
+    
+    for(var i=1; i<=endPos; i++){
+        
+        newEmail += "*";
+    }
+    
+    return newEmail+email.substr(endPos);
+});
+
+Template.registerHelper("capitalize",function(str){
+    
+    if(typeof str === "string"){
+        var splitStr = str.toLowerCase().split(' ');
+        for (var i = 0; i < splitStr.length; i++) {
+            // You do not need to check if i is larger than splitStr length, as your for does that for you
+            // Assign it back to the array
+            splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);     
+        }
+
+        // Directly return the joined string
+        return splitStr.join(' ');
+    }else{
+        return "";
+    }
 });

@@ -7,6 +7,40 @@
                     <div class="col-sm-12">
                         <h3>Bookings</h3>
                         
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Order No.</th>
+                                        <th>Details</th>
+                                        <th>Payment Mode</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each arrayify_bookings bookings}}
+                                    <tr>
+                                        <td>{{_id}}</td>
+                                        <td>{{title}}<br>{{formatBookingDate date_from date_to}}</td>
+                                        <td>{{capitalize payment_method}}</td>
+                                        <td>${{totalCost price guests}}</td>
+                                        <td>{{status}}</td>
+                                        <td>
+                                            {{#if showFeedback status payment_method}}
+                                            <button data-toggle="modal" data-target="#confirmationWindow" class="btn btn-orange" id="btnFeedback_{{_id}}">Feedback</button>
+                                            {{/if}}
+                                            
+                                            {{#if showPayment status payment_method}}
+                                            <button class="btn btn-orange" id="btnPayment_{{_id}}">Payment</button>
+                                            {{/if}}
+                                        </td>
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

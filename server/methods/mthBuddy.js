@@ -82,7 +82,6 @@ Meteor.methods({
             return false;
         }
     },
-
     HasBuddyAccount: function(data) {
         try{
             let buddy = Buddies.find({ userId: data.userId }).fetch()[0];
@@ -91,6 +90,48 @@ Meteor.methods({
             } else {
                 return false;
             }
+        }catch (error) {
+            console.log(error);
+            return false;
+        }
+    },
+    getABuddy: function(data){
+        
+        try {
+            
+            var selector = {};
+            
+            if(typeof data.userId !== "undefined"){
+                selector["userId"] = data.userId;
+            }
+            
+            if(typeof data.buddy_id !== "undefined"){
+                selector["_id"] = data.buddy_id;
+            }
+            
+            var buddy = Buddies.findOne(selector);
+            
+            if (buddy) {
+                return buddy;
+            } else {
+                //throw new Meteor.Error('500','Invalid Buddy Account.');
+                return false;
+            }
+            
+        } catch (error) {
+            console.log(error);
+            return false;
+        }
+    },
+    UpdateBuddy: function(data){
+        
+        try{
+            console.log(data._id);
+            const results = Buddies.update({"_id": data._id},
+            { $push: { "reviews":  data.reviews}});
+            
+            return results;
+            
         } catch (error) {
             console.log(error);
             return false;

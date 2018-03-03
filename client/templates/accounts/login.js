@@ -1,3 +1,43 @@
+Template.login.onRendered(function(){
+   $('#app-login').validate({
+        rules: {
+            loginEmail: {
+                required: true,
+            },
+           loginPassword: {
+                required: true,
+            },
+
+        },
+        messages: {
+            loginEmail: {
+                required: 'Email is required.',
+            },
+            loginPassword: {
+                required: 'Password is required.',
+            },
+        },
+        invalidHandler: function(event, validator) {
+            // 'this' refers to the form
+            var numOfErrors = validator.numberOfInvalids();
+            var msg = "";
+            
+            if (numOfErrors) {
+               
+               _.forEach(validator.invalid, function(k,v){
+                   msg+=k+"<br>";
+               });
+               
+              Bert.alert(msg, 'danger', 'fixed-top', 'fa-frown-o');
+            }
+        },
+        errorPlacement: function(error, element) {
+            
+        },
+        focusInvalid: false
+    }); 
+});
+
 Template.login.events({
     'click #aRegister': function(event) {
         Session.set('showRegister', true)
