@@ -52,11 +52,37 @@ Meteor.methods({
                         street: data.street,
                         city: data.city,
                         country: data.country,
-                        about: data.about
+                        about: data.about,
+                        avatar: data.imageurl
                     }
                 }              
             });
-            console.log("SERVER METHOD: UpdateProfile ");
+            console.log("SERVER METHOD: UpdateProfile IMG URL");
+            console.log(data.imageurl);
+            console.log(result);
+            if (result)
+                return result;
+            else
+                throw new Meteor.Error('Unexpected error while updating profile information. Please try again.');
+        } catch (error) {
+            console.log("SERVER METHOD: UpdateProfile EXCEPTION");
+            console.log(error);
+            throw new Meteor.Error(error);
+        }
+    },
+
+    UpdateProfileImage : function(data) {
+        try {
+            if (!Meteor.userId()){
+                throw new Meteor.Error('500','Not authorized!');
+            }
+
+            var result = Meteor.users.update(Meteor.userId() ,{
+                $set: {
+                    'profile.avatar': data.imageurl
+                }              
+            });
+            console.log("SERVER METHOD: UpdateProfile IMG URL");
             console.log(result);
             if (result)
                 return result;
@@ -68,4 +94,5 @@ Meteor.methods({
             throw new Meteor.Error(error);
         }
     }
+
 })

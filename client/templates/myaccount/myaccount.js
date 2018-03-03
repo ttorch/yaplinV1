@@ -4,15 +4,49 @@ Template.myaccount.events({
             format: 'DD/MM/YYYY'
         });
     },
+    'change #profileimage': function(event, tmpl) {
+        var imageUrl = ''
+        // var file = $('#profileimage').get(0).files[0];
+        // if (file) {
+        //     console.log("Uploaded File");
+        //     console.log(file);
+        // }
+        FS.Utility.eachFile(event, function(file){
+            ProfileImages.insert(file, function(err, fileObj){
+                if (!err){
+                    imageUrl = '/cfs/files/images/' + fileObj._id;
+                    setTimeout(function(){
+                        data = {
+                            imageurl: imageUrl
+                        }
+
+                        Meteor.call('UpdateProfileImage', data, function(error, response){
+                            if (error) {
+                                Bart.alert(error.error.reason, 'danger', 'fixed-top', 'fa-frown-o');
+                                $('#btn-submit-profile').html('Submit'); 
+                                $('#btn-submit-profile').prop('disabled',false);                
+                                return false;
+                            }
+                        })
+                    }, 3000);
+                } else {
+                    console.log("MY ACCOUNT FS ERROR");
+                    console.log(err);
+                }
+            });
+        });
+
+        console.log("imageUrl", imageUrl);
+    },
     'submit form':function(event){
         event.preventDefault();
         
         var target = event.target;
-        
-        console.log(moment(target.dateofbirth.value, "DD/MM/YYYY").format("YYYY-MM-DD"));
-        
+ 
         $('#btn-submit-profile').prop('disabled',true);
         $('#btn-submit-profile').html('Submitting Information...'); 
+
+        var imageUrl = $('#avatar').attr("src");
 
         data = {
             firstname: target.firstname.value,
@@ -23,7 +57,8 @@ Template.myaccount.events({
             street: target.street.value,
             city: target.city.value,
             country: target.country.value,
-            about: target.about.value
+            about: target.about.value,
+            imageurl: imageUrl
         }
 
         Meteor.call('UpdateProfile', data, function(error, response){

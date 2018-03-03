@@ -1,5 +1,17 @@
 <template name="profile">
-    
+    <div class="form-group">
+        <center>
+            <div class="profile-ing-container">
+                <img src="{{currentUser.profile.avatar}}" alt="avatar" class="avatar" id="avatar">
+            </div>
+        </center>
+    </div>
+
+    <div class="form-group">
+        <span class="btn btn-default btn-file">
+            <input type="file" accept=".gif,.jpg,.png" id="profileimage" name="profileimage">
+        </span>
+    </div>
     <div class="form-group">
         <input type="text" name="firstname" class="form-control input-md" placeholder="First Name" value="{{currentUser.profile.firstName}}" required>
     </div>

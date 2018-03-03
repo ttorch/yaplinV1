@@ -81,3 +81,12 @@
     color: rgb(0, 0, 0);
     border-left: solid 3px #e44d26
 }
+
+.avatar {
+    border-radius: 50%;
+    max-width: 100%;
+}
+
+.profile-ing-container {
+    width: 200px;
+}

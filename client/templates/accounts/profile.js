@@ -29,6 +29,7 @@ Template.profile.events({
             Bert.alert( 'Before you can proceed, please accept the Terms and Conditions.', 'warning', 'growl-top-right', 'fa-exclamation-triangle' );
             return false;
         }
+        var imageUrl = $('#avatar').attr("src");
         
         console.log(moment(target.dateofbirth.value).format("YYYY-MM-DD"));
         data = {
@@ -40,7 +41,8 @@ Template.profile.events({
             street: target.street.value,
             city: target.city.value,
             country: target.country.value,
-            about: target.about.value
+            about: target.about.value,
+            imageurl: imageUrl
         }
 
         Meteor.call('UpdateProfile', data, function(error, response){
@@ -50,6 +52,10 @@ Template.profile.events({
                 Bart.alert('OK', 'success', 'growl-top-right', 'fa-frown-o');
             }
         });
-
+    },
+    'change input[type=file]':function(event) {
+        // console.log(event);
+        var output = document.getElementById('avatar');
+        output.src = URL.createObjectURL(event.target.files[0]);
     }
 })

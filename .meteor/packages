@@ -45,3 +45,6 @@ dbarrett:dropzonejs
 tomi:upload-server
 http
 mrt:paypal
+cfs:standard-packages
+cfs:gridfs
+cfs:filesystem
