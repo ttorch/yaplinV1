@@ -22,6 +22,7 @@ Template.home.onRendered(function(){
             Bert.alert(error.error.reason, 'danger', 'fixed-top', 'fa-frown-o');
         } else {
             Session.set("tours",response);
+            
         }
     });
 });
@@ -29,7 +30,7 @@ Template.home.onRendered(function(){
 Template.home.helpers({
   tours() {
       return Session.get("tours");
-  },
+  }
 });
 
 Template.registerHelper('arrayify_tour',function(obj){
@@ -38,6 +39,13 @@ Template.registerHelper('arrayify_tour',function(obj){
     if(typeof obj !== "undefined"){
         
         Object.keys(obj).forEach(function (key){
+                
+                var photos = null;
+                
+                if(typeof obj[key]["photos"]!="undefined"){
+                    
+                    photos=obj[key]["photos"];
+                }
                 
                 result.push({
                     _id: obj[key]["_id"],
@@ -53,6 +61,7 @@ Template.registerHelper('arrayify_tour',function(obj){
                     scheduleId: obj[key]["schedules"]["scheduleId"],
                     from: obj[key]["schedules"]["from"],
                     to: obj[key]["schedules"]["to"],
+                    photos: photos,
                 });
         });
     }
@@ -117,5 +126,21 @@ Template.registerHelper("capitalize",function(str){
         return splitStr.join(' ');
     }else{
         return "";
+    }
+});
+
+Template.registerHelper('displayPhoto', function(photos) { 
+    
+    if(photos !== null){
+        if(typeof photos[0].filename != "undefined"){
+            
+            console.log(photos[0].filename);
+            
+            return photos[0].filename;
+        }else{
+            return "home-exp.jpg";
+        }
+    }else{
+        return "home-exp.jpg";
     }
 });

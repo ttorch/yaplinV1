@@ -18,7 +18,7 @@ Meteor.methods({
         try {
             Tours.insert(data);
             console.log("Create: OK");
-            console.log(data);
+            
             return "OK";
         } catch (error) {
             console.log('SERVER ERROR');

@@ -1,9 +1,11 @@
 <template name="profile">
     <div class="form-group">
         <center>
+            {{#if currentUser.profile.avatar}}
             <div class="profile-ing-container">
                 <img src="{{currentUser.profile.avatar}}" alt="avatar" class="avatar" id="avatar">
             </div>
+            {{/if}}
         </center>
     </div>
 

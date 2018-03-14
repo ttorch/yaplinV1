@@ -80,32 +80,3 @@ Template.listings.events({
         //console.log(target.id);
     }
 });
-
-Template.registerHelper('arrayify_tour',function(obj){
-    var result = [];
-    
-    if(typeof obj !== "undefined"){
-        
-        Object.keys(obj).forEach(function (key){
-                
-                result.push({
-                    _id: obj[key]["_id"],
-                    title: obj[key]["title"],
-                    location: obj[key]["location"],
-                    guests: obj[key]["guests"],
-                    price: obj[key]["price"],
-                    summary: obj[key]["summary"],
-                    experience: obj[key]["experience"],
-                    exp_expectation: obj[key]["exp_expectation"],
-                    provision: obj[key]["provision"],
-                    prov_expectation: obj[key]["prov_expectation"],
-                    scheduleId: obj[key]["schedules"]["scheduleId"],
-                    from: obj[key]["schedules"]["from"],
-                    to: obj[key]["schedules"]["to"],
-                });
-        });
-    }
-    
-    
-    return result;
-});

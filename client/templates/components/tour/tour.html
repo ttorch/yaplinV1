@@ -1,13 +1,5 @@
 <template name="tour">
-    <a href="/tour-details/{{_id}}"><img src="/assets/images/home-exp.jpg"></a>
+    <a href="/tour-details/{{_id}}"><img src="/assets/images/{{displayPhoto photos}}"></a>
     <div class="top-title">{{title}}, {{location}}</div>
     <div class="price-title">SGD ${{price}} per person</div>
-    <div class="ratings-title btn-xs">
-        <span class="glyphicon glyphicon-star"></span>
-        <span class="glyphicon glyphicon-star"></span>
-        <span class="glyphicon glyphicon-star"></span>
-        <span class="glyphicon glyphicon-star"></span>
-        <span class="glyphicon glyphicon-star"></span>
-        <b>(20)</b>
-    </div>
 </template>

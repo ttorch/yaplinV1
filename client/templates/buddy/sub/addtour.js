@@ -16,6 +16,7 @@ Dropzone.options.dropzoneDiv = {
         
     },
     success: function(file, response){
+        
         var photos = [];
         
         var res = JSON.parse(response);
@@ -31,7 +32,19 @@ Dropzone.options.dropzoneDiv = {
         });
         
         if(photos.length > 0) {
+            
+            if(Session.get("photos")!== null && typeof Session.get("photos") !== "undefined"){
+                Object.keys(Session.get("photos")).forEach(function (key){
+                    photos.push({
+                        baseUrl: Session.get("photos")[key]["baseUrl"], 
+                        filename: Session.get("photos")[key]["filename"],
+                        filesize: Session.get("photos")[key]["filesize"]
+                    });
+                });
+            }
+            
             Session.set('photos', photos);
+            
         }
     }
 };
@@ -72,7 +85,6 @@ Template.addtour.onRendered(function() {
         FlowRouter.go("/");
     }
     
-    
     var action = Session.get("action");
     
     const instance = Template.instance();
@@ -112,7 +124,7 @@ Template.addtour.onRendered(function() {
                var mockFile = {};
                var baseUrl = "";
                 
-               if(typeof response.photos!== "undefined"){
+               if(typeof response.photos!== "undefined" && response.photos!== null){
                 
                 Object.keys(response.photos).forEach(function (key){
                      photos.push({
@@ -137,10 +149,12 @@ Template.addtour.onRendered(function() {
 
                      myDropzone.emit('complete', mockFile);
                  });
-
+                 
+                 Session.set("photos", photos);
+                 
              }
              
-             Session.set("photos", photos);
+             
              
             }else{
                Bert.alert(error.error.reason, 'danger', 'fixed-top', 'fa-frown-o');
@@ -156,7 +170,7 @@ Template.addtour.onRendered(function() {
         schedules.push({scheduleId: scheduleId, from: getDateTime(), to: getDateTime()});
 
         instance.schedules.set(schedules);
-    
+        
     }
     
     Meteor.setTimeout(function() {
@@ -247,90 +261,94 @@ Template.addtour.events({
         
         myDropzone.processQueue();
         
-        var invalid = false;
-        var msg = "";
-        
-        if(arySchedules.length<=0){
-            invalid = true;
-            msg+="Please add at least one schedules.<br>";
-        }
-        
-        if(invalid){
-            Bert.alert(msg, 'danger', 'fixed-top', 'fa-frown-o');
-        }else{
-        
-            var buddy = Buddies.find({ userId: Meteor.userId() }).fetch()[0];
+        myDropzone.on("complete", function(file) {
+            var invalid = false;
+            var msg = "";
 
-
-            if (buddy != undefined && buddy._id && buddy.verified === true) {
-
-                if(action == "add"){
-                    var data = {
-                        buddy_id: buddy._id,
-                        title: target.title.value,
-                        location: target.location.value,
-                        guests: noOfGuests,
-                        price: target.price.value,
-                        summary: target.summary.value,
-                        experience: target.experience.value,
-                        exp_expectation: target.exp_expectation.value,
-                        provision: target.provision.value,
-                        prov_expectation: target.prov_expectation.value,
-                        schedules: arySchedules,
-                        photos: Session.get('photos')
-                    };
-
-                    Meteor.call('CreateTour', data, function(error, response){
-
-                        if (error) {
-                            console.log(error);
-                            Bert.alert(error.error.reason, 'danger', 'fixed-top', 'fa-frown-o');
-                        } else {
-
-                            //reset session
-                            Session.set('photos', null);
-
-                            Bert.alert("Listing have added succcessfully!", 'success', 'fixed-top', 'fa-smile-o');
-                            FlowRouter.go("/myaccount/listings");
-                        }
-                    });
-                }else if(action == "update"){
-
-                    var data = {
-                        _id: instance.tourdetails.get()._id,
-                        buddy_id: buddy._id,
-                        title: target.title.value,
-                        location: target.location.value,
-                        guests: noOfGuests,
-                        price: target.price.value,
-                        summary: target.summary.value,
-                        experience: target.experience.value,
-                        exp_expectation: target.exp_expectation.value,
-                        provision: target.provision.value,
-                        prov_expectation: target.prov_expectation.value,
-                        schedules: arySchedules,
-                        photos: Session.get('photos')
-                    };
-
-                    Meteor.call('UpdateTour', data, function(error, response){
-
-                        if (error) {
-                            console.log(error);
-                            Bert.alert(error.error.reason, 'danger', 'fixed-top', 'fa-frown-o');
-                        } else {
-
-                            //reset session
-                            Session.set('photos', null);
-
-                            Bert.alert("Listing have updated succcessfully!", 'success', 'fixed-top', 'fa-smile-o');
-                            FlowRouter.go("/myaccount/listings");
-                        }
-                    });
-                }
-            } else {
-                Bert.alert('Not authorized!.', 'danger', 'fixed-top', 'fa-frown-o');
+            if(arySchedules.length<=0){
+                invalid = true;
+                msg+="Please add at least one schedules.<br>";
             }
-        }
+
+            if(invalid){
+                Bert.alert(msg, 'danger', 'fixed-top', 'fa-frown-o');
+            }else{
+
+                var buddy = Buddies.find({ userId: Meteor.userId() }).fetch()[0];
+
+
+                if (buddy != undefined && buddy._id && buddy.verified === true) {
+
+                    if(action == "add"){
+
+                        var data = {
+                            buddy_id: buddy._id,
+                            title: target.title.value,
+                            location: target.location.value,
+                            guests: noOfGuests,
+                            price: target.price.value,
+                            summary: target.summary.value,
+                            experience: target.experience.value,
+                            exp_expectation: target.exp_expectation.value,
+                            provision: target.provision.value,
+                            prov_expectation: target.prov_expectation.value,
+                            schedules: arySchedules,
+                            photos: Session.get('photos')
+                        };
+
+                        Meteor.call('CreateTour', data, function(error, response){
+
+                            if (error) {
+                                console.log(error);
+                                Bert.alert(error.error.reason, 'danger', 'fixed-top', 'fa-frown-o');
+                            } else {
+
+                                //reset session
+                                Session.set('photos', null);
+
+                                Bert.alert("Listing have added succcessfully!", 'success', 'fixed-top', 'fa-smile-o');
+                                FlowRouter.go("/myaccount/listings");
+                            }
+                        });
+                    }else if(action == "update"){
+
+                        var data = {
+                            _id: instance.tourdetails.get()._id,
+                            buddy_id: buddy._id,
+                            title: target.title.value,
+                            location: target.location.value,
+                            guests: noOfGuests,
+                            price: target.price.value,
+                            summary: target.summary.value,
+                            experience: target.experience.value,
+                            exp_expectation: target.exp_expectation.value,
+                            provision: target.provision.value,
+                            prov_expectation: target.prov_expectation.value,
+                            schedules: arySchedules,
+                            photos: Session.get('photos')
+                        };
+
+                        Meteor.call('UpdateTour', data, function(error, response){
+
+                            if (error) {
+                                console.log(error);
+                                Bert.alert(error.error.reason, 'danger', 'fixed-top', 'fa-frown-o');
+                            } else {
+
+                                //reset session
+                                Session.set('photos', null);
+
+                                Bert.alert("Listing have updated succcessfully!", 'success', 'fixed-top', 'fa-smile-o');
+                                FlowRouter.go("/myaccount/listings");
+                            }
+                        });
+                    }
+                } else {
+                    Bert.alert('Not authorized!.', 'danger', 'fixed-top', 'fa-frown-o');
+                }
+            }
+        });
+        
         return false;
     },
     'change #noOfGuests': function(event, template) {

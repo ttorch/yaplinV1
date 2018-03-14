@@ -4,6 +4,7 @@ Template.tourdetails.onCreated(function(){
     
     var self = this;
     self.tourdetails = new ReactiveVar({});
+    self.buddydetails = new ReactiveVar({});
     self.numOfGuests = new ReactiveVar({});
     
     var title = "Yaplin - Tour Details";
@@ -15,15 +16,18 @@ Template.tourdetails.onRendered(function(){
     
    $(window).scroll(function() {    
         var scroll = $(window).scrollTop();
-
+        
         if (scroll >= 215) {
-
             $("#form-book").addClass("position-book");
-        }else {
+            
+            if((scroll + $("#form-book").outerHeight()) >= $("footer").position().top){
+               $("#form-book").offset({top:($("footer").position().top-$("#form-book").outerHeight())});
+            }
+        }else{
 
-                $("#form-book").removeClass("position-book");
+            $("#form-book").removeClass("position-book");
         }
-
+        
     });
 
    const instance = Template.instance();
@@ -41,6 +45,35 @@ Template.tourdetails.onRendered(function(){
             Bert.alert(error.error.reason, 'danger', 'fixed-top', 'fa-frown-o');
         } else {
             instance.tourdetails.set(response);
+            
+            var buddy_data = {
+                "buddy_id": response.buddy_id
+            };
+            console.log(response.buddy_id);
+            
+            Meteor.call("getABuddy",buddy_data, function(error,response){
+                
+                if(response == false){
+                    FlowRouter.go('/');
+                    Bert.alert("Sorry, tour doesn't exist.", 'danger', 'fixed-top', 'fa-frown-o');
+                }else{
+                    
+                    var user_data = {
+                        "_id": response.userId
+                    };
+                    
+                    Meteor.call("getAUser",user_data, function(error,response){
+                        
+                        if(response){
+                            instance.buddydetails.set(response);
+                        }else{
+                            FlowRouter.go('/');
+                            Bert.alert("Sorry, tour doesn't exist.", 'danger', 'fixed-top', 'fa-frown-o');
+                        }
+                    });
+                    
+                }
+            });
         }
     });
     
@@ -151,6 +184,13 @@ Template.tourdetails.helpers({
         
         return instance.tourdetails.get();
     },
+    buddydetails(){
+        const instance = Template.instance();
+        
+        //console.log(instance.tourdetails.get());
+        
+        return instance.buddydetails.get();
+    },
     noOfGuest(){
         
         const instance = Template.instance();
@@ -172,6 +212,13 @@ Template.tourdetails.helpers({
             return true;
         }else{
             return false;
+        }
+    },
+    showActive(index){
+        if(index == 0){
+            return "active";
+        }else{
+            return "";
         }
     }
 });

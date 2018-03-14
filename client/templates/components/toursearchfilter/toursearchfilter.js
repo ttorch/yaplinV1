@@ -4,7 +4,7 @@ Template.toursearchfilter.onRendered(function(){
     
     $('.datepicker').datetimepicker({
         format: 'DD MMM YYYY',
-        date: new Date()
+        date: new Date("2018-02-28")
     });
     
     $('.timepicker').datetimepicker({
@@ -60,42 +60,7 @@ Template.toursearchfilter.events({
             console.log(error);
             Bert.alert(error.error.reason, 'danger', 'fixed-top', 'fa-frown-o');
         } else {
-            
             Session.set("tours",response);
-            
-            
-            
-              /*$(".regular").slick({
-                      dots: false,
-                      infinite: false,
-                      slidesToShow: 4,
-                      slidesToScroll: 4,
-                      responsive: [
-                      {
-                        breakpoint: 1024,
-                        settings: {
-                          slidesToShow: 4,
-                          slidesToScroll: 4,
-                        }
-                      },
-                      {
-                        breakpoint: 600,
-                        settings: {
-                          slidesToShow: 3,
-                          slidesToScroll: 3
-                        }
-                      },
-                      {
-                        breakpoint: 480,
-                        settings: {
-                          slidesToShow: 2,
-                          slidesToScroll: 2
-                        }
-                      }
-                    ]
-                  });
-
-                $(".regular").slick("setPosition");*/
         }
     });
     

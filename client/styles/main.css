@@ -396,6 +396,7 @@ a:hover{text-decoration:none!important;}
 .home-exp img{
     width:100%;
     border-radius:5px;
+    height: 180px;
 }
 
 .home-exp.col-lg-3{

@@ -30,7 +30,9 @@ Template.review.events({
                     "review_id": new Meteor.Collection.ObjectID()._str, 
                     "rating":rating,
                     "feedback": feedback,
-                    "name": Meteor.user().profile.firstName + " " + Meteor.user().profile.lastName
+                    "name": Meteor.user().profile.firstName + " " + Meteor.user().profile.lastName,
+                    "avatar": Meteor.user().profile.avatar,
+                    "gender": Meteor.user().profile.gender
                 };
 
                 var booking_data = {

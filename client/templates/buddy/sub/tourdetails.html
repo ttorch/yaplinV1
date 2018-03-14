@@ -18,8 +18,17 @@
                     <div class="col-md-12 col-xs-12">
                         <div class="tour-profile-img clearfix">
                             <a href="{{pathFor "/buddy/profile/:buddyId" buddyId=tourdetails.buddy_id}}">
-                                <div class="col-tour-1"><img src="/assets/images/profile-img.jpg"> </div>
-                                <div class="col-tour-11 tour-profile-name">Karen Lim</div>
+                                
+                                <div class="col-tour-1">
+                                    {{#if buddydetails.profile.avatar}}
+                                    <img src="{{buddydetails.profile.avatar}}">
+                                    {{else if buddydetails.profile.gender ='female'}}
+                                    <img src="/assets/images/female.jpg">
+                                    {{else}}
+                                    <img src="/assets/images/male.png">
+                                    {{/if}}
+                                </div>
+                                <div class="col-tour-11 tour-profile-name">{{buddydetails.profile.firstName}} {{buddydetails.profile.lastName}}</div>
                             </a>
                         </div>
                     </div>
@@ -37,17 +46,12 @@
 
                           <!-- Wrapper for slides -->
                           <div class="carousel-inner">
-                            <div class="item active">
-                              <img src="/assets/images/home-exp2.jpg" width="100%">
+                              {{#each tourdetails.photos}}
+                            <div class="item {{showActive @index}}">
+                              <img src="/assets/images/{{filename}}" width="100%">
                             </div>
-
-                            <div class="item">
-                              <img src="/assets/images/home-exp2.jpg" width="100%">
-                            </div>
-
-                            <div class="item">
-                              <img src="/assets/images/home-exp2.jpg" width="100%">
-                            </div>
+                              {{/each}}
+                              
                           </div>
 
                           <!-- Left and right controls -->
