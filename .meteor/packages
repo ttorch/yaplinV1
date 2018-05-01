@@ -49,3 +49,4 @@ cfs:standard-packages
 cfs:gridfs
 cfs:filesystem
 barbatus:stars-rating
+percolate:synced-cron
