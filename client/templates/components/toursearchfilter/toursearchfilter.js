@@ -50,7 +50,8 @@ Template.toursearchfilter.events({
         date: target.date.value,
         noOfGuest: target.noOfGuest.value,
         timeFrom: target.timeFrom.value,
-        timeTo: target.timeTo.value
+        timeTo: target.timeTo.value,
+        title: target.title.value,
     };
     
     //search tours

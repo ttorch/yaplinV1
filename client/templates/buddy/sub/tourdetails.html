@@ -109,6 +109,7 @@
                 </div>
             </div>
             <div class="col-md-4 col-sm-5">
+                {{#if hasNotExpired tourdetails.schedules}}
                 <div id="form-book" class="hidden-xs hidden-sm">
                     <div class="tour-price">SGD<span>${{tourdetails.price}}</span> per person</div>
                     <form id="tourBookingFrm" action="">
@@ -128,11 +129,14 @@
                             </div>
                             <fieldset id="Radios1">
                                 {{#each tourdetails.schedules}}
+                                
+                                    {{#if hasNotExpired this.from}}
                                 <div class="form-check">
                                     
                                     <input class="form-check-input" type="radio" name="tourDate" value="{{this.scheduleId}}">
                                     <span>{{ formatBookingDate this.from this.to}}</span>
                                 </div>
+                                    {{/if}}
                                 {{/each}}
                             </fieldset>
                             <fieldset id="Radios2">
@@ -153,6 +157,8 @@
                         </div>    
                     </form>
                 </div>
+                
+                {{/if}}
             </div>
             
        </div>

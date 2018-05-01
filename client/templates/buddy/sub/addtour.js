@@ -259,6 +259,10 @@ Template.addtour.events({
             });
         });
         
+        if(myDropzone.files.length <=0){
+            Bert.alert("Please upload a photo", 'danger', 'fixed-top', 'fa-frown-o');
+        }
+        
         myDropzone.processQueue();
         
         myDropzone.on("complete", function(file) {
@@ -291,7 +295,7 @@ Template.addtour.events({
                             experience: target.experience.value,
                             exp_expectation: target.exp_expectation.value,
                             provision: target.provision.value,
-                            prov_expectation: target.prov_expectation.value,
+                            //prov_expectation: target.prov_expectation.value,
                             schedules: arySchedules,
                             photos: Session.get('photos')
                         };
@@ -323,7 +327,7 @@ Template.addtour.events({
                             experience: target.experience.value,
                             exp_expectation: target.exp_expectation.value,
                             provision: target.provision.value,
-                            prov_expectation: target.prov_expectation.value,
+                            //prov_expectation: target.prov_expectation.value,
                             schedules: arySchedules,
                             photos: Session.get('photos')
                         };

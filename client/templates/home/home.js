@@ -134,8 +134,6 @@ Template.registerHelper('displayPhoto', function(photos) {
     if(photos !== null){
         if(typeof photos[0].filename != "undefined"){
             
-            console.log(photos[0].filename);
-            
             return photos[0].filename;
         }else{
             return "home-exp.jpg";
@@ -144,3 +142,10 @@ Template.registerHelper('displayPhoto', function(photos) {
         return "home-exp.jpg";
     }
 });
+
+Template.registerHelper('displayExpired', function(from){
+    if(moment(from).isBefore(moment())){
+        return Spacebars.SafeString("<span class='expired'>Expired</span>");
+    }
+});
+

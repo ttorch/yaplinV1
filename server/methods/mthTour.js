@@ -98,12 +98,15 @@ Meteor.methods({
             if(data.noOfGuest!== undefined && data.noOfGuest!=""){
                 pipeline.push({"$match": { "guests": parseInt(data.noOfGuest) }});
             }
-
-            /*if(txtSearch!== undefined && txtSearch!=""){
-                selector.title=txtSearch;
-            }*/
+            
+            if(data.title!== undefined && data.title!=""){
+                
+                var params = new RegExp("^"+data.title+"$","i");
+                
+                pipeline.push({"$match": { "title": params }});
+            }
            
-           const tours=Tours.aggregate(pipeline); 
+           const tours=Tours.aggregate(pipeline);
            
            return tours;
            

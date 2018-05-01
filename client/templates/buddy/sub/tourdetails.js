@@ -49,7 +49,6 @@ Template.tourdetails.onRendered(function(){
             var buddy_data = {
                 "buddy_id": response.buddy_id
             };
-            console.log(response.buddy_id);
             
             Meteor.call("getABuddy",buddy_data, function(error,response){
                 
@@ -220,5 +219,30 @@ Template.tourdetails.helpers({
         }else{
             return "";
         }
+    },
+    hasNotExpired(schedules){
+        
+        var hasNotExpired = true;
+        
+        if(typeof schedules.length != "undefined"){
+            
+            Object.keys(schedules).forEach(function (key){
+
+                if(moment(schedules[key].from).isBefore(moment())){
+                    hasNotExpired = false;
+                }else{
+                    hasNotExpired = true;
+                }
+            });
+        }else{
+            
+            if(moment(schedules).isBefore(moment())){
+                hasNotExpired = false;
+            }else{
+                hasNotExpired = true;
+            }
+        }
+        
+        return hasNotExpired;
     }
 });
