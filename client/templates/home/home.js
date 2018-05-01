@@ -149,3 +149,12 @@ Template.registerHelper('displayExpired', function(from){
     }
 });
 
+Template.registerHelper("displayEmpty", function(obj){
+    
+    if(obj.length <=0){
+        return Spacebars.SafeString("<h3>There is no record.</h3>");
+    }else{
+        return "";
+    }
+});
+
